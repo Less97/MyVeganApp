@@ -10,17 +10,19 @@ using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 
 
+
+
 namespace myVegAppDbAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class MyVegApiController : Controller
+    public class myVegAppAPIController : Controller
     {
         private MongoClient _client;
         private IMongoDatabase _database;
 
-        public MyVegApiController ()
+        public myVegAppAPIController()
         {
-            _client = new MongoClient("mongodb://localhost:4321");
+            _client = new MongoClient("mongodb://localhost:43210");
             _database = _client.GetDatabase("MyVegAppDb");
         }
 
@@ -31,33 +33,36 @@ namespace myVegAppDbAPI.Controllers
             return "Hello MyVegAppDbAPI";
         }
 
-        // GET api/values/5
-        [HttpPost]
-        public JsonResult Login(Login model)
+        [HttpPost("login")]
+        public JsonResult Login([FromBody]Login model)
         {
-            var collection = _database.GetCollection<User>("restaurants");
-            var builder = Builders<User>.Filter;
-            var filter = builder.Eq("email", model.email) & builder.Eq("password", model.password);
-            var result = collection.Count(filter);
-            return Json(new {Login = (result == 1)});
+            try
+            {
+                var collection = _database.GetCollection<BsonDocument>("places");
+                var filter = Builders<BsonDocument>.Filter.Eq("email", model.Email);
+                var result = collection.Count(filter);
+                return Json(new { login = result == 1 });
+            }
+            catch (Exception ex) {
+                return Json(ex);
+            }
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
+        [HttpGet("getplaces")]
+        public JsonResult GetPlaces() {
+            try
+            {
+                var collection = _database.GetCollection<BsonDocument>("places");
+                return Json(collection.ToJson());
+            }
+            catch (Exception ex) {
+                return Json(new { error = true, errorMessage = ex.Message });
+            }
+
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+        
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
     }
 }
