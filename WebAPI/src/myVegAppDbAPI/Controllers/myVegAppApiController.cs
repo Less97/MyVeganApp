@@ -9,6 +9,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson.Serialization.Serializers;
+using myVegAppDbAPI.Model.APIModels;
 
 
 
@@ -43,7 +44,7 @@ namespace myVegAppDbAPI.Controllers
                 var filter = new FilterDefinitionBuilder<BsonDocument>().And(new FilterDefinitionBuilder<BsonDocument>().Eq("email",model.Email)& new FilterDefinitionBuilder<BsonDocument>().Eq("password", model.Password));
                 var document = await collection.Find(filter).FirstOrDefaultAsync();
                 if (document == null)
-                    return Json(new {Error = 1});
+                    return Json(new {}.ToJson());
                 else
                     return  Json(document.ToJson());
             }
@@ -52,12 +53,55 @@ namespace myVegAppDbAPI.Controllers
             }
         }
 
+        [HttpPost("createUser")]
+        public async Task<JsonResult> CreateUser([FromBody] CreateUser model)
+        {
+            try
+            {
+                var userCollection = _database.GetCollection<BsonDocument>("users");
+             
+                //check if already existing
+                var filter = new FilterDefinitionBuilder<BsonDocument>().And(new FilterDefinitionBuilder<BsonDocument>().Eq("email", model.Email) & new FilterDefinitionBuilder<BsonDocument>().Eq("password", model.Password));
+                var document = await userCollection.Find(filter).FirstOrDefaultAsync();
+
+                if (document != null)
+                {
+                    return Json(new {error = 1, Message = "User already exists"});
+                }
+
+                var bsonDocument = new BsonDocument()
+                {
+                    { "email" ,model.Email},
+                    { "password",model.Password},
+                    { "firstName" ,model.FirstName},
+                    { "lastName",model.LastName},
+                    { "tipology",model.Type},
+                };
+                await userCollection.InsertOneAsync(bsonDocument);
+                document = await userCollection.Find(filter).FirstOrDefaultAsync();
+                if (document == null)
+                    return Json(new {error=1,Message="Couldn't create the user" }.ToJson());
+                else
+                    return Json(document.ToJson());
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new {Error=1,Message= ex});
+            }
+        }
+
         [HttpGet("getplaces")]
-        public JsonResult GetPlaces() {
+        public async Task<JsonResult> GetPlaces(Double latitude,Double longitude,String searchText) {
             try
             {
                 var collection = _database.GetCollection<BsonDocument>("places");
-                return Json(collection.ToJson());
+
+                var filter = new FilterDefinitionBuilder<BsonDocument>().Text(searchText);
+                var docs = await collection.Find(filter).FirstOrDefaultAsync();
+                if (docs != null)
+                    return Json(docs);
+                return Json(new {});
             }
             catch (Exception ex) {
                 return Json(new { error = true, errorMessage = ex.Message });
