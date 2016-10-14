@@ -10,9 +10,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson.Serialization.Serializers;
 using myVegAppDbAPI.Model.APIModels;
-
-
-
+using Microsoft.Extensions.Options;
 
 namespace myVegAppDbAPI.Controllers
 {
@@ -21,11 +19,14 @@ namespace myVegAppDbAPI.Controllers
     {
         private MongoClient _client;
         private IMongoDatabase _database;
+        private MySettings MySettings { get; set; }
 
-        public myVegAppAPIController()
+        public myVegAppAPIController(IOptions<MySettings> settings)
         {
-            _client = new MongoClient("mongodb://127.0.0.1:4321");
-            _database = _client.GetDatabase("myVegAppDb");
+            MySettings = settings.Value;
+
+            _client = new MongoClient(MySettings.MongoDbHost);
+            _database = _client.GetDatabase(MySettings.DatabaseName);
         }
 
         // GET api/values
