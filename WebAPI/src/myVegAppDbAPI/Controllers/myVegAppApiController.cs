@@ -8,6 +8,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using MongoDB.Bson.Serialization.Serializers;
 
 
 
@@ -22,8 +23,8 @@ namespace myVegAppDbAPI.Controllers
 
         public myVegAppAPIController()
         {
-            _client = new MongoClient("mongodb://localhost:43210");
-            _database = _client.GetDatabase("MyVegAppDb");
+            _client = new MongoClient("mongodb://127.0.0.1:4321");
+            _database = _client.GetDatabase("myVegAppDb");
         }
 
         // GET api/values
@@ -34,14 +35,17 @@ namespace myVegAppDbAPI.Controllers
         }
 
         [HttpPost("login")]
-        public JsonResult Login([FromBody]Login model)
+        public async Task<JsonResult> Login([FromBody]Login model)
         {
             try
             {
-                var collection = _database.GetCollection<BsonDocument>("places");
-                var filter = Builders<BsonDocument>.Filter.Eq("email", model.Email);
-                var result = collection.Count(filter);
-                return Json(new { login = result == 1 });
+                var collection = _database.GetCollection<BsonDocument>("users");
+                var filter = new FilterDefinitionBuilder<BsonDocument>().And(new FilterDefinitionBuilder<BsonDocument>().Eq("email",model.Email)& new FilterDefinitionBuilder<BsonDocument>().Eq("password", model.Password));
+                var document = await collection.Find(filter).FirstOrDefaultAsync();
+                if (document == null)
+                    return Json(new {Error = 1});
+                else
+                    return  Json(document.ToJson());
             }
             catch (Exception ex) {
                 return Json(ex);

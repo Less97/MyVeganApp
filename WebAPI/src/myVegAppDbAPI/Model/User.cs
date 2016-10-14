@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace myVegAppDbAPI.Controllers
 {
-    public class User
+    public class User : BsonDocument
     {
         [BsonElement("email")]
         public String Email { get; set; }
