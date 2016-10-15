@@ -9,5 +9,6 @@ namespace myVegAppDbAPI.Model
     {
         public String MongoDbHost { get; set; }
         public String DatabaseName { get; set; }
+        public Double PlaceRadius { get; set; }
     }
 }

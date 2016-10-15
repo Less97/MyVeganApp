@@ -11,5 +11,11 @@ namespace myVegAppDbAPI.Model
 
         public Double Longitude { get; set; }
 
+        public Location() { }
+        public Location(Double latitude, Double longitude)
+        {
+            this.Latitude = latitude;
+            this.Longitude = longitude;
+        }
     }
 }

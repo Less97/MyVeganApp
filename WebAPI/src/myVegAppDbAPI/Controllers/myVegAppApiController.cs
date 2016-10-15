@@ -11,6 +11,7 @@ using MongoDB.Driver.Builders;
 using MongoDB.Bson.Serialization.Serializers;
 using myVegAppDbAPI.Model.APIModels;
 using Microsoft.Extensions.Options;
+using myVegAppDbAPI.Helpers;
 
 namespace myVegAppDbAPI.Controllers
 {
@@ -96,12 +97,15 @@ namespace myVegAppDbAPI.Controllers
         public async Task<JsonResult> GetPlaces(Double latitude,Double longitude,String searchText) {
             try
             {
+                if (String.IsNullOrEmpty(searchText)) searchText = String.Empty;
                 var collection = _database.GetCollection<BsonDocument>("places");
 
-                var filter = new FilterDefinitionBuilder<BsonDocument>().Text(searchText);
-                var docs = await collection.Find(filter).FirstOrDefaultAsync();
+                var builder = Builders<BsonDocument>.Filter;
+                var filter = (builder.Regex("name", "/" + searchText + "/i") | builder.Regex("menu.dishName", "/" + searchText + "/i")) &builder.NearSphere("location",latitude,longitude,MySettings.PlaceRadius);
+                var docs =  await collection.Find(filter).ToListAsync();
+               
                 if (docs != null)
-                    return Json(docs);
+                    return Json(docs.ToJson());
                 return Json(new {});
             }
             catch (Exception ex) {
