@@ -111,6 +111,7 @@ namespace myVegAppDbAPI.Controllers
                     var loc = x["location"]["coordinates"].AsBsonArray;
                     x.Add("distance", GeoHelper.CalculateDistance(new Location(latitude, longitude), new Location(loc[1].ToDouble(), loc[0].ToDouble())));
                 });
+               
                 if (docs != null)
                     return Json(docs.ToJson());
                 return Json(new { });
@@ -142,8 +143,8 @@ namespace myVegAppDbAPI.Controllers
                         }
                     },
                     { "menu",new BsonArray() },
-                    { "rating",0 },
-                    { "totalFeed",0}
+                    { "nReviews",0 },
+                    { "rating",0}
                  };
                 await _database.GetCollection<BsonDocument>("places").InsertOneAsync(myNewPlace);
                 return Json(new { error = 0, result = 1 });
@@ -181,18 +182,31 @@ namespace myVegAppDbAPI.Controllers
         {
             try
             {
-                var reviewsCollection = _database.GetCollection<BsonDocument>("reviews");
                 var placesCollection = _database.GetCollection<BsonDocument>("places");
+                var usersCollection = _database.GetCollection<BsonDocument>("users");
+                var reviewsCollection = _database.GetCollection<BsonDocument>("reviews");
+
                 var findMyPlaceFilter = Builders<BsonDocument>.Filter.Where(x => x["_id"] == ObjectId.Parse(model.PlaceId));
-                var doc = await placesCollection.Find(findMyPlaceFilter).ToListAsync();
-                if (doc.Count() == 0)
+                var findMyReviewerFilter = Builders<BsonDocument>.Filter.Where(x => x["_id"] == ObjectId.Parse(model.ReviewerId));
+                var place = await placesCollection.Find(findMyPlaceFilter).FirstAsync();
+                if (place == null)
                     return Json(new { error = 1, errorMessage = "Place not found" });
+                var reviewer = await usersCollection.Find(findMyReviewerFilter).FirstAsync();
+                if (reviewer == null) {
+                    return Json(new { error = 1, errorMessage = "Reviewer not found" });
+                }
                 await reviewsCollection.InsertOneAsync(new BsonDocument() {
                     { "placeId",ObjectId.Parse(model.PlaceId)},
-                    { "reviewer",model.Reviewer},
+                    { "reviewerId",ObjectId.Parse(model.ReviewerId)},
                     { "rating",model.Rating},
                     { "description",model.Description}
                 });
+                var nReviews = Convert.ToInt32(place["nReviews"]);
+                var currentRating = Convert.ToDouble(place["rating"]);
+                var newRating = Convert.ToDouble((currentRating * nReviews + model.Rating) / (++nReviews));
+                newRating = Math.Round(newRating * 2, MidpointRounding.AwayFromZero) / 2;
+                var updateReviewInPlace = Builders<BsonDocument>.Update.Set("nReviews", nReviews).Set("rating", newRating);
+                await placesCollection.UpdateOneAsync(findMyPlaceFilter, updateReviewInPlace);
                 return Json(new { error = 0, result = 1 });
             }
             catch (Exception ex)
