@@ -101,7 +101,7 @@ namespace myVegAppDbAPI.Controllers
                 var collection = _database.GetCollection<BsonDocument>("places");
 
                 var builder = Builders<BsonDocument>.Filter;
-                var filter = (builder.Regex("name", "/" + searchText + "/i") | builder.Regex("menu.dishName", "/" + searchText + "/i")) &builder.NearSphere("location",latitude,longitude,MySettings.PlaceRadius);
+                var filter = (builder.Regex("name", "/" + searchText + "/i") | builder.Regex("menu.dishName", "/" + searchText + "/i")) & builder.NearSphere("location", longitude, latitude/*,MySettings.PlaceRadius*/);
                 var docs =  await collection.Find(filter).ToListAsync();
                
                 if (docs != null)
