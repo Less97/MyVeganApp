@@ -10,6 +10,6 @@ namespace myVegAppDbAPI.Model.APIModels
         public String PlaceId { get; set; }
         public String Name { get; set; }
         public Double Price { get; set; }
-        public String Tipology { get; set; }
+        public Int32 Tipology { get; set; }
     }
 }

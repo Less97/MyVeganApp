@@ -96,7 +96,7 @@ namespace myVegAppDbAPI.Controllers
         }
 
         [HttpGet("getplaces")]
-        public async Task<JsonResult> GetPlaces(Double latitude, Double longitude, String searchText, Int32 maxDistance = Int32.MaxValue)
+        public async Task<JsonResult> GetPlaces(Double latitude, Double longitude, String searchText, Int32 maxDistance = Int32.MaxValue,Int32 tipology = 0)
         {
             try
             {
@@ -104,14 +104,13 @@ namespace myVegAppDbAPI.Controllers
                 var collection = _database.GetCollection<BsonDocument>("places");
 
                 var builder = Builders<BsonDocument>.Filter;
-                var filter = (builder.Regex("name", "/" + searchText + "/i") | builder.Regex("menu.dishName", "/" + searchText + "/i")) & builder.NearSphere("location", longitude, latitude, maxDistance / 6378.1);
+                var filter = (builder.Regex("name", "/" + searchText + "/i") | builder.Regex("menu.dishName", "/" + searchText + "/i")) & builder.NearSphere("location", longitude, latitude, maxDistance / 6378.1) & builder.BitsAllSet("menu.tipology",tipology);
                 var docs = await collection.Find(filter).ToListAsync();
                 docs.ForEach(x =>
                 {
                     var loc = x["location"]["coordinates"].AsBsonArray;
                     x.Add("distance", GeoHelper.CalculateDistance(new Location(latitude, longitude), new Location(loc[1].ToDouble(), loc[0].ToDouble())));
                 });
-               
                 if (docs != null)
                     return Json(docs.ToJson());
                 return Json(new { });
