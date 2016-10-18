@@ -54,7 +54,6 @@ angular.module('starter', ['ionic', 'myApp.Controllers', 'myApp.Services'])
 .state('createUser',{
     templateUrl: 'views/createUser.html',
     controller:'CreateUserCtrl'
-
 })
 
   .state('tab.aroundyou', {
