@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'myApp.Controllers', 'myApp.Services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -35,7 +35,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     .state('tab', {
     url: '/tab',
     abstract: true,
-    templateUrl: 'templates/tabs.html'
+    templateUrl: 'views/tabs.html'
   })
 
   // Each tab has its own nav history stack:
@@ -44,7 +44,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     url: '/aroundyou',
     views: {
       'tabAroundyou': {
-        templateUrl: 'templates/tabAroundYou.html',
+        templateUrl: 'views/aroundyou.html',
         controller: 'AroundYouCtrl'
       }
     }
@@ -54,18 +54,28 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       url: '/search',
       views: {
         'tabSearch': {
-          templateUrl: 'templates/tabSearch.html',
+          templateUrl: 'views/search.html',
           controller: 'SearchCtrl'
         }
       }
     })
 
-  .state('tab.info', {
+   .state('tab.info', {
     url: '/info',
     views: {
       'tabInfo': {
-        templateUrl: 'templates/tabInfo.html',
+        templateUrl: 'views/info.html',
         controller: 'InfoCtrl'
+      }
+    }
+  })
+
+  .state('tab.account', {
+    url: '/account',
+    views: {
+      'tabAccount': {
+        templateUrl: 'views/account.html',
+        controller: 'AccountCtrl'
       }
     }
   });

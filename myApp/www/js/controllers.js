@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('myApp.Controllers', [])
 
 .controller('AroundYouCtrl', function($scope) {})
 
@@ -25,4 +25,9 @@ angular.module('starter.controllers', [])
   $scope.settings = {
     enableFriends: true
   };
+})
+
+.controller('AccountCtrl', function($scope) {
+ 
 });
+
