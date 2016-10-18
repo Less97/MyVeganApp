@@ -39,6 +39,23 @@ angular.module('starter', ['ionic', 'myApp.Controllers', 'myApp.Services'])
   })
 
   // Each tab has its own nav history stack:
+.state('login', {
+    url: '/login',
+        templateUrl: 'views/login.html',
+        controller:'LoginCtrl'
+    })
+
+.state('forgotPassword', {
+    url: '/forgotPassword',
+    templateUrl: 'views/forgotPassword.html',
+    controller:'ForgotPasswordCtrl'
+    })
+
+.state('createUser',{
+    templateUrl: 'views/createUser.html',
+    controller:'CreateUserCtrl'
+
+})
 
   .state('tab.aroundyou', {
     url: '/aroundyou',
@@ -81,6 +98,6 @@ angular.module('starter', ['ionic', 'myApp.Controllers', 'myApp.Services'])
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/aroundyou');
+  $urlRouterProvider.otherwise('/login');
 
 });

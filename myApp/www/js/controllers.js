@@ -22,11 +22,38 @@ angular.module('myApp.Controllers', [])
 // })
 
 .controller('InfoCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
+  
+})
+
+
+.controller('LoginCtrl', function($scope,$state) {
+  $scope.user = {
+      email:'',
+      password:'',
+      loginError:false
+  }
+  $scope.goToNewUser=function(){
+    $state.go('createUser');
+  }
+  $scope.signIn = function(user) {
+    if(user.email==="test@test.it"&&user.password==="Password_123"){
+       user.loginError=false;
+      $state.go('tab.aroundyou');
+    }else{
+      user.loginError=true;
+    }
   };
 })
 
+.controller('CreateUserCtrl',function($scope,$state){
+
+})
+
+.controller('ForgotPasswordCtrl', function($scope,$state) {
+  $scope.sendPassword = function(user) {
+    $state.go('login');
+  };
+})
 .controller('AccountCtrl', function($scope) {
  
 });
