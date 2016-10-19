@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'myApp.Controllers', 'myApp.Service'])
+angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Service'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -51,9 +51,9 @@ angular.module('starter', ['ionic', 'myApp.Controllers', 'myApp.Service'])
     controller:'ForgotPasswordCtrl'
     })
 
-.state('createUser',{
-    templateUrl: 'views/createUser.html',
-    controller:'CreateUserCtrl'
+.state('register',{
+    templateUrl: 'views/register.html',
+    controller:'RegisterCtrl'
 })
 
   .state('tab.aroundyou', {
@@ -66,12 +66,12 @@ angular.module('starter', ['ionic', 'myApp.Controllers', 'myApp.Service'])
     }
   })
 
-  .state('tab.search', {
-      url: '/search',
+  .state('tab.add', {
+      url: '/add',
       views: {
-        'tabSearch': {
-          templateUrl: 'views/search.html',
-          controller: 'SearchCtrl'
+        'tabAdd': {
+          templateUrl: 'views/add.html',
+          controller: 'AddCtrl'
         }
       }
     })
