@@ -26,7 +26,7 @@ angular.module('myApp.Controllers', [])
 })
 
 
-.controller('LoginCtrl', function($scope,$state) {
+.controller('LoginCtrl', function($scope,$state,LoginService) {
   $scope.user = {
       email:'',
       password:'',
@@ -36,12 +36,11 @@ angular.module('myApp.Controllers', [])
     $state.go('createUser');
   }
   $scope.signIn = function(user) {
-    if(user.email==="test@test.it"&&user.password==="Password_123"){
-       user.loginError=false;
-      $state.go('tab.aroundyou');
-    }else{
-      user.loginError=true;
-    }
+     if(LoginService.login(user.email,user.password)){
+       $state.go("tab.aroundyou")
+     }else{
+       $scope.user.loginError = true;
+     }
   };
 })
 
