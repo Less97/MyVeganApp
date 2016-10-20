@@ -56,12 +56,22 @@ angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Ser
     controller:'RegisterCtrl'
 })
 
-  .state('tab.aroundyou', {
+  .state('tab.aroundyou-map', {
     url: '/aroundyou',
     views: {
       'tabAroundyou': {
-        templateUrl: 'views/aroundyou.html',
-        controller: 'AroundYouCtrl'
+        templateUrl: 'views/aroundyou_map.html',
+        controller: 'AroundYouMapCtrl'
+      }
+    }
+  })
+
+   .state('tab.aroundyou-list', {
+    url: '/aroundyou/list',
+    views: {
+      'tabAroundyou': {
+        templateUrl: 'views/aroundyou_list.html',
+        controller: 'AroundYouListCtrl'
       }
     }
   })
