@@ -12,3 +12,17 @@
     width: 100%;
     height: 100%;
 }
+
+/*Rating*/
+
+ul.rating li {
+  display: inline;
+  border: 0px;
+  background: none;
+  padding: 5px 1.5px;
+}
+ul.rating li i {
+  font-size: 15px;
+  color:orange
+}
+

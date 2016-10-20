@@ -1,10 +1,17 @@
 <ion-view view-title="Around you">
   <ion-nav-buttons side="left">
-      <button class="button" ng-click="doSomething()">
-        View List
+      <button class="button" ng-click="goToMap()">
+        View as Map
       </button>
     </ion-nav-buttons>
   <ion-content>
-    <div id="map" data-tap-disabled="true"></div>
+  <ion-list>
+    <ion-item ng-repeat="place in places" class="item item-thumbnail-left">
+       <img ng-src="/img/restaurant.png" class="placeTypeImg">   
+       <h2>{{place.name}}</h2>
+       <h4>{{place.type}}</h4>
+       <rating ng-model="rating" max="5"></rating>
+    </ion-item>
+</ion-list>
   </ion-content>
 </ion-view>

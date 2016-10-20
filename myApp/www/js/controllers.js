@@ -1,6 +1,6 @@
-angular.module('myApp.Controllers', [])
+angular.module('myApp.Controllers', ['ionic.rating'])
 
-.controller('AroundYouMapCtrl', function($scope,$state,$cordovaGeolocation) {
+.controller('AroundYouMapCtrl', function($scope,$state,$cordovaGeolocation,$ionicHistory) {
  var options = {timeout: 10000, enableHighAccuracy: true};
  
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
@@ -30,16 +30,28 @@ angular.module('myApp.Controllers', [])
   });
 
   $scope.goToList = function(){
+    $ionicHistory.nextViewOptions({
+      disableBack: true,
+      disableAnimate:true
+    });
+    
     $state.go('tab.aroundyou-list')    
   }
 })
 
-.controller('AroundYouListCtrl', function($scope,$state,$cordovaGeolocation) {
-  
+.controller('AroundYouListCtrl', function($scope,$state,$cordovaGeolocation,$ionicHistory,PlacesService) {
+ $scope.goToMap = function(){
+    $ionicHistory.nextViewOptions({
+      disableBack: true,
+      disableAnimate:true
+    });
+    $state.go('tab.aroundyou-map'); 
+   }
+  $scope.places = PlacesService.getPlaces();
+  $scope.rating ={
+      rating : 3
+  };
 })
-
-
-
 
 .controller('AddCtrl', function($scope) {
   
