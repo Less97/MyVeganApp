@@ -34,6 +34,13 @@ angular.module('myApp.Controllers', [])
   }
 })
 
+.controller('AroundYouListCtrl', function($scope,$state,$cordovaGeolocation) {
+  
+})
+
+
+
+
 .controller('AddCtrl', function($scope) {
   
   var place = {
