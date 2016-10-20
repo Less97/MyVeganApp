@@ -7,10 +7,12 @@
   <ion-content>
   <ion-list>
     <ion-item ng-repeat="place in places" class="item item-thumbnail-left">
-       <img ng-src="/img/restaurant.png" class="placeTypeImg">   
+       <img ng-src="img/restaurant.png" class="placeTypeImg">   
        <h2>{{place.name}}</h2>
        <h4>{{place.type}}</h4>
-       <rating ng-model="rating" max="5"></rating>
+       <div ng-if="true">
+          <rating ng-model="place.rating" max="5"></rating>
+       </div>
     </ion-item>
 </ion-list>
   </ion-content>

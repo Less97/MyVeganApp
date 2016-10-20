@@ -1,6 +1,6 @@
 angular.module('myApp.Controllers', ['ionic.rating'])
 
-.controller('AroundYouMapCtrl', function($scope,$state,$cordovaGeolocation,$ionicHistory) {
+.controller('AroundYouMapCtrl', function($scope,$state,$cordovaGeolocation,$ionicHistory,PlacesService) {
  var options = {timeout: 10000, enableHighAccuracy: true};
  
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
@@ -15,15 +15,30 @@ angular.module('myApp.Controllers', ['ionic.rating'])
  
     $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
     //Wait until the map is loaded
+    var places = PlacesService.getPlaces();
     google.maps.event.addListenerOnce($scope.map, 'idle', function(){
  
-        var marker = new google.maps.Marker({
+        var infoWindow = new google.maps.InfoWindow(), marker, i;
+        var uPos = new google.maps.Marker({
             map: $scope.map,
             animation: google.maps.Animation.DROP,
-            position: latLng
-        });      
- 
+            position: latLng,
+        });   
+        for(var i=0;i<places.length;i++){
+            var pos = new google.maps.LatLng(places[i].location.coordinates[1], places[i].location.coordinates[0]);
+              
+             
+            places[i].marker = new google.maps.Marker({
+                map: $scope.map,
+                animation: google.maps.Animation.DROP,
+                position: pos,
+                title:places[i].name
+             });  
+          
+        }
     });
+
+
  
   }, function(error){
     console.log("Could not get location");
@@ -48,9 +63,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $state.go('tab.aroundyou-map'); 
    }
   $scope.places = PlacesService.getPlaces();
-  $scope.rating ={
-      rating : 3
-  };
+  
 })
 
 .controller('AddCtrl', function($scope) {
