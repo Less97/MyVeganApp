@@ -75,9 +75,13 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $state.go('tab.aroundyou-map'); 
    }
   $scope.places = PlacesService.getPlaces();
-  $scope.gotoDetails=function(){
-    $state.go('placedetails');
+  $scope.gotoDetails=function(myPlace){
+   $state.go('placedetails',{_id:myPlace._id})
   }
+})
+
+.controller('placeDetailsCtrl',function($scope,$stateParams,$state){
+  alert($stateParams._id);
 })
 
 .controller('AddCtrl', function($scope) {

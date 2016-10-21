@@ -13,9 +13,28 @@
     height: 100%;
 }
 
+
+
+.infoWindow{
+    width:100px;
+    height:25px;
+}
+
+
+.item-avatar>i:first-child{
+    position: absolute;
+    top: 30%;
+    left: 15px;
+    font-size: 36px;
+    max-width: 40px;
+    max-height: 40px;
+    width: 100%;
+    border-radius: 4px; }
+
 /*Rating*/
 
-ul.rating li {
+.review ul.rating li {
+  position:st !important;
   display: inline;
   border: 0px;
   background: none;
@@ -26,8 +45,8 @@ ul.rating li i {
   color:orange
 }
 
-.infoWindow{
-    width:100px;
-    height:25px;
+.list-arrow{
+    position: absolute;
+    right: 20px;
+    top: 45%;
 }
-
