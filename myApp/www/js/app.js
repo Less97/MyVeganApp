@@ -55,6 +55,11 @@ angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Ser
     templateUrl: 'views/register.html',
     controller:'RegisterCtrl'
 })
+.state('placedetails',{
+    templateUrl: 'views/register.html',
+    controller:'RegisterCtrl'
+})
+
 
   .state('tab.aroundyou-map', {
     url: '/aroundyou',

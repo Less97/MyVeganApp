@@ -15,26 +15,38 @@ angular.module('myApp.Controllers', ['ionic.rating'])
  
     $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
     //Wait until the map is loaded
-    var places = PlacesService.getPlaces();
+    $scope.places = PlacesService.getPlaces();
     google.maps.event.addListenerOnce($scope.map, 'idle', function(){
  
-        var infoWindow = new google.maps.InfoWindow(), marker, i;
-        var uPos = new google.maps.Marker({
+       var uWindow = new google.maps.InfoWindow({
+          content: '<h4>You</h4>'
+       });
+       
+        var uMarker = new google.maps.Marker({
             map: $scope.map,
             animation: google.maps.Animation.DROP,
             position: latLng,
-        });   
-        for(var i=0;i<places.length;i++){
-            var pos = new google.maps.LatLng(places[i].location.coordinates[1], places[i].location.coordinates[0]);
-              
-             
-            places[i].marker = new google.maps.Marker({
+        }); 
+         uMarker.addListener('click', function() {
+              uWindow.open($scope.map, this);
+          });  
+       
+        for(var i=0;i<$scope.places.length;i++){
+            
+            var pos = new google.maps.LatLng($scope.places[i].location.coordinates[1], $scope.places[i].location.coordinates[0]);
+            
+            $scope.places[i].marker = new google.maps.Marker({
                 map: $scope.map,
                 animation: google.maps.Animation.DROP,
                 position: pos,
-                title:places[i].name
+                title:$scope.places[i].name
              });  
-          
+             $scope.places[i].marker.addListener('click',function(idx){
+                var placeWindow = new google.maps.InfoWindow({
+                  content: this.title
+                });
+                 placeWindow.open($scope.map,this);
+             });
         }
     });
 
@@ -63,7 +75,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $state.go('tab.aroundyou-map'); 
    }
   $scope.places = PlacesService.getPlaces();
-  
+  $scope.gotoDetails=function(){
+    $state.go('placedetails');
+  }
 })
 
 .controller('AddCtrl', function($scope) {
