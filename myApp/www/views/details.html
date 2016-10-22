@@ -1,0 +1,25 @@
+<ion-view view-title="Details">
+   <ion-content class="padding">
+      <div class="list card">
+
+  <div class="item item-avatar">
+    <i class="icon ion-ios-nutrition-outline"></i>
+    <h2>{{details.name}}</h2>
+    <p>{{details.type}}</p>
+   
+  </div>
+
+  <div class="item item-body detailsMap" >
+    
+    <div id="map" data-tap-disabled="true"></div>
+  </div>
+  <div class="item item-body">
+    <p>Address: {{details.address}}</p>
+    <p>Phone: {{details.phoneNumber}}</p>
+    <div class="review">
+          <rating ng-model="rating" max="5"></rating>
+      </div>
+    </item>
+</div>
+   </ion-content>
+</ion-view>

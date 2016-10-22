@@ -66,22 +66,47 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   }
 })
 
-.controller('AroundYouListCtrl', function($scope,$state,$cordovaGeolocation,$ionicHistory,PlacesService) {
+.controller('AroundYouListCtrl', function($scope,$state,$cordovaGeolocation,PlacesService) {
  $scope.goToMap = function(){
-    $ionicHistory.nextViewOptions({
-      disableBack: true,
-      disableAnimate:true
-    });
     $state.go('tab.aroundyou-map'); 
    }
   $scope.places = PlacesService.getPlaces();
   $scope.gotoDetails=function(myPlace){
-   $state.go('placedetails',{_id:myPlace._id})
+      $state.go('details',{id:myPlace._id})
   }
 })
 
-.controller('placeDetailsCtrl',function($scope,$stateParams,$state){
-  alert($stateParams._id);
+.controller('DetailsCtrl',function($scope,$stateParams,$state,PlacesService){
+  $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
+  viewData.enableBack = true;
+}); 
+  $scope.details = PlacesService.getDetails($stateParams.id);
+  var lat = $scope.details.location.coordinates[1];
+  var lng = $scope.details.location.coordinates[0];
+var latLng = new google.maps.LatLng(lat, lng);
+ 
+    var mapOptions = {
+      center: latLng,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+ 
+    $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    google.maps.event.addListenerOnce($scope.map, 'idle', function(){
+ 
+       var uWindow = new google.maps.InfoWindow({
+          content: '<h4>You</h4>'
+       });
+       
+        var uMarker = new google.maps.Marker({
+            map: $scope.map,
+            animation: google.maps.Animation.DROP,
+            position: latLng,
+        }); 
+         uMarker.addListener('click', function() {
+              uWindow.open($scope.map, this);
+          });  
+      });
 })
 
 .controller('AddCtrl', function($scope) {

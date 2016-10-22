@@ -108,7 +108,12 @@ return {
   getPlaces:function(){
     return placesSample;
 
+  },
+  getDetails:function(id){
+      var p = placesSample.filter(function(obj){return obj._id==id})[0];
+      return p;
   }
+
 
 
 }
