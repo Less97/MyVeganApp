@@ -1,6 +1,6 @@
 angular.module('myApp.Controllers', ['ionic.rating'])
 
-.controller('AroundYouMapCtrl', function($scope,$state,$cordovaGeolocation,$ionicHistory,PlacesService) {
+.controller('AroundYouCtrl', function($scope,$state,$cordovaGeolocation,$ionicHistory,PlacesService) {
  var options = {timeout: 10000, enableHighAccuracy: true};
  
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
@@ -55,20 +55,11 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   }, function(error){
     console.log("Could not get location");
   });
-
-  $scope.goToList = function(){
-    $ionicHistory.nextViewOptions({
-      disableBack: true,
-      disableAnimate:true
-    });
-    
-    $state.go('tab.aroundyou-list')    
-  }
 })
 
-.controller('AroundYouListCtrl', function($scope,$state,$cordovaGeolocation,PlacesService) {
+.controller('ListCtrl', function($scope,$state,$cordovaGeolocation,PlacesService) {
  $scope.goToMap = function(){
-    $state.go('tab.aroundyou-map'); 
+    $state.go('tab.map'); 
    }
   $scope.places = PlacesService.getPlaces();
   $scope.gotoDetails=function(myPlace){
@@ -77,9 +68,6 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 })
 
 .controller('DetailsCtrl',function($scope,$stateParams,$state,PlacesService){
-  $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
-  viewData.enableBack = true;
-}); 
   $scope.details = PlacesService.getDetails($stateParams.id);
   var lat = $scope.details.location.coordinates[1];
   var lng = $scope.details.location.coordinates[0];
@@ -139,7 +127,7 @@ var latLng = new google.maps.LatLng(lat, lng);
   }
   $scope.signIn = function(user) {
      if(LoginService.login(user.email,user.password)){
-       $state.go("tab.aroundyou-map")
+       $state.go("tab.map")
      }else{
        $scope.user.loginError = true;
      }

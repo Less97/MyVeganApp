@@ -62,27 +62,27 @@ angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Ser
 })
 
 
-  .state('tab.aroundyou-map', {
+  .state('tab.map', {
     url: '/aroundyou',
     views: {
       'tabAroundyou': {
-        templateUrl: 'views/aroundyou_map.html',
-        controller: 'AroundYouMapCtrl'
+        templateUrl: 'views/map.html',
+        controller: 'AroundYouCtrl'
       }
     }
   })
 
-   .state('tab.aroundyou-list', {
+   .state('tab.list', {
     url: '/aroundyou/list',
     views: {
-      'tabAroundyou': {
-        templateUrl: 'views/aroundyou_list.html',
-        controller: 'AroundYouListCtrl'
+      'tabList': {
+        templateUrl: 'views/list.html',
+        controller: 'ListCtrl'
       }
     }
   })
 
-  .state('tab.add', {
+  .state('add', {
       url: '/add',
       views: {
         'tabAdd': {
