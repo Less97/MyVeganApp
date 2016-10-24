@@ -63,7 +63,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Ser
 
 
   .state('tab.map', {
-    url: '/aroundyou',
+    url: '/map',
     views: {
       'tabAroundyou': {
         templateUrl: 'views/map.html',
@@ -73,7 +73,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Ser
   })
 
    .state('tab.list', {
-    url: '/aroundyou/list',
+    url: '/list',
     views: {
       'tabList': {
         templateUrl: 'views/list.html',

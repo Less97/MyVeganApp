@@ -69,9 +69,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 .controller('DetailsCtrl',function($scope,$stateParams,$state,PlacesService){
   $scope.details = PlacesService.getDetails($stateParams.id);
-  var lat = $scope.details.location.coordinates[1];
-  var lng = $scope.details.location.coordinates[0];
-var latLng = new google.maps.LatLng(lat, lng);
+  var latLng = new google.maps.LatLng($scope.details.location.coordinates[1], $scope.details.location.coordinates[0]);
  
     var mapOptions = {
       center: latLng,
@@ -80,7 +78,9 @@ var latLng = new google.maps.LatLng(lat, lng);
     };
  
     $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-    google.maps.event.addListenerOnce($scope.map, 'idle', function(){
+
+
+ google.maps.event.addListenerOnce($scope.map, 'idle', function(){
  
        var uWindow = new google.maps.InfoWindow({
           content: '<h4>You</h4>'
@@ -94,7 +94,8 @@ var latLng = new google.maps.LatLng(lat, lng);
          uMarker.addListener('click', function() {
               uWindow.open($scope.map, this);
           });  
-      });
+ });
+
 })
 
 .controller('AddCtrl', function($scope) {

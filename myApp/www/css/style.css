@@ -53,3 +53,20 @@ ul.rating li i {
 .detailsMap{
     height:300px;
 }
+
+.main-message{
+    background-color: #009dff;
+    color: white;
+    /* position: fixed !important; */
+}
+
+.main-message>a{
+    color:white;
+}
+.cancel-button{
+    color:grey !important;
+}
+
+.item-map>#map{
+    height:200px;
+}
