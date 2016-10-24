@@ -1,4 +1,18 @@
 angular.module('myApp.Service', [])
+
+.factory('LoginService', function() {
+    return {
+      login : function(email,password){
+        if(email=="Test@test.it"&&password=="Password_123"){
+          return {email:"Test@test.it",password:"Password_123","firstName":"My First Name","lastName":"myLastName"};
+      }else {
+          return {};
+      }},
+      createUser:function(){
+        return 1;
+      }
+      }})
+
 .factory('PlacesService',function(){
 
 var placesSample = [{
@@ -99,4 +113,12 @@ return {
       var p = placesSample.filter(function(obj){return obj._id==id})[0];
       return p;
   }
-}});
+
+
+
+}
+
+
+
+
+});
