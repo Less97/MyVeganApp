@@ -66,7 +66,6 @@ angular.module('myApp.Controllers', ['ionic.rating'])
       $state.go('details',{id:myPlace._id})
   }
    $scope.goToAdd=function(){
-     alert();
       $state.go('add')
    }
    $scope.back = function(){

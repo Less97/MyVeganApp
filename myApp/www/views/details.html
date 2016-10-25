@@ -1,8 +1,4 @@
 <ion-view view-title="{{details.name}}" class="details">
-  <ion-nav-back-button class="button-clear"
-    ng-click="myGoBack()">
-    <i class="ion-arrow-left-c"></i> Back
-  </ion-nav-back-button>
    <ion-content class="padding">
  <div class="item item-divider">
     <h2>{{details.name}}</h2>
@@ -12,7 +8,7 @@
 
     <div class="list">
 
-  <a class="item item-icon-left" href="emailto:{{details.email}}">
+  <a class="item item-icon-left" href="mailto:{{details.email}}">
     <i class="icon ion-email"></i>
     {{details.email}}
   </a>
@@ -23,9 +19,9 @@
     <i class="icon ion-ios-telephone positive"></i>
   </a>
   <div class="item">
-      <img src="https://maps.googleapis.com/maps/api/staticmap?center={{details.latitude}},{{details.longitude}}&markers=color:red%7Clabel:{{details.name}}%7C{{details.latitude}},{{details.longitude}}&zoom=12&size=400x150&key=AIzaSyDIILGDLIQU2DlGzBbw4smp1WErV5QKpB0"/>
+      <img src="https://maps.googleapis.com/maps/api/staticmap?center={{details.latitude}},{{details.longitude}}&markers=color:red%7Clabel:{{details.name}}%7C{{details.latitude}},{{details.longitude}}&zoom=12&size=300x150&key=AIzaSyDIILGDLIQU2DlGzBbw4smp1WErV5QKpB0"/>
   </div>
-  <a class="item item-icon-left" href="#">
+  <a class="item item-icon-left" href="maps://maps.apple.com/?q={{details.latitude}},{{details.longitude}}">
     <i class="icon ion-location"></i>
     {{details.address}}
     <span class="item-note">
@@ -37,7 +33,7 @@
     <i class="icon ion-android-star-outline"></i>
     
     <div class="review">
-       <rating ng-model="place.rating" max="5" ></rating>
+       <rating ng-model="details.rating" max="5" ></rating>
     </div>
     <span class="item-note">
       Open Reviews
