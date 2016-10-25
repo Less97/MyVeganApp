@@ -20,6 +20,7 @@ var placesSample = [{
     "name" : "Giovinda's",
     "type" : "restaurant",
     "phoneNumber" : "000-000000",
+    "email":"info@giovinda.it",
     "address" : "4 Aungier St, Dublin 2",
     "location" : {
         "coordinates" : [ 
@@ -44,6 +45,7 @@ var placesSample = [{
     "type" : "restaurant",
     "phoneNumber" : "000-000000",
     "address" : "13 Dame Street, Dublin 2",
+     "email":"info@umifalafel.it",
     "location" : {
         "coordinates" : [ 
             -6.2676697, 
@@ -65,6 +67,7 @@ var placesSample = [{
     "_id" : "58034b9511652af20268d817",
     "name" : "Galwy Veggie",
     "type" : "restaurant",
+    "email":"info@galwyVeggie.it",
     "phoneNumber" : "000-000000",
     "address" : "Galway Street",
     "location" : {
@@ -89,6 +92,7 @@ var placesSample = [{
     "name" : "Cornucopia",
     "type" : "restaurant",
     "phoneNumber" : "000-000000",
+    "email":"info@cornucopia.it",
     "address" : "19-20 Wicklow St, Dublin 2",
     "location" : {
         "coordinates" : [ 

@@ -66,6 +66,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
       $state.go('details',{id:myPlace._id})
   }
    $scope.goToAdd=function(){
+     alert();
       $state.go('add')
    }
    $scope.back = function(){
@@ -75,18 +76,12 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 .controller('DetailsCtrl',function($scope,$stateParams,$state,PlacesService){
   $scope.details = PlacesService.getDetails($stateParams.id);
-
+  $scope.details.latitude = $scope.details.location.coordinates[1];
+  $scope.details.longitude = $scope.details.location.coordinates[0];
 })
 
 .controller('AddCtrl', function($scope) {
   
-  var place = {
-    name:"",
-    phone:"",
-    address:"",
-    type:"",
-  }
-
 
  
 })

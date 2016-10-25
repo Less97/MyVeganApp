@@ -34,7 +34,7 @@
 /*Rating*/
 
 .review ul.rating li {
-  position:st !important;
+  position:static !important;
   display: inline;
   border: 0px;
   background: none;
@@ -42,7 +42,9 @@
 }
 ul.rating li i {
   font-size: 15px;
-  color:orange
+  color:orange;
+  position: relative !important;
+  display: inline-block !important;
 }
 
 .list-arrow{
@@ -69,4 +71,9 @@ ul.rating li i {
 
 .item-map>#map{
     height:200px;
+}
+
+.details .review{
+    position: relative;
+    top: 10px;
 }
