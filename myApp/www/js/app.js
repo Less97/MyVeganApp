@@ -55,6 +55,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Ser
     templateUrl: 'views/register.html',
     controller:'RegisterCtrl'
 })
+
 .state('details',{
     url:'/details/{id}',
     templateUrl: 'views/details.html',

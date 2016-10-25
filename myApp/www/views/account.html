@@ -1,9 +1,11 @@
-<ion-view view-title="Account">
+<ion-view view-title="User Preferences">
   <ion-content>
+     <div class="item item-text-wrap main-message">
+        Which are your dietary preferences?
+     </div>
     <ion-list>
-    <ion-toggle  ng-model="settings.enableFriends">
-        Enable Friends
-    </ion-toggle>
+        <ion-checkbox ng-model="filter.red">Vegetarian</ion-checkbox>
+        <ion-checkbox ng-model="filter.yellow">Vegan</ion-checkbox>
     </ion-list>
   </ion-content>
 </ion-view>

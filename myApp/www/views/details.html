@@ -1,20 +1,25 @@
 <ion-view view-title="{{details.name}}">
+  <ion-nav-back-button class="button-clear"
+    ng-click="myGoBack()">
+    <i class="ion-arrow-left-c"></i> Back
+  </ion-nav-back-button>
    <ion-content class="padding">
       <div class="list card">
 
   <div class="item item-avatar">
-    <img src="avatar.jpg">
+    <i class="icon ion-ios-search placeholder-icon"></i>
     <h2>{{details.name}}</h2>
     <p>{{details.address}}</p>
     <p>{{details.phoneNumber}}</p>
+    <div>
+      <a href="geo:0,0">Open in maps</a>
+    <div>
+      <div class="review">
+        <rating ng-model="details.rating" max="5"></rating>
+    </div>
   </div>
-
   <div class="item item-map">
-     <div id="map" data-tap-disabled="true" ></div>
   </div>
-
-  
-
 </div>
    </ion-content>
 </ion-view>

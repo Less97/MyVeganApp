@@ -65,36 +65,16 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   $scope.gotoDetails=function(myPlace){
       $state.go('details',{id:myPlace._id})
   }
+   $scope.goToAdd=function(){
+      $state.go('add')
+   }
+   $scope.back = function(){
+     $state.go('tabs.list');
+   }
 })
 
 .controller('DetailsCtrl',function($scope,$stateParams,$state,PlacesService){
   $scope.details = PlacesService.getDetails($stateParams.id);
-  var latLng = new google.maps.LatLng($scope.details.location.coordinates[1], $scope.details.location.coordinates[0]);
- 
-    var mapOptions = {
-      center: latLng,
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
- 
-    $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-
- google.maps.event.addListenerOnce($scope.map, 'idle', function(){
- 
-       var uWindow = new google.maps.InfoWindow({
-          content: '<h4>You</h4>'
-       });
-       
-        var uMarker = new google.maps.Marker({
-            map: $scope.map,
-            animation: google.maps.Animation.DROP,
-            position: latLng,
-        }); 
-         uMarker.addListener('click', function() {
-              uWindow.open($scope.map, this);
-          });  
- });
 
 })
 
