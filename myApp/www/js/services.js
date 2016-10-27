@@ -14,7 +14,7 @@ angular.module('myApp.Service', [])
       }})
 
 .factory('PlacesService',function(){
-
+{
 var placesSample = [{
     "_id" :"57fe828211652af20268d814",
     "name" : "Giovinda's",
@@ -120,9 +120,52 @@ return {
 
 
 
+}}})
+.factory('ReviewsService',function(){
+var reviews = [
+{
+    "_id" : ObjectId("5803f2ed6f525f126c398db3"),
+    "placeId" : ObjectId("57fe828211652af20268d814"),
+    "reviewerId" : ObjectId("57fe829611652af20268d815"),
+    "rating" : 5,
+    "description" : "it was a good very dinner"
+},
+{
+    "_id" : ObjectId("5803f3086f525f126c398db4"),
+    "placeId" : ObjectId("57fe828211652af20268d814"),
+    "reviewerId" : ObjectId("57fe829611652af20268d815"),
+    "rating" : 4,
+    "description" : "Decent"
+},
+{
+    "_id" : ObjectId("5803f36d97364a15742712bd"),
+    "placeId" : ObjectId("57fe828211652af20268d814"),
+    "reviewerId" : ObjectId("57fe829611652af20268d815"),
+    "rating" : 3,
+    "description" : "Nah, I wouldn't go there again"
+},
+{
+    "_id" : ObjectId("5803f39197364a15742712be"),
+    "placeId" : ObjectId("57fe828211652af20268d814"),
+    "reviewerId" : ObjectId("57fe829611652af20268d815"),
+    "rating" : 5,
+    "description" : "Amazing!"
+},
+{
+    "_id" : ObjectId("5803f4546210e31c1cdbe2a9"),
+    "placeId" : ObjectId("57fe828211652af20268d814"),
+    "reviewerId" : ObjectId("57fe829611652af20268d815"),
+    "rating" : 2,
+    "description" : "Bleah. Never again!"
+}];
+
+return {
+    getReviews:function(placeId){
+        return reviews;
+    }
 }
+})
 
+.factory('MenuService',function(){
 
-
-
-});
+})

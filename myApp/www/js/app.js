@@ -7,8 +7,8 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Service'])
 
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
+.run(function ($ionicPlatform) {
+  $ionicPlatform.ready(function () {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -23,7 +23,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Ser
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -39,29 +39,39 @@ angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Ser
   })
 
   // Each tab has its own nav history stack:
-.state('login', {
+  .state('login', {
     url: '/login',
-        templateUrl: 'views/login.html',
-        controller:'LoginCtrl'
-    })
+    templateUrl: 'views/login.html',
+    controller: 'LoginCtrl'
+  })
 
-.state('forgotPassword', {
+  .state('forgotPassword', {
     url: '/forgotPassword',
     templateUrl: 'views/forgotPassword.html',
-    controller:'ForgotPasswordCtrl'
-    })
+    controller: 'ForgotPasswordCtrl'
+  })
 
-.state('register',{
+  .state('register', {
     templateUrl: 'views/register.html',
-    controller:'RegisterCtrl'
-})
+    controller: 'RegisterCtrl'
+  })
 
-.state('details',{
-    url:'/details/{id}',
+  .state('details', {
+    url: '/details/{id}',
     templateUrl: 'views/details.html',
-    controller:'DetailsCtrl'
-})
+    controller: 'DetailsCtrl'
+  })
 
+  .state('reviews', {
+      url: '/reviews/{id}',
+      templateUrl: 'views/reviews.html',
+      controller: 'ReviewsCtrl'
+    })
+    .state('menu', {
+      url: '/menu/{id}',
+      templateUrl: 'views/menu.html',
+      controller: 'MenuCtrl'
+    })
 
   .state('tab.map', {
     url: '/map',
@@ -73,7 +83,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Ser
     }
   })
 
-   .state('tab.list', {
+  .state('tab.list', {
     url: '/list',
     views: {
       'tabList': {
@@ -83,17 +93,8 @@ angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Ser
     }
   })
 
-  .state('add', {
-      url: '/add',
-      views: {
-        'tabAdd': {
-          templateUrl: 'views/add.html',
-          controller: 'AddCtrl'
-        }
-      }
-    })
 
-   .state('tab.info', {
+  .state('tab.info', {
     url: '/info',
     views: {
       'tabInfo': {
