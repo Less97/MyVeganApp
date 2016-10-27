@@ -11,13 +11,15 @@
     Cancel
   </button>
 </div>
+<a ng-click="goToAddPlace()">    
     <div class="card">
-  <a ng-click="goToAddPlace()">    
+  
       <div class="item item-text-wrap main-message">
       Do you know a place we didn't review yet? Please add it clicking here
       </div>
+      </div>
   </a>
-</div>
+
   <div class="list">
     <a ng-repeat="place in places" class="item item-avatar" ng-click="$parent.gotoDetails(place)">
       <i class="icon ion-ios-nutrition-outline"></i>
