@@ -27,7 +27,7 @@
     <i class="icon ion-ios-telephone positive"></i>
   </a>
   <div class="item">
-      <img src="https://maps.googleapis.com/maps/api/staticmap?center={{details.latitude}},{{details.longitude}}&markers=color:red%7Clabel:{{details.name}}%7C{{details.latitude}},{{details.longitude}}&zoom=12&size=300x150&key=AIzaSyDIILGDLIQU2DlGzBbw4smp1WErV5QKpB0"/>
+        <div my-static-map lat="details.latitude" lng="details.longitude" width="350"></div>
   </div>
   <a class="item item-icon-left" href="maps://maps.apple.com/?q={{details.latitude}},{{details.longitude}}">
     <i class="icon ion-location"></i>
