@@ -6,11 +6,12 @@
   </ion-nav-buttons>-->
 
    <ion-content class="padding">
+      <a ng-click="goToAddMenuItem()">
       <div class="card">
         <div class="item item-text-wrap main-message padding">
-           Is there something we didn't know? Please tell us clicking <a ng-click="goToAddMenuItem()" class="underlined">here</a>
+           Is there something we didn't know? Please tell us clicking here
         </div>
-        </div>
+        </div></a>
        <a ng-repeat="m in menu" class="item item-avatar">
       <i class="icon ion-ios-nutrition-outline"></i>
       <h2>{{m.name}}</h2>
