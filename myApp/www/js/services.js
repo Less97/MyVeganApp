@@ -119,35 +119,25 @@ angular.module('myApp.Service', [])
   })
   .factory('ReviewsService', function () {
     var reviews = [{
-      "_id": ObjectId("5803f2ed6f525f126c398db3"),
-      "placeId": ObjectId("57fe828211652af20268d814"),
-      "reviewerId": ObjectId("57fe829611652af20268d815"),
+      "reviewerName": "Mara",
       "rating": 5,
-      "description": "it was a good very dinner"
+      "review": "it was a good very dinner"
     }, {
-      "_id": ObjectId("5803f3086f525f126c398db4"),
-      "placeId": ObjectId("57fe828211652af20268d814"),
-      "reviewerId": ObjectId("57fe829611652af20268d815"),
+      "reviewerName": "Giovanna",
       "rating": 4,
-      "description": "Decent"
+      "review": "Decent"
     }, {
-      "_id": ObjectId("5803f36d97364a15742712bd"),
-      "placeId": ObjectId("57fe828211652af20268d814"),
-      "reviewerId": ObjectId("57fe829611652af20268d815"),
+      "reviewerName": "Maria",
       "rating": 3,
-      "description": "Nah, I wouldn't go there again"
+      "review": "Nah, I wouldn't go there again"
     }, {
-      "_id": ObjectId("5803f39197364a15742712be"),
-      "placeId": ObjectId("57fe828211652af20268d814"),
-      "reviewerId": ObjectId("57fe829611652af20268d815"),
+      "reviewerName": "Susanna",
       "rating": 5,
-      "description": "Amazing!"
+      "review": "Amazing!"
     }, {
-      "_id": ObjectId("5803f4546210e31c1cdbe2a9"),
-      "placeId": ObjectId("57fe828211652af20268d814"),
-      "reviewerId": ObjectId("57fe829611652af20268d815"),
+      "reviewerName": "Polly",
       "rating": 2,
-      "description": "Bleah. Never again!"
+      "review": "Bleah. Never again!"
     }];
 
     return {
@@ -157,12 +147,17 @@ angular.module('myApp.Service', [])
     }
   })
 
-.factory('MenuService', function (placeId) {
-  var menu = {
-    "dishName": "Dish 3",
+.factory('MenuService', function () {
+  var menu = [{
+    "name": "The amazing salad",
     "price": 10.5,
     "tipology": 7
-  }
+  },
+  {   
+   "name": "The vegan lasagna",
+    "price": 12.5,
+    "tipology": 7
+  }]
 
   return {
     getMenu: function (placeId) {

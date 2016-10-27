@@ -1,7 +1,17 @@
 <ion-view view-title="Reviews">
+    <!--<ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item" ng-click="goBack()">
+      <i class="icon ion-ios-arrow-back"> Back</i> 
+    </button>
+  </ion-nav-buttons>-->
    <ion-content class="padding">
-        <div class="list">
-            Here there will be the reviews
-        </div>
+         <ion-item ng-repeat="r in reviews" class="item-avatar">
+            <i class="icon {{r.rating>3?'ion-happy-outline':'ion-sad-outline'}}"></i>
+      <h2>{{r.reviewerName}}</h2>
+      <p>{{r.review}}</p>
+      <div class="review">
+          <rating ng-model="r.rating" max="5"></rating>
+      </div>
+        </ion-item>
    </ion-content>
 </ion-view>

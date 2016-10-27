@@ -63,16 +63,28 @@ angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Ser
   })
 
   .state('reviews', {
-      url: '/reviews/{id}',
-      templateUrl: 'views/reviews.html',
-      controller: 'ReviewsCtrl'
+    url: '/reviews/{id}',
+    templateUrl: 'views/reviews.html',
+    controller: 'ReviewsCtrl'
+  })
+
+  .state('addPlace', {
+      url: '/addPlace',
+      templateUrl: 'views/addplace.html',
+      controller: 'AddPlaceCtrl'
     })
-    
-    .state('menu', {
-      url: '/menu/{id}',
-      templateUrl: 'views/menu.html',
-      controller: 'MenuCtrl'
-    })
+  
+  .state('addMenuItem', {
+     url: '/addMenuItem',
+    templateUrl: 'views/addMenuItem.html',
+    controller: 'AddMenuItemCtrl'
+  })
+
+  .state('menu', {
+    url: '/menu/{id}',
+    templateUrl: 'views/menu.html',
+    controller: 'MenuCtrl'
+  })
 
   .state('tab.map', {
     url: '/map',

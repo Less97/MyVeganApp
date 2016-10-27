@@ -76,8 +76,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
       id: myPlace._id
     })
   }
-  $scope.goToAdd = function () {
-    $state.go('add')
+  $scope.goToAddPlace = function () {
+    $state.go('addPlace')
   }
   $scope.back = function () {
     $state.go('tabs.list');
@@ -92,9 +92,16 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   $scope.details = PlacesService.getDetails($stateParams.id);
   $scope.details.latitude = $scope.details.location.coordinates[1];
   $scope.details.longitude = $scope.details.location.coordinates[0];
-
+  $scope.goBack = function(){
+    $state.go('tab.list')
+  }
   $scope.goToReviews = function (details) {
     $state.go('reviews', {
+      id: details._id
+    })
+  }
+  $scope.goToMenu = function (details) {
+    $state.go('menu', {
       id: details._id
     })
   }
@@ -103,8 +110,17 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Add Controller*/
-.controller('AddCtrl', function ($scope) {
+.controller('AddPlaceCtrl', function ($scope,$state) {
+  $scope.goBack = function(){
+    $state.go('tab.list')
+  }
+})
 
+/*Add Controller*/
+.controller('AddMenuItemCtrl', function ($scope) {
+  $scope.goBack = function(){
+    $state.go('menu')
+  }
 })
 
 
@@ -112,6 +128,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 /*Reviews Controller*/
 .controller('ReviewsCtrl', function ($scope, $stateParams, ReviewsService) {
   $scope.reviews = ReviewsService.getReviews($stateParams.id);
+  $scope.goBack = function(){
+    $state.go('details')
+  }
 })
 
 
@@ -125,8 +144,14 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Menu Controller*/
-.controller('MenuCtrl',function($scope,$stateParams,MenuService){
-    $scope.menu = MenuService.getMenu();
+.controller('MenuCtrl', function ($scope, $state,$stateParams, MenuService) {
+  $scope.menu = MenuService.getMenu($stateParams.id);
+  $scope.goBack = function(){
+    $state.go('details')
+  }
+  $scope.goToAddMenuItem=function(){
+    $state.go('addMenuItem')
+  }
 
 })
 

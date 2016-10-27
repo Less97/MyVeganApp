@@ -1,6 +1,22 @@
 <ion-view view-title="Menu">
+<!--<ion-nav-buttons side="left">
+    <button class="button back-button buttons button-clear header-item" ng-click="goBack()">
+      <i class="icon ion-ios-arrow-back"> Back</i> 
+    </button>
+  </ion-nav-buttons>-->
+
    <ion-content class="padding">
-        <div class="list">
+      <div class="card">
+        <div class="item item-text-wrap main-message padding">
+           Is there something we didn't know? Please tell us clicking <a ng-click="goToAddMenuItem()" class="underlined">here</a>
         </div>
+        </div>
+       <a ng-repeat="m in menu" class="item item-avatar">
+      <i class="icon ion-ios-nutrition-outline"></i>
+      <h2>{{m.name}}</h2>
+        <span class="item-note">
+      €&nbsp;{{m.price}}
+    </span>
+    </a>
    </ion-content>
 </ion-view>

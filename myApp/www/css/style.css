@@ -77,3 +77,7 @@ ul.rating li i {
     position: relative;
     top: 10px;
 }
+
+.underlined{
+    text-decoration: underline;
+}
