@@ -93,9 +93,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   $scope.details.latitude = $scope.details.location.coordinates[1];
   $scope.details.longitude = $scope.details.location.coordinates[0];
 
-  $scope.goToReviews = function (myId) {
+  $scope.goToReviews = function (details) {
     $state.go('reviews', {
-      id: myId
+      id: details._id
     })
   }
 })
@@ -112,8 +112,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 /*Reviews Controller*/
 .controller('ReviewsCtrl', function ($scope, $stateParams, ReviewsService) {
   $scope.reviews = ReviewsService.getReviews($stateParams.id);
-
 })
+
+
 
 
 /*Info Controller*/
@@ -121,6 +122,14 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 })
+
+
+/*Menu Controller*/
+.controller('MenuCtrl',function($scope,$stateParams,MenuService){
+    $scope.menu = MenuService.getMenu();
+
+})
+
 
 /*Login Controller*/
 .controller('LoginCtrl', function ($scope, $state, LoginService) {

@@ -67,6 +67,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Ser
       templateUrl: 'views/reviews.html',
       controller: 'ReviewsCtrl'
     })
+    
     .state('menu', {
       url: '/menu/{id}',
       templateUrl: 'views/menu.html',
