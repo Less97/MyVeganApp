@@ -70,7 +70,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Ser
 
   .state('addPlace', {
       url: '/addPlace',
-      templateUrl: 'views/addplace.html',
+      templateUrl: 'views/addPlace.html',
       controller: 'AddPlaceCtrl'
     })
   
