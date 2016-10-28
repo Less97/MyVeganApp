@@ -96,7 +96,7 @@ namespace myVegAppDbAPI.Controllers
         }
 
         [HttpGet("getplaces")]
-        public async Task<JsonResult> GetPlaces(Double latitude, Double longitude, String searchText, Int32 maxDistance = Int32.MaxValue,Int32 tipology = 0)
+        public async Task<JsonResult> GetPlaces(Double latitude, Double longitude, String searchText, Int32 maxDistance = Int32.MaxValue, Int32 tipology = 0)
         {
             try
             {
@@ -104,8 +104,24 @@ namespace myVegAppDbAPI.Controllers
                 var collection = _database.GetCollection<BsonDocument>("places");
 
                 var builder = Builders<BsonDocument>.Filter;
-                var filter = (builder.Regex("name", "/" + searchText + "/i") | builder.Regex("menu.dishName", "/" + searchText + "/i")) & builder.NearSphere("location", longitude, latitude, maxDistance / 6378.1) & builder.BitsAllSet("menu.tipology",tipology);
+                var filter = (builder.Regex("name", "/" + searchText + "/i") | builder.Regex("menu.dishName", "/" + searchText + "/i")) & builder.NearSphere("location", longitude, latitude, maxDistance / 6378.1) & builder.BitsAllSet("menu.tipology", tipology);
                 var docs = await collection.Find(filter).ToListAsync();
+                var aggregate = new BsonDocument[] {
+                    new BsonDocument() {
+                        { "$lookup" ,new BsonDocument()
+                            {
+                                { "from", "countries" },
+                                { "localField","country" },
+                                { "foreignField","_id" },
+                                { "as","country" },
+                            }
+                        }
+                    },
+                    new BsonDocument() {
+
+                    },
+                };
+
                 docs.ForEach(x =>
                 {
                     var loc = x["location"]["coordinates"].AsBsonArray;
@@ -191,7 +207,8 @@ namespace myVegAppDbAPI.Controllers
                 if (place == null)
                     return Json(new { error = 1, errorMessage = "Place not found" });
                 var reviewer = await usersCollection.Find(findMyReviewerFilter).FirstAsync();
-                if (reviewer == null) {
+                if (reviewer == null)
+                {
                     return Json(new { error = 1, errorMessage = "Reviewer not found" });
                 }
                 await reviewsCollection.InsertOneAsync(new BsonDocument() {
@@ -200,13 +217,24 @@ namespace myVegAppDbAPI.Controllers
                     { "rating",model.Rating},
                     { "description",model.Description}
                 });
-                var nReviews = Convert.ToInt32(place["nReviews"]);
-                var currentRating = Convert.ToDouble(place["rating"]);
-                var newRating = Convert.ToDouble((currentRating * nReviews + model.Rating) / (++nReviews));
-                newRating = Math.Round(newRating * 2, MidpointRounding.AwayFromZero) / 2;
-                var updateReviewInPlace = Builders<BsonDocument>.Update.Set("nReviews", nReviews).Set("rating", newRating);
-                await placesCollection.UpdateOneAsync(findMyPlaceFilter, updateReviewInPlace);
                 return Json(new { error = 0, result = 1 });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = 1, errorMessage = ex.Message });
+            }
+        }
+
+
+        [HttpPost("getReviews")]
+        public async Task<JsonResult> GetReviews(String placeId)
+        {
+            try
+            {
+                var reviewsCollection = _database.GetCollection<BsonDocument>("reviews");
+                var findPlaceReviews = Builders<BsonDocument>.Filter.Where(x => x["_placeId"] == ObjectId.Parse(placeId));
+                var reviews = await reviewsCollection.Find(findPlaceReviews).ToListAsync();
+                return Json(reviews);
             }
             catch (Exception ex)
             {
