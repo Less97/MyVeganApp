@@ -66,11 +66,25 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /* ListCtrl*/
-.controller('ListCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, PlacesService) {
+.controller('ListCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, $ionicLoading, PlacesService,LoadingHelper) {
+
+
   $scope.goToMap = function () {
     $state.go('tab.map');
   }
-  $scope.places = PlacesService.getPlaces();
+  $scope.currentTextFilter = "";
+  var options = {
+    timeout: 10000,
+    enableHighAccuracy: true
+  };
+
+  $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
+      LoadingHelper.show();
+      PlacesService.getPlaces(position.coords.latitude, position.coords.longitude,$scope.currentTextFilter,0,300,function(items){
+         LoadingHelper.hide();
+        $scope.places = items;
+     });
+  });
   $scope.gotoDetails = function (myPlace) {
     $state.go('details', {
       id: myPlace._id
@@ -157,7 +171,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Login Controller*/
-.controller('LoginCtrl', function ($scope, $state,$ionicLoading, LoginService) {
+.controller('LoginCtrl', function ($scope, $state,$ionicLoading, LoginService,LoadingHelper) {
   $scope.user = {
     email: '',
     password: '',
@@ -168,16 +182,10 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   }
   $scope.signIn = function (user) {
 
-     $ionicLoading.show({
-     content: 'Loading',
-     animation: 'fade-in',
-     showBackdrop: true,
-     maxWidth: 200,
-     showDelay: 0
-  });
+    LoadingHelper.show();
 
     LoginService.login(user.email, user.password,function(result,data){
-      $ionicLoading.hide();
+       LoadingHelper.hide();
       if(result==true){
         $state.go("tab.map")
       }else{

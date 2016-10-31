@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using myVegAppDbAPI.Helpers;
 using myVegAppDbAPI.Model.DbModels;
 using Microsoft.AspNetCore.Cors;
+using MongoDB.Bson.IO;
 
 namespace myVegAppDbAPI.Controllers
 {
@@ -24,6 +25,7 @@ namespace myVegAppDbAPI.Controllers
         private MongoClient _client;
         private IMongoDatabase _database;
         private MySettings MySettings { get; set; }
+        private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
 
         public myVegAppAPIController(IOptions<MySettings> settings)
         {
@@ -52,7 +54,7 @@ namespace myVegAppDbAPI.Controllers
                 if (document == null)
                     return Json(new { isLoggedIn = false }.ToJson());
                 else
-                    return Json(new { isLoggedIn=true,document=document.ToJson() }.ToJson());
+                    return Json(new { isLoggedIn = true, document = document.ToJson(jsonWriterSettings) }.ToJson());
             }
             catch (Exception ex)
             {
@@ -90,7 +92,7 @@ namespace myVegAppDbAPI.Controllers
                 if (document == null)
                     return Json(new { error = 1, Message = "Couldn't create the user" }.ToJson());
                 else
-                    return Json(document.ToJson());
+                    return Json(document.ToJson(jsonWriterSettings));
             }
             catch (Exception ex)
             {
@@ -105,12 +107,7 @@ namespace myVegAppDbAPI.Controllers
             try
             {
                 if (String.IsNullOrEmpty(searchText)) searchText = String.Empty;
-                var collection = _database.GetCollection<BsonDocument>("places");
-
-                var builder = Builders<BsonDocument>.Filter;
-                var filter = (builder.Regex("name", "/" + searchText + "/i") | builder.Regex("menu.dishName", "/" + searchText + "/i")) & builder.NearSphere("location", longitude, latitude, maxDistance / 6378.1) & builder.BitsAllSet("menu.tipology", tipology);
-                var docs = await collection.Find(filter).ToListAsync();
-                var aggregate = new BsonDocument[] {
+                var agg = new BsonDocument[] {
                     new BsonDocument() {
                         { "$lookup" ,new BsonDocument()
                             {
@@ -122,9 +119,26 @@ namespace myVegAppDbAPI.Controllers
                         }
                     },
                     new BsonDocument() {
-
+                        {
+                            "$lookup" ,new BsonDocument()
+                            {
+                                { "from", "reviews" },
+                                { "localField","reviews" },
+                                { "foreignField","place" },
+                                { "as","reviews" },
+                            }
+                        }
                     },
                 };
+                var collection = _database.GetCollection<BsonDocument>("places");
+
+                var builder = Builders<BsonDocument>.Filter;
+                var filter = (builder.Regex("name", "/" + searchText + "/i") | builder.Regex("menu.dishName", "/" + searchText + "/i")) & builder.NearSphere("location", longitude, latitude, maxDistance / 6378.1);
+
+                if (tipology != 0)
+                    filter = filter & builder.BitsAllSet("menu.tipology", tipology);
+
+                var docs = await collection.Find(filter).ToListAsync();
 
                 docs.ForEach(x =>
                 {
@@ -132,7 +146,8 @@ namespace myVegAppDbAPI.Controllers
                     x.Add("distance", GeoHelper.CalculateDistance(new Location(latitude, longitude), new Location(loc[1].ToDouble(), loc[0].ToDouble())));
                 });
                 if (docs != null)
-                    return Json(docs.ToJson());
+                    return Json(docs.ToJson(jsonWriterSettings));
+
                 return Json(new { });
             }
             catch (Exception ex)
@@ -221,6 +236,12 @@ namespace myVegAppDbAPI.Controllers
                     { "rating",model.Rating},
                     { "description",model.Description}
                 });
+                var nReviews = Convert.ToInt32(place["nReviews"]);
+                var currentRating = Convert.ToDouble(place["rating"]);
+                var newRating = Convert.ToDouble((currentRating * nReviews + model.Rating) / (++nReviews));
+                newRating = Math.Round(newRating * 2, MidpointRounding.AwayFromZero) / 2;
+                var updateReviewInPlace = Builders<BsonDocument>.Update.Set("nReviews", nReviews).Set("rating", newRating);
+                await placesCollection.UpdateOneAsync(findMyPlaceFilter, updateReviewInPlace);
                 return Json(new { error = 0, result = 1 });
             }
             catch (Exception ex)
