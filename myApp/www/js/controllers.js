@@ -3,7 +3,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Around you Controller */
-.controller('AroundYouCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, PlacesService) {
+.controller('AroundYouCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, PlacesService,LoadingHelper) {
   var options = {
     timeout: 10000,
     enableHighAccuracy: true
@@ -21,9 +21,34 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
     $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
     //Wait until the map is loaded
-    $scope.places = PlacesService.getPlaces();
+
+    LoadingHelper.show();
+
     google.maps.event.addListenerOnce($scope.map, 'idle', function () {
 
+      PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, 0, 300, function (items) {
+        LoadingHelper.hide();
+        $scope.places = items;
+
+        for (var i = 0; i < $scope.places.length; i++) {
+
+          var pos = new google.maps.LatLng($scope.places[i].location.coordinates[1], $scope.places[i].location.coordinates[0]);
+
+          $scope.places[i].marker = new google.maps.Marker({
+            map: $scope.map,
+            animation: google.maps.Animation.DROP,
+            position: pos,
+            title: $scope.places[i].name
+          });
+
+          $scope.places[i].marker.addListener('click', function (idx) {
+            var placeWindow = new google.maps.InfoWindow({
+              content: this.title
+            });
+            placeWindow.open($scope.map, this);
+          });
+        }
+      });
       var uWindow = new google.maps.InfoWindow({
         content: '<h4>You</h4>'
       });
@@ -37,23 +62,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         uWindow.open($scope.map, this);
       });
 
-      for (var i = 0; i < $scope.places.length; i++) {
 
-        var pos = new google.maps.LatLng($scope.places[i].location.coordinates[1], $scope.places[i].location.coordinates[0]);
-
-        $scope.places[i].marker = new google.maps.Marker({
-          map: $scope.map,
-          animation: google.maps.Animation.DROP,
-          position: pos,
-          title: $scope.places[i].name
-        });
-        $scope.places[i].marker.addListener('click', function (idx) {
-          var placeWindow = new google.maps.InfoWindow({
-            content: this.title
-          });
-          placeWindow.open($scope.map, this);
-        });
-      }
     });
 
 
@@ -66,7 +75,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /* ListCtrl*/
-.controller('ListCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, $ionicLoading, PlacesService,LoadingHelper) {
+.controller('ListCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, $ionicLoading, PlacesService, LoadingHelper) {
 
 
   $scope.goToMap = function () {
@@ -79,11 +88,11 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   };
 
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
-      LoadingHelper.show();
-      PlacesService.getPlaces(position.coords.latitude, position.coords.longitude,$scope.currentTextFilter,0,300,function(items){
-         LoadingHelper.hide();
-        $scope.places = items;
-     });
+    LoadingHelper.show();
+    PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, 0, 300, function (items) {
+      LoadingHelper.hide();
+      $scope.places = items;
+    });
   });
   $scope.gotoDetails = function (myPlace) {
     $state.go('details', {
@@ -106,7 +115,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   $scope.details = PlacesService.getDetails($stateParams.id);
   $scope.details.latitude = $scope.details.location.coordinates[1];
   $scope.details.longitude = $scope.details.location.coordinates[0];
-  $scope.goBack = function(){
+  $scope.goBack = function () {
     $state.go('tab.list')
   }
   $scope.goToReviews = function (details) {
@@ -124,15 +133,15 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Add Controller*/
-.controller('AddPlaceCtrl', function ($scope,$state) {
-  $scope.goBack = function(){
+.controller('AddPlaceCtrl', function ($scope, $state) {
+  $scope.goBack = function () {
     $state.go('tab.list')
   }
 })
 
 /*Add Controller*/
 .controller('AddMenuItemCtrl', function ($scope) {
-  $scope.goBack = function(){
+  $scope.goBack = function () {
     $state.go('menu')
   }
 })
@@ -142,7 +151,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 /*Reviews Controller*/
 .controller('ReviewsCtrl', function ($scope, $stateParams, ReviewsService) {
   $scope.reviews = ReviewsService.getReviews($stateParams.id);
-  $scope.goBack = function(){
+  $scope.goBack = function () {
     $state.go('details')
   }
 })
@@ -158,12 +167,12 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Menu Controller*/
-.controller('MenuCtrl', function ($scope, $state,$stateParams, MenuService) {
+.controller('MenuCtrl', function ($scope, $state, $stateParams, MenuService) {
   $scope.menu = MenuService.getMenu($stateParams.id);
-  $scope.goBack = function(){
+  $scope.goBack = function () {
     $state.go('details')
   }
-  $scope.goToAddMenuItem=function(){
+  $scope.goToAddMenuItem = function () {
     $state.go('addMenuItem')
   }
 
@@ -171,7 +180,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Login Controller*/
-.controller('LoginCtrl', function ($scope, $state,$ionicLoading, LoginService,LoadingHelper) {
+.controller('LoginCtrl', function ($scope, $state, $ionicLoading, LoginService, LoadingHelper) {
   $scope.user = {
     email: '',
     password: '',
@@ -184,16 +193,16 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
     LoadingHelper.show();
 
-    LoginService.login(user.email, user.password,function(result,data){
-       LoadingHelper.hide();
-      if(result==true){
+    LoginService.login(user.email, user.password, function (result, data) {
+      LoadingHelper.hide();
+      if (result == true) {
         $state.go("tab.map")
-      }else{
+      } else {
         $scope.user.loginError = true;
       }
-   })
+    })
   }
-  })
+})
 
 
 /* Register Controller */
