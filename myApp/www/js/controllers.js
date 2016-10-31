@@ -157,7 +157,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Login Controller*/
-.controller('LoginCtrl', function ($scope, $state, LoginService) {
+.controller('LoginCtrl', function ($scope, $state,$ionicLoading, LoginService) {
   $scope.user = {
     email: '',
     password: '',
@@ -167,13 +167,25 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $state.go('register');
   }
   $scope.signIn = function (user) {
-    if (LoginService.login(user.email, user.password)) {
-      $state.go("tab.map")
-    } else {
-      $scope.user.loginError = true;
-    }
-  };
-})
+
+     $ionicLoading.show({
+     content: 'Loading',
+     animation: 'fade-in',
+     showBackdrop: true,
+     maxWidth: 200,
+     showDelay: 0
+  });
+
+    LoginService.login(user.email, user.password,function(result,data){
+      $ionicLoading.hide();
+      if(result==true){
+        $state.go("tab.map")
+      }else{
+        $scope.user.loginError = true;
+      }
+   })
+  }
+  })
 
 
 /* Register Controller */

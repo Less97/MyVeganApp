@@ -1,24 +1,30 @@
+var address = "http://localhost:51067/api/myVegAppApi";
+var currentLoginData = {};
 angular.module('myApp.Service', [])
+  .factory('LoginService', function ($http) {
+    return {
+      login: function (eml, pwd, callback) {
+       var req = {
+            url:address+"/login",
+            data:{email:eml,password:pwd},
+            method:'POST',
+            headers:{'Content-Type':"application/json"}
+       }
+       $http(req).success(function (data) {
+         data = JSON.parse(data);
+         if(data.isLoggedIn)
+            currentLoginData = data;
 
-.factory('LoginService', function () {
-  return {
-    login: function (email, password) {
-      if (email == "Test@test.it" && password == "Password_123") {
-        return {
-          email: "Test@test.it",
-          password: "Password_123",
-          "firstName": "My First Name",
-          "lastName": "myLastName"
-        };
-      } else {
-        return {};
+       callback(data.isLoggedIn); 
+            
+       }).error(function () {
+          callback(false);
+      })},
+      createUser: function () {
+
       }
-    },
-    createUser: function () {
-      return 1;
     }
-  }
-})
+  })
 
 .factory('PlacesService', function () {
     {
@@ -152,16 +158,15 @@ angular.module('myApp.Service', [])
     "name": "The amazing salad",
     "price": 10.5,
     "tipology": 7
-  },
-  {   
-   "name": "The vegan lasagna",
+  }, {
+    "name": "The vegan lasagna",
     "price": 12.5,
     "tipology": 7
   }]
 
   return {
     getMenu: function (placeId) {
-        return menu;
+      return menu;
     }
   }
 })

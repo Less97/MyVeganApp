@@ -31,10 +31,19 @@ namespace myVegAppDbAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+
+            }));
             // Add framework services.
             services.AddMvc();
             services.Configure<MySettings>(Configuration.GetSection("MySettings"));
             services.AddSingleton<IConfiguration>(Configuration);
+           
 
         }
 
@@ -43,8 +52,8 @@ namespace myVegAppDbAPI
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
             app.UseMvc();
+
         }
 
         public void MapBSonClasses()

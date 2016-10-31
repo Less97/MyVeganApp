@@ -13,10 +13,12 @@ using myVegAppDbAPI.Model.APIModels;
 using Microsoft.Extensions.Options;
 using myVegAppDbAPI.Helpers;
 using myVegAppDbAPI.Model.DbModels;
+using Microsoft.AspNetCore.Cors;
 
 namespace myVegAppDbAPI.Controllers
 {
     [Route("api/[controller]")]
+    [EnableCors("MyPolicy")]
     public class myVegAppAPIController : Controller
     {
         private MongoClient _client;
@@ -43,17 +45,19 @@ namespace myVegAppDbAPI.Controllers
         {
             try
             {
+                model.Email = model.Email.ToLower();
                 var collection = _database.GetCollection<BsonDocument>("users");
                 var filter = new FilterDefinitionBuilder<BsonDocument>().And(new FilterDefinitionBuilder<BsonDocument>().Eq("email", model.Email) & new FilterDefinitionBuilder<BsonDocument>().Eq("password", model.Password));
                 var document = await collection.Find(filter).FirstOrDefaultAsync();
                 if (document == null)
-                    return Json(new { }.ToJson());
+                    return Json(new { isLoggedIn = false }.ToJson());
                 else
-                    return Json(document.ToJson());
+                    return Json(new { isLoggedIn=true,document=document.ToJson() }.ToJson());
             }
             catch (Exception ex)
             {
-                return Json(ex);
+                ////TODO:Error logging
+                return Json(new { isLoggedIn = false });
             }
         }
 
