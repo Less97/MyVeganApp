@@ -163,15 +163,13 @@ namespace myVegAppDbAPI.Controllers
             try
             {
                 var places = _database.GetCollection<BsonDocument>("places");
-                var filter = Builders<BsonDocument>.Filter.Where(x => x["_placeId"] == ObjectId.Parse(placeId));
-                var docs = await places.Find(filter).FirstAsync();
-             
-                
-
+                var filter = Builders<BsonDocument>.Filter.Where(x => x["_id"] == ObjectId.Parse(placeId));
+                var doc = await places.Find(filter).FirstAsync();
+                return Json(doc.ToJson(jsonWriterSettings));
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-
+                return Json(new { error = true, errorMessage = ex.Message });
             }
         }
 

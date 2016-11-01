@@ -42,11 +42,18 @@ angular.module('myApp.Service', [])
             callback([]);
           })
         },
-        getDetails: function (id) {
-          var p = placesSample.filter(function (obj) {
-            return obj._id == id
-          })[0];
-          return p;
+        getDetails: function (placeId) {
+           var req = {
+            url:address+"/getPlaceDetails",
+            params:{id:placeId},
+            method:'GET',
+          }
+          $http(req).success(function(data){
+            data = JSON.parse(data);
+            callback(data)
+          }).error(function(){
+            callback([]);
+          })
         }
       }
     }
