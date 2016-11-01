@@ -18,7 +18,7 @@ using MongoDB.Bson.IO;
 
 namespace myVegAppDbAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/myVegAppAPI")]
     [EnableCors("MyPolicy")]
     public class myVegAppAPIController : Controller
     {

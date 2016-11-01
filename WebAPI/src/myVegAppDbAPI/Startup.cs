@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson.Serialization;
 using myVegAppDbAPI.Model;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace myVegAppDbAPI
 {
@@ -40,10 +41,10 @@ namespace myVegAppDbAPI
 
             }));
             // Add framework services.
-            services.AddMvc();
+
             services.Configure<MySettings>(Configuration.GetSection("MySettings"));
             services.AddSingleton<IConfiguration>(Configuration);
-           
+            services.AddMvc();
 
         }
 
@@ -53,20 +54,7 @@ namespace myVegAppDbAPI
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             app.UseMvc();
-        }
 
-        public void MapBSonClasses()
-        {
-            BsonClassMap.RegisterClassMap<User>(cm =>
-            {
-                cm.AutoMap();
-                cm.SetIgnoreExtraElements(true);
-            });
-            BsonClassMap.RegisterClassMap<Place>(cm =>
-            {
-                cm.AutoMap();
-                cm.SetIgnoreExtraElements(true);
-            });
         }
     }
 }
