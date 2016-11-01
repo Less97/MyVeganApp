@@ -12,6 +12,9 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Bson.Serialization;
 using myVegAppDbAPI.Model;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace myVegAppDbAPI
 {
@@ -45,15 +48,26 @@ namespace myVegAppDbAPI
             services.Configure<MySettings>(Configuration.GetSection("MySettings"));
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddMvc();
-
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
             loggerFactory.AddDebug();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), @"Content")),
+                RequestPath = new PathString("/Content")
+            });
             app.UseMvc();
+           
 
         }
     }

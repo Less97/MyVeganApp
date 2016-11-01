@@ -157,22 +157,6 @@ namespace myVegAppDbAPI.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<JsonResult> GetPlaceDetails(String placeId)
-        {
-            try
-            {
-                var places = _database.GetCollection<BsonDocument>("places");
-                var filter = Builders<BsonDocument>.Filter.Where(x => x["_id"] == ObjectId.Parse(placeId));
-                var doc = await places.Find(filter).FirstAsync();
-                return Json(doc.ToJson(jsonWriterSettings));
-            }
-            catch (Exception ex)
-            {
-                return Json(new { error = true, errorMessage = ex.Message });
-            }
-        }
-
         [HttpPost("createPlace")]
         public async Task<JsonResult> CreatePlace([FromBody]CreatePlace model)
         {
