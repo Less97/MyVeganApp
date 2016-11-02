@@ -55,10 +55,10 @@ namespace myVegAppDbAPI
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            if (env.IsDevelopment())
-            {
+            //if (env.IsDevelopment())
+            //{
                 app.UseDeveloperExceptionPage();
-            }
+            //}
             loggerFactory.AddDebug();
             app.UseStaticFiles(new StaticFileOptions()
             {
