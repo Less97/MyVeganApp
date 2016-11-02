@@ -1,6 +1,9 @@
 ﻿<!-- =========================
      FOOTER
 ============================== -->
+@using myVegAppDbAPI.Model.Website;
+@model MessageViewModel
+
 <footer>
 
     <div class="container">
@@ -11,40 +14,57 @@
 
             <a class="btn contact-button expand-form expanded"><i class="icon_mail_alt"></i></a>
 
+            @if (@ViewBag.IsMessageSent == true)
+            {
+                        <!-- IF MAIL SENT SUCCESSFULLY -->
+                <h4 class="success">
+                    <i class="icon_check"></i> Your message has been sent successfully.
+                </h4>
+            }
+            else
+            {
+                            <!-- IF MAIL SENDING UNSUCCESSFULL -->
+                <h4 class="error">
+                    <i class="icon_error-circle_alt"></i> E-mail must be valid and message must be longer than 1 character.
+                </h4>
+            }
+
             <!-- EXPANDED CONTACT FORM -->
             <div class="row expanded-contact-form">
 
                 <div class="col-md-8 col-md-offset-2">
 
+
+                   
                     <!-- FORM -->
+                    @using (Html.BeginForm("SendMessage","Home",FormMethod.Post))
+                    {
                     <form class="contact-form" id="contact" role="form">
 
-                        <!-- IF MAIL SENT SUCCESSFULLY -->
-                        <h4 class="success">
-                            <i class="icon_check"></i> Your message has been sent successfully.
-                        </h4>
-
-                        <!-- IF MAIL SENDING UNSUCCESSFULL -->
-                        <h4 class="error">
-                            <i class="icon_error-circle_alt"></i> E-mail must be valid and message must be longer than 1 character.
-                        </h4>
+                    
+                       
 
                         <div class="col-md-6">
-                            <input class="form-control input-box" id="name" type="text" name="name" placeholder="Your Name">
+                            @Html.TextBoxFor(m=>m.SenderName,new { @placeholder="Your name",@class= "form-control input-box" })
+                            @*<input class="form-control input-box" id="name" type="text" name="name" placeholder="Your Name">*@
                         </div>
 
                         <div class="col-md-6">
-                            <input class="form-control input-box" id="email" type="email" name="email" placeholder="Your Email">
+                            @Html.TextBoxFor(m => m.SenderEmail, new { @placeholder = "Your Email",@class= "form-control input-box" })
+                            @*<input class="form-control input-box" id="email" type="email" name="email" placeholder="Your Email">*@
                         </div>
 
                         <div class="col-md-12">
-                            <input class="form-control input-box" id="subject" type="text" name="subject" placeholder="Subject">
-                            <textarea class="form-control textarea-box" id="message" rows="8" placeholder="Message"></textarea>
+                            @Html.TextBoxFor(m => m.Subject, new { @placeholder = "Subject", @class = "form-control input-box" })
+                            @*<input class="form-control input-box" id="subject" type="text" name="subject" placeholder="Subject">*@
+                            @Html.TextAreaFor(m=>m.Body,new { @placeholder = "Let us know what you think", @class = "form-control textarea-box" })
+                            @*<textarea class="form-control textarea-box" id="message" rows="8" placeholder="We want to know what you think."></textarea>*@
                         </div>
 
-                        <button class="btn btn-primary standard-button2 ladda-button" type="submit" id="submit" name="submit" data-style="expand-left">Send Message</button>
+                        <button class="btn btn-primary standard-button2 ladda-button" type="submit" id="submit" name="submit" data-style="expand-left">Send message</button>
 
                     </form>
+                    }
                     <!-- /END FORM -->
 
                 </div>
@@ -70,7 +90,7 @@
 
         <!-- COPYRIGHT TEXT -->
         <p class="copyright">
-            ©2014 Kane, All Rights Reserved
+            ©2016 Alessandro Orlandi, All Rights Reserved
         </p>
 
     </div>

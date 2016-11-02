@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using myVegAppDbAPI.Model.Website;
 
 namespace myVegAppDbAPI.Controllers
 {
@@ -10,7 +11,22 @@ namespace myVegAppDbAPI.Controllers
     public class HomeController : Controller
     {
         public ActionResult Index() {
-            return View();
+            var message = new HomeViewModel();
+            return View(message);
+        }
+
+        [HttpPost]
+        public ActionResult SendEmail(MessageViewModel messageToSend)
+        {
+            try
+            {
+                ViewBag.IsMessageSent = true;
+            }
+            catch (Exception ex) {
+                ViewBag.IsMessageSent = false;
+            }
+            
+            return View("Index",new HomeViewModel() { Message = messageToSend});
         }
     }
 }

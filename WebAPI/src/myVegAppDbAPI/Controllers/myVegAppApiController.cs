@@ -107,29 +107,6 @@ namespace myVegAppDbAPI.Controllers
             try
             {
                 if (String.IsNullOrEmpty(searchText)) searchText = String.Empty;
-                var agg = new BsonDocument[] {
-                    new BsonDocument() {
-                        { "$lookup" ,new BsonDocument()
-                            {
-                                { "from", "countries" },
-                                { "localField","country" },
-                                { "foreignField","_id" },
-                                { "as","country" },
-                            }
-                        }
-                    },
-                    new BsonDocument() {
-                        {
-                            "$lookup" ,new BsonDocument()
-                            {
-                                { "from", "reviews" },
-                                { "localField","reviews" },
-                                { "foreignField","place" },
-                                { "as","reviews" },
-                            }
-                        }
-                    },
-                };
                 var collection = _database.GetCollection<BsonDocument>("places");
 
                 var builder = Builders<BsonDocument>.Filter;
@@ -156,6 +133,29 @@ namespace myVegAppDbAPI.Controllers
             }
 
         }
+
+
+        [HttpGet("getplaces")]
+        public async Task<JsonResult> GetPlaceDetails(String placeId,Double latitude,Double longitude)
+        {
+            try
+            {
+                var collection = _database.GetCollection<BsonDocument>("places");
+                var builder = Builders<BsonDocument>.Filter;
+                var findPlaceDetails = Builders<BsonDocument>.Filter.Where(x => x["_placeId"] == ObjectId.Parse(placeId));
+                var doc = await collection.Find(findPlaceDetails).FirstOrDefaultAsync();
+                var docLocation = doc["location"]["coordinates"].AsBsonArray;
+                doc.Add("distance", GeoHelper.CalculateDistance(new Location(latitude, longitude), new Location(docLocation[1].ToDouble(), docLocation[0].ToDouble())));
+                return Json(doc.ToJson(jsonWriterSettings));
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = true, errorMessage = ex.Message });
+            }
+
+        }
+
 
         [HttpPost("createPlace")]
         public async Task<JsonResult> CreatePlace([FromBody]CreatePlace model)
