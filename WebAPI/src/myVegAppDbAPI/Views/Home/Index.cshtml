@@ -1,7 +1,20 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-     Layout = "_Layout";
+﻿@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@Html.Partial("_Header")
 
+@Html.Partial("_Features")
+
+@*@Html.Partial("_BriefLeft")
+
+@Html.Partial("_BriefRightWithVideo")
+
+@Html.Partial("_Testimonial")
+
+@Html.Partial("_Services")
+
+@Html.Partial("_Pricing")
+
+@Html.Partial("_Download")*@
+
+@Html.Partial("_Footer")
