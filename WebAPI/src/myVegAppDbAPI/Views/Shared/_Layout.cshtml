@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <!-- SITE TITLE -->
-    <title>Kane - Responsive App Landing Page</title>
+    <title>The Curious Carrot App</title>
 
     <!-- =========================
           FAV AND TOUCH ICONS
@@ -42,7 +42,7 @@
 
     <!-- CUSTOM STYLESHEETS -->
     <link rel="stylesheet" href="@Url.Content("~/Content/css/styles.css")">
-
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/mystyles.css")">
     <!-- COLORS -->
     <!--<link rel="stylesheet" href="css/colors/blue.css"> --><!-- DEFAULT COLOR/ CURRENTLY USING -->
     <!-- <link rel="stylesheet" href="css/colors/red.css"> -->
@@ -70,9 +70,9 @@
     <!-- =========================
          PRE LOADER
     ============================== -->
-    <div class="preloader">
-        <div class="status">&nbsp;</div>
-    </div>
+    @RenderSection("Preloader",false)
+
+    
    
     @RenderBody()
 
