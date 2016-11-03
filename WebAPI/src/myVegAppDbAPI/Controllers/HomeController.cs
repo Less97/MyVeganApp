@@ -11,7 +11,11 @@ namespace myVegAppDbAPI.Controllers
     public class HomeController : Controller
     {
         public ActionResult Index() {
-            var message = new HomeViewModel();
+            var message = new HomeViewModel()
+            {
+                Message = new MessageViewModel() { Status = 0 }
+            };
+
             return View(message);
         }
 
@@ -20,10 +24,10 @@ namespace myVegAppDbAPI.Controllers
         {
             try
             {
-                ViewBag.IsMessageSent = true;
+                messageToSend.Status = 1;
             }
             catch (Exception ex) {
-                ViewBag.IsMessageSent = false;
+                messageToSend.Status = -1;
             }
             
             return View("Index",new HomeViewModel() { Message = messageToSend});

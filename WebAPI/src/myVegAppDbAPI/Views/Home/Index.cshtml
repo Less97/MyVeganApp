@@ -3,6 +3,21 @@
 @{ 
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+@if (Model.Message.Status==0)
+{
+    @section Preloader{
+        <!-- =========================
+             PRE LOADER
+        ============================== -->
+        <div class="preloader">
+            <div class="status">&nbsp;</div>
+        </div>
+    }
+}
+
+
+
 @Html.Partial("_Header")
 
 @Html.Partial("_Features")

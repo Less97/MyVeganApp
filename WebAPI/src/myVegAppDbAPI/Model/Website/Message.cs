@@ -14,5 +14,7 @@ namespace myVegAppDbAPI.Model.Website
         public String SenderName { get; set; }
 
         public String SenderEmail { get; set; }
+
+        public Int32 Status { get; set; }
     }
 }
