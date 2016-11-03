@@ -16,6 +16,7 @@ using myVegAppDbAPI.Model.DbModels;
 using Microsoft.AspNetCore.Cors;
 using MongoDB.Bson.IO;
 
+
 namespace myVegAppDbAPI.Controllers
 {
     [Route("api/myVegAppAPI")]
@@ -135,17 +136,17 @@ namespace myVegAppDbAPI.Controllers
         }
 
 
-        [HttpGet("getplaces")]
-        public async Task<JsonResult> GetPlaceDetails(String placeId,Double latitude,Double longitude)
+        [HttpGet("getPlaceDetails")]
+        public async Task<JsonResult> GetPlaceDetails(String placeId, Double latitude, Double longitude)
         {
             try
             {
-                var collection = _database.GetCollection<BsonDocument>("places");
-                var builder = Builders<BsonDocument>.Filter;
-                var findPlaceDetails = Builders<BsonDocument>.Filter.Where(x => x["_placeId"] == ObjectId.Parse(placeId));
-                var doc = await collection.Find(findPlaceDetails).FirstOrDefaultAsync();
-                var docLocation = doc["location"]["coordinates"].AsBsonArray;
-                doc.Add("distance", GeoHelper.CalculateDistance(new Location(latitude, longitude), new Location(docLocation[1].ToDouble(), docLocation[0].ToDouble())));
+
+                var placeIdFilter = Builders<BsonDocument>.Filter.Where(x => x["_id"] == ObjectId.Parse(placeId));
+                //var project = Builders<BsonDocument>.Projection.Slice("countryArray", 0,1);
+                var doc = await _database.GetCollection<BsonDocument>("places").Aggregate().Match(placeIdFilter).Lookup("reviews", "_id", "placeId", "reviews").Lookup("countries", "countryId", "_id", "country").SingleAsync();
+                
+
                 return Json(doc.ToJson(jsonWriterSettings));
 
             }
