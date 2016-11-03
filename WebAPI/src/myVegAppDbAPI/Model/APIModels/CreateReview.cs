@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace myVegAppDbAPI.Model.APIModels
 {
-    public class Review
+    public class CreateReview
     {
         public String PlaceId { get; set; }
         public String Description { get; set; }

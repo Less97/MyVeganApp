@@ -15,7 +15,7 @@ using myVegAppDbAPI.Helpers;
 using myVegAppDbAPI.Model.DbModels;
 using Microsoft.AspNetCore.Cors;
 using MongoDB.Bson.IO;
-
+using MongoDB.Driver.Linq;
 
 namespace myVegAppDbAPI.Controllers
 {
@@ -49,8 +49,8 @@ namespace myVegAppDbAPI.Controllers
             try
             {
                 model.Email = model.Email.ToLower();
-                var collection = _database.GetCollection<BsonDocument>("users");
-                var filter = new FilterDefinitionBuilder<BsonDocument>().And(new FilterDefinitionBuilder<BsonDocument>().Eq("email", model.Email) & new FilterDefinitionBuilder<BsonDocument>().Eq("password", model.Password));
+                var collection = _database.GetCollection<User>("users");
+                var filter = new FilterDefinitionBuilder<User>().And(new FilterDefinitionBuilder<User>().Eq("email", model.Email) & new FilterDefinitionBuilder<User>().Eq("password", model.Password));
                 var document = await collection.Find(filter).FirstOrDefaultAsync();
                 if (document == null)
                     return Json(new { isLoggedIn = false }.ToJson());
@@ -60,7 +60,7 @@ namespace myVegAppDbAPI.Controllers
             catch (Exception ex)
             {
                 ////TODO:Error logging
-                return Json(new { isLoggedIn = false });
+                return Json(new { Error = 1, Message = ex });
             }
         }
 
@@ -69,31 +69,7 @@ namespace myVegAppDbAPI.Controllers
         {
             try
             {
-                var userCollection = _database.GetCollection<BsonDocument>("users");
-
-                //check if already existing
-                var filter = new FilterDefinitionBuilder<BsonDocument>().And(new FilterDefinitionBuilder<BsonDocument>().Eq("email", model.Email) & new FilterDefinitionBuilder<BsonDocument>().Eq("password", model.Password));
-                var document = await userCollection.Find(filter).FirstOrDefaultAsync();
-
-                if (document != null)
-                {
-                    return Json(new { error = 1, Message = "User already exists" });
-                }
-
-                var bsonDocument = new BsonDocument()
-                {
-                    { "email" ,model.Email},
-                    { "password",model.Password},
-                    { "firstName" ,model.FirstName},
-                    { "lastName",model.LastName},
-                    { "tipology",model.Type},
-                };
-                await userCollection.InsertOneAsync(bsonDocument);
-                document = await userCollection.Find(filter).FirstOrDefaultAsync();
-                if (document == null)
-                    return Json(new { error = 1, Message = "Couldn't create the user" }.ToJson());
-                else
-                    return Json(document.ToJson(jsonWriterSettings));
+                return Json(new { });
             }
             catch (Exception ex)
             {
@@ -108,9 +84,9 @@ namespace myVegAppDbAPI.Controllers
             try
             {
                 if (String.IsNullOrEmpty(searchText)) searchText = String.Empty;
-                var collection = _database.GetCollection<BsonDocument>("places");
+                var collection = _database.GetCollection<Place>("places");
 
-                var builder = Builders<BsonDocument>.Filter;
+                var builder = Builders<Place>.Filter;
                 var filter = (builder.Regex("name", "/" + searchText + "/i") | builder.Regex("menu.dishName", "/" + searchText + "/i")) & builder.NearSphere("location", longitude, latitude, maxDistance / 6378.1);
 
                 if (tipology != 0)
@@ -118,11 +94,6 @@ namespace myVegAppDbAPI.Controllers
 
                 var docs = await collection.Find(filter).ToListAsync();
 
-                docs.ForEach(x =>
-                {
-                    var loc = x["location"]["coordinates"].AsBsonArray;
-                    x.Add("distance", GeoHelper.CalculateDistance(new Location(latitude, longitude), new Location(loc[1].ToDouble(), loc[0].ToDouble())));
-                });
                 if (docs != null)
                     return Json(docs.ToJson(jsonWriterSettings));
 
@@ -141,14 +112,10 @@ namespace myVegAppDbAPI.Controllers
         {
             try
             {
-
-                var placeIdFilter = Builders<BsonDocument>.Filter.Where(x => x["_id"] == ObjectId.Parse(placeId));
-                //var project = Builders<BsonDocument>.Projection.Slice("countryArray", 0,1);
-                var doc = await _database.GetCollection<BsonDocument>("places").Aggregate().Match(placeIdFilter).Lookup("reviews", "_id", "placeId", "reviews").Lookup("countries", "countryId", "_id", "country").SingleAsync();
-                
-
-                return Json(doc.ToJson(jsonWriterSettings));
-
+                IMongoCollection<Place> places = _database.GetCollection<Place>("places");
+                IMongoCollection<Review> reviews = _database.GetCollection<Review>("reviews");
+                var place = places.Aggregate().Match(x => x.Id == ObjectId.Parse(placeId)).Lookup<Place, Review, BsonDocument>(reviews, x => x.Id, y => y.PlaceId, d => d["reviews"]);
+                return Json(place.ToJson());
             }
             catch (Exception ex)
             {
@@ -163,26 +130,7 @@ namespace myVegAppDbAPI.Controllers
         {
             try
             {
-                var placesCollection = _database.GetCollection<BsonDocument>("places");
-                var myNewPlace = new BsonDocument() {
-                    { "name",  model.Name },
-                    { "type",  model.Type },
-                    { "phoneNumber",model.PhoneNumber},
-                    { "address",model.Address},
-                    { "location", new BsonDocument()
-                        {
-                            {"coordinates",new BsonArray() {
-                                model.Longitude,model.Latitude
-                            } },
-                            {  "type","Point" }
-                        }
-                    },
-                    { "menu",new BsonArray() },
-                    { "nReviews",0 },
-                    { "rating",0}
-                 };
-                await _database.GetCollection<BsonDocument>("places").InsertOneAsync(myNewPlace);
-                return Json(new { error = 0, result = 1 });
+                return Json(new { });
             }
             catch (Exception ex)
             {
@@ -193,27 +141,11 @@ namespace myVegAppDbAPI.Controllers
         [HttpPost("createMenuItem")]
         public async Task<JsonResult> CreateMenuItem([FromBody]CreateMenuItem model)
         {
-            try
-            {
-                var placesCollection = _database.GetCollection<BsonDocument>("places");
-                var findMyPlaceFilter = Builders<BsonDocument>.Filter.Where(x => x["_id"] == ObjectId.Parse(model.PlaceId));
-                var update = Builders<BsonDocument>.Update.AddToSet("menu", new BsonDocument()
-                {
-                    { "dishName",model.Name},
-                    { "price",model.Price},
-                    { "tipology",model.Tipology},
-                });
-                await placesCollection.UpdateOneAsync(findMyPlaceFilter, update);
-                return Json(new { error = 0, result = 1 });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { error = 1, errorMessage = ex.Message });
-            }
+            return Json(new { });
         }
 
         [HttpPost("addReview")]
-        public async Task<JsonResult> AddReview([FromBody]Review model)
+        public async Task<JsonResult> AddReview([FromBody] CreateReview model)
         {
             try
             {
@@ -252,15 +184,15 @@ namespace myVegAppDbAPI.Controllers
         }
 
 
-        [HttpPost("getReviews")]
+        [HttpGet("getReviews")]
         public async Task<JsonResult> GetReviews(String placeId)
         {
             try
             {
-                var reviewsCollection = _database.GetCollection<BsonDocument>("reviews");
-                var findPlaceReviews = Builders<BsonDocument>.Filter.Where(x => x["_placeId"] == ObjectId.Parse(placeId));
-                var reviews = await reviewsCollection.Find(findPlaceReviews).ToListAsync();
-                return Json(reviews);
+                var reviews = _database.GetCollection<Review>("reviews");
+                var findPlaceReviews = Builders<Review>.Filter.Where(x =>x.PlaceId == ObjectId.Parse(placeId));
+                var result = await reviews.Find(x=>x.PlaceId==ObjectId.Parse(placeId)).ToListAsync();
+                return Json(result);
             }
             catch (Exception ex)
             {

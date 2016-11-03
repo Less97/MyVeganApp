@@ -9,14 +9,17 @@ namespace myVegAppDbAPI.Model.DbModels
 {
     public class User 
     {
+        [BsonId]
+        public ObjectId Id { get; set; }
+
         [BsonElement("email")]
         public String Email { get; set; }
 
         [BsonElement("password")]
         public String Password { get; set; }
 
-        [BsonElement("tipology")]
-        public String Tipology { get; set; }
+        [BsonElement("type")]
+        public Int32 Type { get; set; }
 
         [BsonElement("firstName")]
         public String FirstName { get; set; }
