@@ -114,7 +114,7 @@ namespace myVegAppDbAPI.Controllers
             {
                 IMongoCollection<Place> places = _database.GetCollection<Place>("places");
                 IMongoCollection<Review> reviews = _database.GetCollection<Review>("reviews");
-                var place = places.Aggregate().Match(x => x.Id == ObjectId.Parse(placeId)).Lookup<Place, Review, BsonDocument>(reviews, x => x.Id, y => y.PlaceId, d => d["reviews"]);
+                var place = places.Aggregate().Match(x => x.Id == ObjectId.Parse(placeId)).Lookup<Place, Review, Review>(reviews, x => x.Id, y => y.PlaceId, d => new Place { });
                 return Json(place.ToJson());
             }
             catch (Exception ex)
