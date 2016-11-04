@@ -189,9 +189,14 @@ namespace myVegAppDbAPI.Controllers
         {
             try
             {
-                var reviews = _database.GetCollection<Review>("reviews");
-                var findPlaceReviews = Builders<Review>.Filter.Where(x =>x.PlaceId == ObjectId.Parse(placeId));
-                var result = await reviews.Find(x=>x.PlaceId==ObjectId.Parse(placeId)).ToListAsync();
+                var reviews = _database.GetCollection<Review>("reviews").AsQueryable();
+                var result = reviews.Where(x=>x.PlaceId==ObjectId.Parse(placeId)).Select(X=>new Review() {
+                    Id = X.Id,
+                    Description = X.Description,
+                    Rating = X.Rating,
+                    PlaceId = X.PlaceId,
+                    ReviewerId = X.ReviewerId
+                });
                 return Json(result);
             }
             catch (Exception ex)
