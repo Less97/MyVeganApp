@@ -26,7 +26,7 @@ namespace myVegAppDbAPI.Controllers
         private MongoClient _client;
         private IMongoDatabase _database;
         private MySettings MySettings { get; set; }
-        private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
+        private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict,Indent=true };
 
         public myVegAppAPIController(IOptions<MySettings> settings)
         {
@@ -114,7 +114,34 @@ namespace myVegAppDbAPI.Controllers
             {
                 IMongoCollection<Place> places = _database.GetCollection<Place>("places");
                 IMongoCollection<Review> reviews = _database.GetCollection<Review>("reviews");
-                var place = places.Aggregate().Match(x => x.Id == ObjectId.Parse(placeId)).Lookup<Place, Review, Review>(reviews, x => x.Id, y => y.PlaceId, d => new Place { });
+                var place = await places.Aggregate().Match(x => x.Id == ObjectId.Parse(placeId)).Lookup<Place, Review, BsonDocument>(reviews, x => x.Id, y => y.PlaceId, d => d["reviews"])
+                    .Unwind(x => x["reviews"])
+                   .Group(new BsonDocument()
+                   {
+                       { "_id","$reviews.placeId"},
+                       { "count",new BsonDocument(){
+                           { "$sum",1}
+                       } },
+                       { "average",new BsonDocument() {
+                           {"$avg","$reviews.rating" }
+                       } }
+
+                   })
+                   .Lookup<BsonDocument,Place,BsonDocument>(places,x=>x["_id"],x=>x.Id,z=>z["place"])
+                   .Unwind(x=>x["place"])
+                   .Project(new BsonDocument() {
+                       { "_id", "$place._id"},
+                       { "nReviews","$count"},
+                       { "rating","$average"},
+                       { "name","$place.name"},
+                       { "description","$place.description"},
+                       { "type","$place.type"},
+                       { "website","$place.website"},
+                       { "address","$place.address"},
+                       { "phoneNumber","$place.phoneNumber"}
+                   }).As<Place>()
+                   .ToListAsync();
+
                 return Json(place.ToJson());
             }
             catch (Exception ex)
@@ -169,12 +196,6 @@ namespace myVegAppDbAPI.Controllers
                     { "rating",model.Rating},
                     { "description",model.Description}
                 });
-                var nReviews = Convert.ToInt32(place["nReviews"]);
-                var currentRating = Convert.ToDouble(place["rating"]);
-                var newRating = Convert.ToDouble((currentRating * nReviews + model.Rating) / (++nReviews));
-                newRating = Math.Round(newRating * 2, MidpointRounding.AwayFromZero) / 2;
-                var updateReviewInPlace = Builders<BsonDocument>.Update.Set("nReviews", nReviews).Set("rating", newRating);
-                await placesCollection.UpdateOneAsync(findMyPlaceFilter, updateReviewInPlace);
                 return Json(new { error = 0, result = 1 });
             }
             catch (Exception ex)
@@ -189,15 +210,17 @@ namespace myVegAppDbAPI.Controllers
         {
             try
             {
-                var reviews = _database.GetCollection<Review>("reviews").AsQueryable();
-                var result = reviews.Where(x=>x.PlaceId==ObjectId.Parse(placeId)).Select(X=>new Review() {
-                    Id = X.Id,
-                    Description = X.Description,
-                    Rating = X.Rating,
-                    PlaceId = X.PlaceId,
-                    ReviewerId = X.ReviewerId
-                });
-                return Json(result);
+                var reviews = _database.GetCollection<Review>("reviews");
+                var users = _database.GetCollection<User>("users");
+                var result = await reviews.Aggregate().Match(x => x.PlaceId == ObjectId.Parse(placeId))
+                        .Lookup<Review, User, BsonDocument>(users, x => x.ReviewerId, y => y.Id, d => d["reviewer"])
+                         .Unwind(x=>x["reviewer"]).Project(new BsonDocument() {
+                             { "reviewer","$reviewer.firstName"},
+                             { "description",1},
+                             { "rating",1}
+                         }).As<Review>().
+                         ToListAsync();
+                return Json(result.ToJson());
             }
             catch (Exception ex)
             {
