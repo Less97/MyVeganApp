@@ -7,8 +7,8 @@
    <ion-content class="padding">
          <ion-item ng-repeat="r in reviews" class="item-avatar">
             <i class="icon {{r.rating>3?'ion-happy-outline':'ion-sad-outline'}}"></i>
-      <h2>{{r.reviewerName}}</h2>
-      <p>{{r.review}}</p>
+      <h2>{{r.reviewer}}</h2>
+      <p>{{r.description}}</p>
       <div class="review">
           <rating ng-model="r.rating" max="5"></rating>
       </div>

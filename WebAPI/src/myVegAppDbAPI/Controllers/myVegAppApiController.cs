@@ -300,7 +300,7 @@ namespace myVegAppDbAPI.Controllers
                              { "rating",1}
                          }).As<Review>().
                          ToListAsync();
-                return Json(result.ToJson());
+                return Json(result.ToJson(jsonWriterSettings));
             }
             catch (Exception ex)
             {

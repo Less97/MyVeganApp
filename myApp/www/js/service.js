@@ -58,7 +58,7 @@ angular.module('myApp.Service', [])
       }
     }
   })
-  .factory('ReviewsService', function () {
+  .factory('ReviewsService', function ($http) {
     return {
       getReviews: function (id,callback) {
        var req = {

@@ -132,7 +132,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   }
   $scope.goToReviews = function (details) {
     $state.go('reviews', {
-      id: details._id
+      id: details._id.$oid
     })
   }
   $scope.goToMenu = function (details) {
