@@ -16,6 +16,7 @@ using myVegAppDbAPI.Model.DbModels;
 using Microsoft.AspNetCore.Cors;
 using MongoDB.Bson.IO;
 using MongoDB.Driver.Linq;
+using MongoDB.Driver.GeoJsonObjectModel;
 
 namespace myVegAppDbAPI.Controllers
 {
@@ -26,7 +27,7 @@ namespace myVegAppDbAPI.Controllers
         private MongoClient _client;
         private IMongoDatabase _database;
         private MySettings MySettings { get; set; }
-        private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict,Indent=true };
+        private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict, Indent = true };
 
         public myVegAppAPIController(IOptions<MySettings> settings)
         {
@@ -83,19 +84,77 @@ namespace myVegAppDbAPI.Controllers
         {
             try
             {
-                if (String.IsNullOrEmpty(searchText)) searchText = String.Empty;
-                var collection = _database.GetCollection<Place>("places");
 
-                var builder = Builders<Place>.Filter;
-                var filter = (builder.Regex("name", "/" + searchText + "/i") | builder.Regex("menu.dishName", "/" + searchText + "/i")) & builder.NearSphere("location", longitude, latitude, maxDistance / 6378.1);
+                if (String.IsNullOrEmpty(searchText)) searchText = String.Empty;
+                BsonArray location = new BsonArray();
+                location.AddRange(new Double[] { longitude, latitude });
+                var reviews = _database.GetCollection<Review>("reviews");
+                var places = _database.GetCollection<Place>("places");
+
+
+                var builder = Builders<BsonDocument>.Filter;
+                var postGeoFilter = builder.Empty;
+
+                if (!String.IsNullOrEmpty(searchText))
+                    postGeoFilter = postGeoFilter & builder.Regex("name", "/" + searchText + "/i") | builder.Regex("menu.dishName", "/" + searchText + "/i");
 
                 if (tipology != 0)
-                    filter = filter & builder.BitsAllSet("menu.tipology", tipology);
+                    postGeoFilter = postGeoFilter & builder.BitsAllSet("menu.tipology", tipology);
 
-                var docs = await collection.Find(filter).ToListAsync();
 
-                if (docs != null)
-                    return Json(docs.ToJson(jsonWriterSettings));
+                var docs = await places.Aggregate().AppendStage<BsonDocument>(new BsonDocument() {
+                    { "$geoNear",new BsonDocument() {
+                        { "near", new BsonDocument() {
+                            { "type","Point"},
+                            { "coordinates",new BsonArray(new Double[] { longitude,latitude})}
+                        } },
+                        { "distanceField","dist.calculated"},
+                        { "spherical",true},
+                        { "maxDistance", maxDistance*1000},
+                    } }
+                })
+                .Match(postGeoFilter) // filtro menu & nome del posto
+                .Lookup<BsonDocument, Review, BsonDocument>(reviews, x => x["_id"], y => y.PlaceId, z => z["reviews"])
+                .Unwind(x => x["reviews"], new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
+                .Group(new BsonDocument() // Espande l'array di reviews e tira fuori nReviews e rating
+                {
+                    { "_id", new BsonDocument() {
+                        { "_id","$_id"},
+                        { "name","$name" },
+                        { "distance","$dist.calculated"},
+                        { "phoneNumber","$phoneNumber"},
+                        { "address","$address"},
+                        { "description","$description"},
+                        { "website","$website"},
+                        { "type","$type"},
+                        { "location","$location"}
+                    } },
+                       { "nReviews",new BsonDocument(){
+                           { "$sum",1}
+                       } },
+                       { "rating",new BsonDocument() {
+                           {"$avg","$reviews.rating" }
+                  } }
+                })
+                .Project(new BsonDocument() {
+                    { "_id","$_id._id" },
+                    { "name","$_id.name"},
+                    { "phoneNumber","$_id.phoneNumber"},
+                    { "address","$_id.address"},
+                    { "website","$_id.website"},
+                    { "description","$_id.description"},
+                    { "nReviews","$nReviews"},
+                    { "type","$_id.type"},
+                    { "rating","$rating"},
+                    { "distance","$_id.distance"},
+                    { "location","$_id.location"}
+                })
+                //.SortBy<BsonDocument>(x=>x["distance"]) //Forse sono gia ordinati
+                .As<Place>()
+
+                .ToListAsync();
+
+                return Json(docs.ToJson(jsonWriterSettings));
 
                 return Json(new { });
             }
@@ -127,8 +186,8 @@ namespace myVegAppDbAPI.Controllers
                        } }
 
                    })
-                   .Lookup<BsonDocument,Place,BsonDocument>(places,x=>x["_id"],x=>x.Id,z=>z["place"])
-                   .Unwind(x=>x["place"])
+                   .Lookup<BsonDocument, Place, BsonDocument>(places, x => x["_id"], x => x.Id, z => z["place"])
+                   .Unwind(x => x["place"])
                    .Project(new BsonDocument() {
                        { "_id", "$place._id"},
                        { "nReviews","$count"},
@@ -214,7 +273,7 @@ namespace myVegAppDbAPI.Controllers
                 var users = _database.GetCollection<User>("users");
                 var result = await reviews.Aggregate().Match(x => x.PlaceId == ObjectId.Parse(placeId))
                         .Lookup<Review, User, BsonDocument>(users, x => x.ReviewerId, y => y.Id, d => d["reviewer"])
-                         .Unwind(x=>x["reviewer"]).Project(new BsonDocument() {
+                         .Unwind(x => x["reviewer"]).Project(new BsonDocument() {
                              { "reviewer","$reviewer.firstName"},
                              { "description",1},
                              { "rating",1}

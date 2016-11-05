@@ -36,7 +36,13 @@ namespace myVegAppDbAPI.Model.DbModels
         public Int32 nReviews { get; set; }
 
         [BsonElement("rating")]
-        public Double rating { get; set; }
-      
+        public Double? rating { get; set; }
+
+        [BsonElement("distance")]
+        public Double Distance { get; set; }
+        
+        [BsonElement("location")]
+        public GeoLoc Location { get; set; }
+
     }
 }

@@ -14,10 +14,10 @@ namespace myVegAppDbAPI.Model.DbModels
         public ObjectId Id { get; set; }
 
         [BsonElement("placeId")]
-        public ObjectId? PlaceId { get; set; }
+        public ObjectId PlaceId { get; set; }
 
         [BsonElement("reviewerId")]
-        public ObjectId? ReviewerId { get; set; }
+        public ObjectId ReviewerId { get; set; }
 
         [BsonElement("reviewer")]
         public String Reviewer { get; set; }
