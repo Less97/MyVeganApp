@@ -42,10 +42,10 @@ angular.module('myApp.Service', [])
             callback([]);
           })
         },
-        getDetails: function (placeId) {
+        getDetails: function (id,latitude,longitude,callback) {
            var req = {
             url:address+"/getPlaceDetails",
-            params:{id:placeId},
+            params:{placeId:id,latitude:latitude,longitude:longitude},
             method:'GET',
           }
           $http(req).success(function(data){

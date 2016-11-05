@@ -183,7 +183,9 @@ namespace myVegAppDbAPI.Controllers
                            { "address","$address" },
                            { "website","$website" },
                            { "name","$name"},
+                           { "openingHours","$openingHours"},
                            { "type","$type"},
+                           { "email","$email"},
                            { "location","$location"},
                            { "menu","$menu"},
                            { "countryId","$countryId"},
@@ -207,9 +209,11 @@ namespace myVegAppDbAPI.Controllers
                        { "description","$_id.description"},
                        { "type","$_id.type"},
                        { "website","$_id.website"},
+                       { "email","$_id.email"},
                        { "address","$_id.address"},
                        { "location","$_id.location"},
                        { "menu","$_id.menu"},
+                       { "openingHours","$_id.openingHours"},
                        { "phoneNumber","$_id.phoneNumber"},
                        { "country","$country"}
                    }).As<Place>()

@@ -32,6 +32,9 @@ namespace myVegAppDbAPI.Model.DbModels
         [BsonElement("address")]
         public String Address { get; set; }
 
+        [BsonElement("email")]
+        public String Email { get; set; }
+
         [BsonElement("nReviews")]
         public Int32 nReviews { get; set; }
 
@@ -49,5 +52,8 @@ namespace myVegAppDbAPI.Model.DbModels
 
         [BsonElement("country")]
         public Country Country { get; set; }
+
+        [BsonElement("openingHours")]
+        public String OpeningHours { get; set; }
     }
 }
