@@ -35,11 +35,20 @@
   <div class="item">
         <div my-static-map lat="details.latitude" lng="details.longitude" width="350"></div>
   </div>
-  <a class="item item-icon-left" href="maps://maps.apple.com/?q={{details.latitude}},{{details.longitude}}">
+  <!--<a class="item item-icon-left" href="maps://maps.apple.com/?q={{details.latitude}},{{details.longitude}}">
     <i class="icon ion-location"></i>
-    {{details.address}}
+   
     <span class="item-note">
       Open Map
+    </span>
+  </a>-->
+ 
+ <a class="item item-icon-left" href="maps://maps.apple.com/?q={{details.latitude}},{{details.longitude}}">
+    <i class="icon ion-location"></i>
+    <p>{{details.address}}</p>
+    <p> ~ {{details.distance | number:1}} Km</p>
+    <span class="item-note">
+      Open Direction
     </span>
   </a>
 

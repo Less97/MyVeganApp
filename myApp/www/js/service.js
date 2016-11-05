@@ -1,4 +1,5 @@
-var address = "http://localhost:51067/api/myVegAppApi";
+var address = "http://thecuriouscarrot.com/api/myVegAppApi";
+//var address = "http://localhost:51067/api/myVegAppApi";
 var currentLoginData = {};
 angular.module('myApp.Service', [])
   .factory('LoginService', function ($http) {
@@ -32,7 +33,7 @@ angular.module('myApp.Service', [])
         getPlaces: function (lat,lng,txt,maxDist,type,callback) {
           var req = {
             url:address+"/getPlaces",
-            params:{latitude:lat,longitude:lng,searchText:txt,maxDistance:300,tipology:0},
+            params:{latitude:lat,longitude:lng,searchText:txt,maxDistance:3000,tipology:0},
             method:'GET',
           }
           $http(req).success(function(data){

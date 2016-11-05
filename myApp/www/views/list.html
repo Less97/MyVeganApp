@@ -26,6 +26,9 @@
         <div class="review">
           <rating ng-model="place.rating" max="5"></rating>
         </div>
+        <div class="distance-item">
+         ~ {{$parent.returnDistance(place.distance) | number:1}} Km
+        </div>
         <i class="icon ion-chevron-right icon-accessory list-arrow"></i>
       </a>
     </div>

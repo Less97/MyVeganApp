@@ -81,3 +81,16 @@ ul.rating li i {
 .underlined{
     text-decoration: underline;
 }
+
+.logoImg{
+    width:75%;
+    margin:0 auto;
+    display: block;
+    max-width:350px;
+}
+
+.distance-item{
+    position:absolute;
+    right: 10%;
+    top: 45%;
+}

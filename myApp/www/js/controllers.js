@@ -89,7 +89,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
     LoadingHelper.show();
-    PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, 0, 300, function (items) {
+    PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, 0, 3000, function (items) {
       LoadingHelper.hide();
       $scope.places = items;
     });
@@ -104,6 +104,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   }
   $scope.back = function () {
     $state.go('tabs.list');
+  }
+  $scope.returnDistance = function(distance){
+    return distance/1000;
   }
 })
 
