@@ -44,5 +44,10 @@ namespace myVegAppDbAPI.Model.DbModels
         [BsonElement("location")]
         public GeoLoc Location { get; set; }
 
+        [BsonElement("menu")]
+        public MenuItem[] Menu { get; set; }
+
+        [BsonElement("country")]
+        public Country Country { get; set; }
     }
 }

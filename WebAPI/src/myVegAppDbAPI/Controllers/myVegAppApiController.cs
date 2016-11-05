@@ -27,7 +27,7 @@ namespace myVegAppDbAPI.Controllers
         private MongoClient _client;
         private IMongoDatabase _database;
         private MySettings MySettings { get; set; }
-        private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict, Indent = true };
+        private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict};
 
         public myVegAppAPIController(IOptions<MySettings> settings)
         {
@@ -149,14 +149,12 @@ namespace myVegAppDbAPI.Controllers
                     { "distance","$_id.distance"},
                     { "location","$_id.location"}
                 })
-                //.SortBy<BsonDocument>(x=>x["distance"]) //Forse sono gia ordinati
+                .SortBy<BsonDocument>(x=>x["distance"]) //Forse sono gia ordinati
                 .As<Place>()
 
                 .ToListAsync();
 
                 return Json(docs.ToJson(jsonWriterSettings));
-
-                return Json(new { });
             }
             catch (Exception ex)
             {
@@ -173,35 +171,52 @@ namespace myVegAppDbAPI.Controllers
             {
                 IMongoCollection<Place> places = _database.GetCollection<Place>("places");
                 IMongoCollection<Review> reviews = _database.GetCollection<Review>("reviews");
+                IMongoCollection<Country> countries = _database.GetCollection<Country>("countries");
                 var place = await places.Aggregate().Match(x => x.Id == ObjectId.Parse(placeId)).Lookup<Place, Review, BsonDocument>(reviews, x => x.Id, y => y.PlaceId, d => d["reviews"])
-                    .Unwind(x => x["reviews"])
+                    .Unwind(x => x["reviews"], new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
                    .Group(new BsonDocument()
                    {
-                       { "_id","$reviews.placeId"},
-                       { "count",new BsonDocument(){
+                       { "_id",new BsonDocument(){
+                           { "placeId","$placeId" },
+                           { "description","$description" },
+                           { "phoneNumber","$phoneNumber" },
+                           { "address","$address" },
+                           { "website","$website" },
+                           { "name","$name"},
+                           { "type","$type"},
+                           { "location","$location"},
+                           { "menu","$menu"},
+                           { "countryId","$countryId"},
+                            { "_id","$_id"}
+                       }},
+                       { "nReviews",new BsonDocument(){
                            { "$sum",1}
                        } },
-                       { "average",new BsonDocument() {
+                       { "rating",new BsonDocument() {
                            {"$avg","$reviews.rating" }
                        } }
 
                    })
-                   .Lookup<BsonDocument, Place, BsonDocument>(places, x => x["_id"], x => x.Id, z => z["place"])
-                   .Unwind(x => x["place"])
+                   .Lookup<BsonDocument, Country, BsonDocument>(countries, x => x["_id.countryId"], x => x.Id, z => z["country"])
+                   .Unwind(x => x["country"])
                    .Project(new BsonDocument() {
-                       { "_id", "$place._id"},
-                       { "nReviews","$count"},
-                       { "rating","$average"},
-                       { "name","$place.name"},
-                       { "description","$place.description"},
-                       { "type","$place.type"},
-                       { "website","$place.website"},
-                       { "address","$place.address"},
-                       { "phoneNumber","$place.phoneNumber"}
+                       { "_id", "$_id._id"},
+                       { "nReviews","$nReviews"},
+                       { "rating","$rating"},
+                       { "name","$_id.name"},
+                       { "description","$_id.description"},
+                       { "type","$_id.type"},
+                       { "website","$_id.website"},
+                       { "address","$_id.address"},
+                       { "location","$_id.location"},
+                       { "menu","$_id.menu"},
+                       { "phoneNumber","$_id.phoneNumber"},
+                       { "country","$country"}
                    }).As<Place>()
-                   .ToListAsync();
+                   .FirstAsync();
 
-                return Json(place.ToJson());
+                place.Distance = GeoHelper.CalculateDistance(new Location(latitude, longitude), new Location(place.Location.Location[1], place.Location.Location[0]));
+                return Json(place.ToJson(jsonWriterSettings));
             }
             catch (Exception ex)
             {
@@ -275,6 +290,8 @@ namespace myVegAppDbAPI.Controllers
                         .Lookup<Review, User, BsonDocument>(users, x => x.ReviewerId, y => y.Id, d => d["reviewer"])
                          .Unwind(x => x["reviewer"]).Project(new BsonDocument() {
                              { "reviewer","$reviewer.firstName"},
+                             { "reviewerId",1},
+                             { "placeId",1},
                              { "description",1},
                              { "rating",1}
                          }).As<Review>().
