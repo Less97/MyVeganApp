@@ -59,31 +59,19 @@ angular.module('myApp.Service', [])
     }
   })
   .factory('ReviewsService', function () {
-    var reviews = [{
-      "reviewerName": "Mara",
-      "rating": 5,
-      "review": "it was a good very dinner"
-    }, {
-      "reviewerName": "Giovanna",
-      "rating": 4,
-      "review": "Decent"
-    }, {
-      "reviewerName": "Maria",
-      "rating": 3,
-      "review": "Nah, I wouldn't go there again"
-    }, {
-      "reviewerName": "Susanna",
-      "rating": 5,
-      "review": "Amazing!"
-    }, {
-      "reviewerName": "Polly",
-      "rating": 2,
-      "review": "Bleah. Never again!"
-    }];
-
     return {
-      getReviews: function (placeId) {
-        return reviews;
+      getReviews: function (id,callback) {
+       var req = {
+            url:address+"/getReviews",
+            params:{placeId:id},
+            method:'GET',
+          };
+           $http(req).success(function(data){
+            data = JSON.parse(data);
+            callback(data)
+          }).error(function(){
+            callback([]);
+          })
       }
     }
   })

@@ -162,7 +162,10 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 /*Reviews Controller*/
 .controller('ReviewsCtrl', function ($scope, $stateParams, ReviewsService) {
-  $scope.reviews = ReviewsService.getReviews($stateParams.id);
+  $scope.reviews = ReviewsService.getReviews($stateParams.id,function(rs){
+    $scope.reviews = rs;
+
+  });
   $scope.goBack = function () {
     $state.go('details')
   }
