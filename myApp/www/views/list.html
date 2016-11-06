@@ -2,14 +2,6 @@
   <ion-nav-bar class="bar-stable">
   </ion-nav-bar>
   <ion-content>
-    <div class="bar bar-header item-input-inset">
-      <label class="item-input-wrapper">
-      <i class="icon ion-ios-nutrition-outline"></i>
-      <input type="search" placeholder="Search"/>
-      </label>
-    <button class="button button-clear cancel-button">
-    Cancel
-  </button>
     </div>
     <a ng-click="goToAddPlace()">
       <div class="card">
@@ -20,7 +12,7 @@
     </a>
     <div class="list">
       <a ng-repeat="place in places" class="item item-avatar" ng-click="$parent.gotoDetails(place)">
-        <i class="icon ion-ios-nutrition-outline"></i>
+        <img ng-src="{{getImage(place.type)}}" class="imageTypeList"/>
         <h2>{{place.name}}</h2>
         <p>{{place.type}}</p>
         <div class="review">

@@ -21,7 +21,7 @@
     {{details.email}}
   </a>
 
-  <a class="item item-icon-left" href="http://{{details.website}}">
+  <a class="item item-icon-left" ng-click="openPage(details.website)">
     <i class="icon ion-android-globe"></i>
     {{details.website}}
   </a>
@@ -47,7 +47,7 @@
     </span>
   </a>-->
  
- <a class="item item-icon-left" href="maps://maps.apple.com/?q={{details.latitude}},{{details.longitude}}">
+ <a class="item item-icon-left" ng-click="navigate()">
     <i class="icon ion-location"></i>
     <p>{{details.address}}</p>
     <p> ~ {{details.distance | number:1}} Km</p>

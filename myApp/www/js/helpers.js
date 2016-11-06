@@ -15,3 +15,13 @@ angular.module('myApp.Helpers', [])
         }
     }
 })
+.factory("ImageHelper",function(){
+    return{
+        getPinIcon:function(type){
+            return "img/pins/restaurant.png";
+        },
+        getListImg:function(type){
+            return "img/imgTypes/restaurant.png";
+        }
+    }
+})

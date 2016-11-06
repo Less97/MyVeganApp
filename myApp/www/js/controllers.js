@@ -3,12 +3,13 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Around you Controller */
-.controller('AroundYouCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, PlacesService, LoadingHelper) {
+.controller('AroundYouCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, PlacesService, LoadingHelper, ImageHelper) {
   var options = {
     timeout: 10000,
     enableHighAccuracy: true
   };
 
+  LoadingHelper.show();
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
     var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -22,7 +23,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
     //Wait until the map is loaded
 
-    LoadingHelper.show();
+
 
     google.maps.event.addListenerOnce($scope.map, 'idle', function () {
 
@@ -38,7 +39,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
             map: $scope.map,
             animation: google.maps.Animation.DROP,
             position: pos,
-            title: $scope.places[i].name
+            title: $scope.places[i].name,
+            icon: ImageHelper.getPinIcon($scope.places[i].type)
           });
 
           $scope.places[i].marker.addListener('click', function (idx) {
@@ -57,6 +59,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         map: $scope.map,
         animation: google.maps.Animation.DROP,
         position: latLng,
+        icon: 'img/pins/home.png'
       });
       uMarker.addListener('click', function () {
         uWindow.open($scope.map, this);
@@ -75,7 +78,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /* ListCtrl*/
-.controller('ListCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, $ionicLoading, PlacesService, LoadingHelper) {
+.controller('ListCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, $ionicLoading, PlacesService, LoadingHelper, ImageHelper) {
 
 
   $scope.goToMap = function () {
@@ -86,27 +89,32 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     timeout: 10000,
     enableHighAccuracy: true
   };
-
+  LoadingHelper.show();
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
-    LoadingHelper.show();
+
     PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, 0, 3000, function (items) {
       LoadingHelper.hide();
       $scope.places = items;
     });
   });
   $scope.gotoDetails = function (myPlace) {
-      $state.go('details', {
-        id: myPlace._id.$oid,
-      })
+    $state.go('details', {
+      id: myPlace._id.$oid,
+    })
   }
+
+  $scope.getImage = function (type) {
+    return ImageHelper.getListImg(type);
+  }
+
   $scope.goToAddPlace = function () {
     $state.go('addPlace')
   }
   $scope.back = function () {
     $state.go('tabs.list');
   }
-  $scope.returnDistance = function(distance){
-    return distance/1000;
+  $scope.returnDistance = function (distance) {
+    return distance / 1000;
   }
 })
 
@@ -114,21 +122,35 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Details Controller*/
-.controller('DetailsCtrl', function ($scope, $stateParams, $state, PlacesService,$cordovaGeolocation,LoadingHelper) {
-    var options = {
+.controller('DetailsCtrl', function ($scope, $stateParams, $state, PlacesService, $cordovaGeolocation, $cordovaLaunchNavigator, LoadingHelper) {
+  var options = {
     timeout: 10000,
     enableHighAccuracy: true
   };
 
-  $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
   LoadingHelper.show();
-   PlacesService.getDetails($stateParams.id,position.coords.latitude,position.coords.longitude,
-    function(details){
-      $scope.details = details;
-      $scope.details.latitude = $scope.details.location.coordinates[1];
-      $scope.details.longitude = $scope.details.location.coordinates[0];
-      LoadingHelper.hide();
-    });
+  $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
+   
+    PlacesService.getDetails($stateParams.id, position.coords.latitude, position.coords.longitude,
+      function (details) {
+        $scope.details = details;
+        $scope.details.latitude = $scope.details.location.coordinates[1];
+        $scope.details.longitude = $scope.details.location.coordinates[0];
+        LoadingHelper.hide();
+
+        $scope.navigate = function () {
+
+          $cordovaLaunchNavigator.navigate([$scope.details.latitude, $scope.details.longitude], {
+            start: [position.coords.latitude, position.coords.longitude],
+            enableDebug: true
+          }).then(function () {
+            alert("Navigator launched");
+          }, function (err) {
+            alert(err);
+          });
+        };
+
+      });
   });
   $scope.goBack = function () {
     $state.go('tab.list')
@@ -137,6 +159,11 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $state.go('reviews', {
       id: details._id.$oid
     })
+  }
+
+
+  $scope.openPage = function (website) {
+    window.open(website, '_blank');
   }
   $scope.goToMenu = function (details) {
     $state.go('menu', {
@@ -164,12 +191,12 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Reviews Controller*/
-.controller('ReviewsCtrl', function ($scope,$state, $stateParams, ReviewsService) {
-  $scope.reviews = ReviewsService.getReviews($stateParams.id,function(rs){
+.controller('ReviewsCtrl', function ($scope, $state, $stateParams, ReviewsService) {
+  $scope.reviews = ReviewsService.getReviews($stateParams.id, function (rs) {
     $scope.reviews = rs;
-    $scope.isEmpty = rs.length==0;
+    $scope.isEmpty = rs.length == 0;
   });
-  $scope.goToAddReview = function(){
+  $scope.goToAddReview = function () {
     $state.go('addReview')
   }
   $scope.goBack = function () {
@@ -179,7 +206,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 /*Reviews Controller*/
 .controller('AddReviewCtrl', function ($scope, $stateParams, ReviewsService) {
- 
+
 })
 
 

@@ -94,3 +94,7 @@ ul.rating li i {
     right: 10%;
     top: 45%;
 }
+
+.item.item-avatar>.imageTypeList{
+    border-radius:0;
+}
