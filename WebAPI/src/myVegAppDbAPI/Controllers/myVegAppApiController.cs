@@ -91,10 +91,16 @@ namespace myVegAppDbAPI.Controllers
                 if(isAlreadyPresent)
                      return Json(new { Error = 0, Message = "Sorry, the email has already been used. Please use the procedure to retrieve your password instead" });
 
+                String salt = String.Empty;
+                AuthHelper.EncryptPassword(user.Password, out salt);
+
+                user.Salt = salt;
+
                 temporaryUsers.Add(model.Email, user);
-                return Json(new { Error = 0, GeneratedCode = RandomGenerators.RandomString(5) });
+                return Json(new { Error = 0, GeneratedCode = "11111"});
 
             }
+
             catch (Exception ex)
             {
 

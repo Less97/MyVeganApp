@@ -22,5 +22,8 @@ namespace myVegAppDbAPI.Model.DbModels.BaseModels
 
         [BsonElement("lastName")]
         public String LastName { get; set; }
+
+        [BsonElement("salt")]
+        public String Salt { get; set; }
     }
 }
