@@ -1,17 +1,13 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 
-namespace myVegAppDbAPI.Model.DbModels
+namespace myVegAppDbAPI.Model.DbModels.BaseModels
 {
-    public class User 
+    public abstract class BaseUser
     {
-        [BsonId]
-        public ObjectId Id { get; set; }
-
         [BsonElement("email")]
         public String Email { get; set; }
 

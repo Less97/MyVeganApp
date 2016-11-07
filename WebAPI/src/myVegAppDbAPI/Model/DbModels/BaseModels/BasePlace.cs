@@ -1,18 +1,15 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
 
-namespace myVegAppDbAPI.Model.DbModels
+namespace myVegAppDbAPI.Model.DbModels.BaseModels
 {
-    
-    [BsonIgnoreExtraElements]
-    public class Place
+    public class BasePlace
     {
-        [BsonId]
-        public ObjectId Id { get; set; }
+       
 
         [BsonElement("name")]
         public String Name { get; set; }
@@ -34,26 +31,17 @@ namespace myVegAppDbAPI.Model.DbModels
 
         [BsonElement("email")]
         public String Email { get; set; }
-
-        [BsonElement("nReviews")]
-        public Int32 nReviews { get; set; }
-
-        [BsonElement("rating")]
-        public Double? rating { get; set; }
-
-        [BsonElement("distance")]
-        public Double Distance { get; set; }
-        
+       
         [BsonElement("location")]
         public GeoLoc Location { get; set; }
+
+       
+        [BsonElement("openingHours")]
+        public String OpeningHours { get; set; }
 
         [BsonElement("menu")]
         public MenuItem[] Menu { get; set; }
 
-        [BsonElement("country")]
-        public Country Country { get; set; }
 
-        [BsonElement("openingHours")]
-        public String OpeningHours { get; set; }
     }
 }

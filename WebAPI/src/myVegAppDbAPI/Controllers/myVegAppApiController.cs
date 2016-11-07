@@ -17,6 +17,9 @@ using Microsoft.AspNetCore.Cors;
 using MongoDB.Bson.IO;
 using MongoDB.Driver.Linq;
 using MongoDB.Driver.GeoJsonObjectModel;
+using myVegAppDbAPI.Model.DbModels.InsertModels;
+using myVegAppDbAPI.Model.DbModels.ReadModels;
+using System.Text.RegularExpressions;
 
 namespace myVegAppDbAPI.Controllers
 {
@@ -28,6 +31,8 @@ namespace myVegAppDbAPI.Controllers
         private IMongoDatabase _database;
         private MySettings MySettings { get; set; }
         private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict};
+        public Dictionary<String, InsertUser> temporaryUsers { get; set; }
+        
 
         public myVegAppAPIController(IOptions<MySettings> settings)
         {
@@ -50,8 +55,8 @@ namespace myVegAppDbAPI.Controllers
             try
             {
                 model.Email = model.Email.ToLower();
-                var collection = _database.GetCollection<User>("users");
-                var filter = new FilterDefinitionBuilder<User>().And(new FilterDefinitionBuilder<User>().Eq("email", model.Email) & new FilterDefinitionBuilder<User>().Eq("password", model.Password));
+                var collection = _database.GetCollection<ReadUser>("users");
+                var filter = new FilterDefinitionBuilder<ReadUser>().And(new FilterDefinitionBuilder<ReadUser>().Eq("email", model.Email) & new FilterDefinitionBuilder<ReadUser>().Eq("password", model.Password));
                 var document = await collection.Find(filter).FirstOrDefaultAsync();
                 if (document == null)
                     return Json(new { isLoggedIn = false }.ToJson());
@@ -70,12 +75,30 @@ namespace myVegAppDbAPI.Controllers
         {
             try
             {
-                return Json(new { });
+                var collection = _database.GetCollection<InsertUser>("users");
+
+                var user = new InsertUser()
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    Type = 0,
+                    Password = model.Password
+                };
+
+                //checking if the user already exists.
+                var isAlreadyPresent = await collection.AsQueryable().AnyAsync(u => u.Email == model.Email);
+                if(isAlreadyPresent)
+                     return Json(new { Error = 0, Message = "Sorry, the email has already been used. Please use the procedure to retrieve your password instead" });
+
+                temporaryUsers.Add(model.Email, user);
+                return Json(new { Error = 0, GeneratedCode = RandomGenerators.RandomString(5) });
+
             }
             catch (Exception ex)
             {
 
-                return Json(new { Error = 1, Message = ex });
+                return Json(ex.RaiseException());
             }
         }
 
@@ -89,7 +112,7 @@ namespace myVegAppDbAPI.Controllers
                 BsonArray location = new BsonArray();
                 location.AddRange(new Double[] { longitude, latitude });
                 var reviews = _database.GetCollection<Review>("reviews");
-                var places = _database.GetCollection<Place>("places");
+                var places = _database.GetCollection<ReadPlace>("places");
 
 
                 var builder = Builders<BsonDocument>.Filter;
@@ -150,7 +173,7 @@ namespace myVegAppDbAPI.Controllers
                     { "location","$_id.location"}
                 })
                 .SortBy<BsonDocument>(x=>x["distance"]) //Forse sono gia ordinati
-                .As<Place>()
+                .As<ReadPlace>()
 
                 .ToListAsync();
 
@@ -158,7 +181,7 @@ namespace myVegAppDbAPI.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { error = true, errorMessage = ex.Message });
+                return Json(ex.RaiseException());
             }
 
         }
@@ -169,10 +192,10 @@ namespace myVegAppDbAPI.Controllers
         {
             try
             {
-                IMongoCollection<Place> places = _database.GetCollection<Place>("places");
+                IMongoCollection<ReadPlace> places = _database.GetCollection<ReadPlace>("places");
                 IMongoCollection<Review> reviews = _database.GetCollection<Review>("reviews");
                 IMongoCollection<Country> countries = _database.GetCollection<Country>("countries");
-                var place = await places.Aggregate().Match(x => x.Id == ObjectId.Parse(placeId)).Lookup<Place, Review, BsonDocument>(reviews, x => x.Id, y => y.PlaceId, d => d["reviews"])
+                var place = await places.Aggregate().Match(x => x.Id == ObjectId.Parse(placeId)).Lookup<ReadPlace, Review, BsonDocument>(reviews, x => x.Id, y => y.PlaceId, d => d["reviews"])
                     .Unwind(x => x["reviews"], new AggregateUnwindOptions<BsonDocument>() { PreserveNullAndEmptyArrays = true })
                    .Group(new BsonDocument()
                    {
@@ -216,7 +239,7 @@ namespace myVegAppDbAPI.Controllers
                        { "openingHours","$_id.openingHours"},
                        { "phoneNumber","$_id.phoneNumber"},
                        { "country","$country"}
-                   }).As<Place>()
+                   }).As<ReadPlace>()
                    .FirstAsync();
 
                 place.Distance = GeoHelper.CalculateDistance(new Location(latitude, longitude), new Location(place.Location.Location[1], place.Location.Location[0]));
@@ -224,7 +247,7 @@ namespace myVegAppDbAPI.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { error = true, errorMessage = ex.Message });
+                return Json(ex.RaiseException());
             }
 
         }
@@ -235,11 +258,27 @@ namespace myVegAppDbAPI.Controllers
         {
             try
             {
-                return Json(new { });
+                IMongoCollection<InsertPlace> places = _database.GetCollection<InsertPlace>("places");
+
+                var myNewPlace = new InsertPlace() {
+                    Name = model.Name,
+                    Description = model.Description,
+                    Website = model.Website,
+                    OpeningHours = model.OpeningHours,
+                    Type = model.Type,
+                    Address = model.Address,
+                    Email = model.Email,
+                    CountryId = new ObjectId(model.CountryId),
+                    Menu = new MenuItem[0],
+                    Location = new GeoLoc(model.Latitude,model.Longitude),
+                    PhoneNumber = model.PhoneNumber
+                };
+                await places.InsertOneAsync(myNewPlace);
+                return Json(new { result = true });
             }
             catch (Exception ex)
             {
-                return Json(new { error = 1, errorMessage = ex.Message });
+                return Json(ex.RaiseException());
             }
         }
 
@@ -265,9 +304,7 @@ namespace myVegAppDbAPI.Controllers
                     return Json(new { error = 1, errorMessage = "Place not found" });
                 var reviewer = await usersCollection.Find(findMyReviewerFilter).FirstAsync();
                 if (reviewer == null)
-                {
                     return Json(new { error = 1, errorMessage = "Reviewer not found" });
-                }
                 await reviewsCollection.InsertOneAsync(new BsonDocument() {
                     { "placeId",ObjectId.Parse(model.PlaceId)},
                     { "reviewerId",ObjectId.Parse(model.ReviewerId)},
@@ -278,7 +315,7 @@ namespace myVegAppDbAPI.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { error = 1, errorMessage = ex.Message });
+                return Json(ex.RaiseException());
             }
         }
 
@@ -289,9 +326,9 @@ namespace myVegAppDbAPI.Controllers
             try
             {
                 var reviews = _database.GetCollection<Review>("reviews");
-                var users = _database.GetCollection<User>("users");
+                var users = _database.GetCollection<ReadUser>("users");
                 var result = await reviews.Aggregate().Match(x => x.PlaceId == ObjectId.Parse(placeId))
-                        .Lookup<Review, User, BsonDocument>(users, x => x.ReviewerId, y => y.Id, d => d["reviewer"])
+                        .Lookup<Review, ReadUser, BsonDocument>(users, x => x.ReviewerId, y => y.Id, d => d["reviewer"])
                          .Unwind(x => x["reviewer"]).Project(new BsonDocument() {
                              { "reviewer","$reviewer.firstName"},
                              { "reviewerId",1},
@@ -304,7 +341,7 @@ namespace myVegAppDbAPI.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { error = 1, errorMessage = ex.Message });
+                return Json(ex.RaiseException());
             }
         }
 

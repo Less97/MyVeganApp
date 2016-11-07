@@ -13,5 +13,12 @@ namespace myVegAppDbAPI.Model.DbModels
 
         [BsonElement("coordinates")]
         public Double[] Location{ get;set; }
+
+        public GeoLoc() { }
+        public GeoLoc(Double lat, Double lng)
+        {
+            this.Type = "Point";
+            this.Location = new Double[] { lng, lat };
+        }
     }
 }
