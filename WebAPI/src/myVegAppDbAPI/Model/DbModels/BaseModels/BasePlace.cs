@@ -9,8 +9,6 @@ namespace myVegAppDbAPI.Model.DbModels.BaseModels
 {
     public class BasePlace
     {
-       
-
         [BsonElement("name")]
         public String Name { get; set; }
 

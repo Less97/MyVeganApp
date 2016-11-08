@@ -1,0 +1,25 @@
+﻿@using myVegAppDbAPI.ViewModels.EmailTemplates;
+@model ConfirmEmailViewModel
+<!doctype html>
+<html>
+<body>
+    <div>
+        <img src="http://thecuriouscarrot.com/Content/images/ccLogo.png" style="height:100px;width:auto"/>
+     </div>
+    <h1>Confirmation Email</h1>
+    <div>
+        Hi @Model.Name, <br/>
+
+        We're glad you decided to join your platform. Please digit the following code in order to confirm your email: <br/>
+
+        <h3>Code: @Model.Code </h3>
+        <p>
+            Looking forward to seeing you in our community!
+        </p>
+        <p>
+            Regards.<br/>
+            Alessandro Orlandi
+        </p>
+    </div>
+</body>
+</html>

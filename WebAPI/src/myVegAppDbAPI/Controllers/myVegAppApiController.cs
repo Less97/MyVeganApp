@@ -20,6 +20,9 @@ using MongoDB.Driver.GeoJsonObjectModel;
 using myVegAppDbAPI.Model.DbModels.InsertModels;
 using myVegAppDbAPI.Model.DbModels.ReadModels;
 using System.Text.RegularExpressions;
+using myVegAppDbAPI.Model.Settings;
+using myVegAppDbAPI.Helpers.Project.Utilities;
+using myVegAppDbAPI.ViewModels.EmailTemplates;
 
 namespace myVegAppDbAPI.Controllers
 {
@@ -29,17 +32,23 @@ namespace myVegAppDbAPI.Controllers
     {
         private MongoClient _client;
         private IMongoDatabase _database;
-        private MySettings MySettings { get; set; }
+        private MongoSettings _MongoSettings;
+        private EmailSettings _EmailSettings;
+        private EmailHelper _emailHelper;
+        private IViewRenderService _renderService;
+
         private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict};
-        public Dictionary<String, InsertUser> temporaryUsers { get; set; }
+        public Dictionary<String, InsertUser> temporaryUsers { get; set; } = new Dictionary<String, InsertUser>();
         
 
-        public myVegAppAPIController(IOptions<MySettings> settings)
+        public myVegAppAPIController(IOptions<MongoSettings> mongoSettings,IOptions<EmailSettings> emailSettings,IViewRenderService viewRenderService)
         {
-            MySettings = settings.Value;
-
-            _client = new MongoClient(MySettings.MongoDbHost);
-            _database = _client.GetDatabase(MySettings.DatabaseName);
+            _MongoSettings = mongoSettings.Value;
+            _EmailSettings = emailSettings.Value;
+            _client = new MongoClient(_MongoSettings.MongoDbHost);
+            _database = _client.GetDatabase(_MongoSettings.DatabaseName);
+            _emailHelper = new EmailHelper(_EmailSettings);
+            this._renderService = viewRenderService;
         }
 
         // GET api/values
@@ -75,7 +84,8 @@ namespace myVegAppDbAPI.Controllers
         {
             try
             {
-                var collection = _database.GetCollection<InsertUser>("users");
+                var collForInserting = _database.GetCollection<InsertUser>("users");
+                var collForReading = _database.GetCollection<ReadUser>("users");
 
                 var user = new InsertUser()
                 {
@@ -87,17 +97,23 @@ namespace myVegAppDbAPI.Controllers
                 };
 
                 //checking if the user already exists.
-                var isAlreadyPresent = await collection.AsQueryable().AnyAsync(u => u.Email == model.Email);
+                var isAlreadyPresent = await collForReading.AsQueryable().AnyAsync(u => u.Email == model.Email);
                 if(isAlreadyPresent)
                      return Json(new { Error = 0, Message = "Sorry, the email has already been used. Please use the procedure to retrieve your password instead" });
 
                 String salt = String.Empty;
-                AuthHelper.EncryptPassword(user.Password, out salt);
-
+                user.Password = AuthHelper.EncryptPassword(user.Password, out salt);
                 user.Salt = salt;
 
                 temporaryUsers.Add(model.Email, user);
-                return Json(new { Error = 0, GeneratedCode = "11111"});
+                var randomCode = Randomizer.RandomString(5);
+                var body = await _renderService.RenderToStringAsync("EmailTemplates/ConfirmEmail", new ConfirmEmailViewModel() {
+                    Name = user.FirstName,
+                    Code = randomCode
+                });
+                 await Task.Run(()=>_emailHelper.SendEmail("The Curious Carrot - Verify Your Email", "noreply@thecuriouscarrot.com", user.Email,body));
+
+                return Json(new { Error = 0, GeneratedCode = randomCode});
 
             }
 

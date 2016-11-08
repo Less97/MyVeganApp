@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using myVegAppDbAPI.Model.Settings;
+using myVegAppDbAPI.Helpers.Project.Utilities;
 
 namespace myVegAppDbAPI
 {
@@ -45,8 +47,10 @@ namespace myVegAppDbAPI
             }));
             // Add framework services.
 
-            services.Configure<MySettings>(Configuration.GetSection("MySettings"));
+            services.Configure<MongoSettings>(Configuration.GetSection("MongoSettings"));
+            services.Configure<EmailSettings>(Configuration.GetSection("MailSettings"));
             services.AddSingleton<IConfiguration>(Configuration);
+            services.AddScoped<IViewRenderService, ViewRenderingService>();
             services.AddMvc();
           
         }
@@ -55,10 +59,10 @@ namespace myVegAppDbAPI
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            //if (env.IsDevelopment())
-            //{
+            if (/*env.IsDevelopment()*/true)
+            {
                 app.UseDeveloperExceptionPage();
-            //}
+            }
             loggerFactory.AddDebug();
             app.UseStaticFiles(new StaticFileOptions()
             {

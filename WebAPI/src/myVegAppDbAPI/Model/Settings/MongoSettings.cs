@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace myVegAppDbAPI.Model
+namespace myVegAppDbAPI.Model.Settings
 {
-    public class MySettings
+    public class MongoSettings
     {
         public String MongoDbHost { get; set; }
         public String DatabaseName { get; set; }
-        public Double PlaceRadius { get; set; }
     }
 }
