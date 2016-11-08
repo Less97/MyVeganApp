@@ -38,7 +38,7 @@ namespace myVegAppDbAPI.Controllers
         private IViewRenderService _renderService;
 
         private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict};
-        public Dictionary<String, InsertUser> temporaryUsers { get; set; } = new Dictionary<String, InsertUser>();
+        private static Dictionary<String, InsertUser> temporaryUsers = new Dictionary<String,InsertUser>();
         
 
         public myVegAppAPIController(IOptions<MongoSettings> mongoSettings,IOptions<EmailSettings> emailSettings,IViewRenderService viewRenderService)
@@ -64,17 +64,24 @@ namespace myVegAppDbAPI.Controllers
             try
             {
                 model.Email = model.Email.ToLower();
-                var collection = _database.GetCollection<ReadUser>("users");
-                var filter = new FilterDefinitionBuilder<ReadUser>().And(new FilterDefinitionBuilder<ReadUser>().Eq("email", model.Email) & new FilterDefinitionBuilder<ReadUser>().Eq("password", model.Password));
-                var document = await collection.Find(filter).FirstOrDefaultAsync();
-                if (document == null)
+                var users = _database.GetCollection<ReadUser>("users").AsQueryable();
+                var myUser = users.Single(u => u.Email == model.Email);
+
+                var isValid = AuthHelper.CheckPassword(model.Password, myUser.Password, myUser.Salt);
+
+                if (!isValid)
                     return Json(new { isLoggedIn = false }.ToJson());
                 else
-                    return Json(new { isLoggedIn = true, document = document.ToJson(jsonWriterSettings) }.ToJson());
+                    return Json(new { isLoggedIn = true, user = 
+                    new {
+                        FirstName = myUser.FirstName,
+                        LastName = myUser.LastName,
+                        Email = myUser.Email,
+                        Id = myUser.Id
+                    } }.ToJson());
             }
             catch (Exception ex)
             {
-                ////TODO:Error logging
                 return Json(new { Error = 1, Message = ex });
             }
         }
@@ -104,6 +111,8 @@ namespace myVegAppDbAPI.Controllers
                 String salt = String.Empty;
                 user.Password = AuthHelper.EncryptPassword(user.Password, out salt);
                 user.Salt = salt;
+                if (temporaryUsers.ContainsKey(model.Email))
+                    temporaryUsers.Remove(model.Email);
 
                 temporaryUsers.Add(model.Email, user);
                 var randomCode = Randomizer.RandomString(5);
@@ -122,6 +131,23 @@ namespace myVegAppDbAPI.Controllers
 
                 return Json(ex.RaiseException());
             }
+        }
+
+        [HttpPost("confirmEmail")]
+        public async Task<JsonResult> ConfirmEmail([FromBody] ConfirmEmail model) {
+            InsertUser t;
+            if (!temporaryUsers.TryGetValue(model.Email, out t)) {
+                return Json(new { Error = 1, Message = "Sorry there was a problem with the registration procedure, Please try again" });
+            }
+
+            var users = _database.GetCollection<InsertUser>("users");
+            await users.InsertOneAsync(t);
+            var body = await _renderService.RenderToStringAsync("EmailTemplates/RegistrationComplete", new RegistrationCompleteViewModel()
+            {
+                Name = t.FirstName
+            });
+            await Task.Run(() => _emailHelper.SendEmail("The Curious Carrot - Registration Completed", "noreply@thecuriouscarrot.com", t.Email, body));
+            return Json(new { Error = 0, Result= "User correctly created"});
         }
 
         [HttpGet("getplaces")]

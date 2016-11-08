@@ -1,0 +1,25 @@
+﻿@using myVegAppDbAPI.ViewModels.EmailTemplates;
+@model RegistrationCompleteViewModel
+<!doctype html>
+<html>
+<body>
+    <div>
+        <img src="http://thecuriouscarrot.com/Content/images/ccLogo.png" style="height:100px;width:auto" />
+    </div>
+    <h1>Registration Successful</h1>
+    <div>
+        Hi @Model.Name, <br />
+        <br/>
+        We're glad to welcome you in the community. We hope you'll find via our app what you're looking for. <br/>
+        
+        <p>Feel free to share any feedback, any problem or any details you are not able to share through our app writing in the following email<br/>  <a href="mailto:team@thecuriouscarrot.com">team@thecuriouscarrot.com</a></p>
+        <p>
+            Looking forward to know your though
+        </p>
+        <p>
+         Regards.<br />
+         The Curious Carrot Team
+        </p>
+    </div>
+</body>
+</html>

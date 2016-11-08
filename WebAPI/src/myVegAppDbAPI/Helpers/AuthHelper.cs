@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 using System.IO;
+using System.Text;
 
 namespace myVegAppDbAPI.Helpers
 {
@@ -30,6 +31,19 @@ namespace myVegAppDbAPI.Helpers
                 numBytesRequested: 256 / 8));
             mySalt = Convert.ToBase64String(salt);
             return hashed;
+        }
+
+        public static Boolean CheckPassword(String pToCheck,String pReal, String salt) {
+
+            var bytesSalt = Convert.FromBase64String(salt);
+            string hashedToCheck = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+            password: pToCheck,
+            salt: bytesSalt,
+            prf: KeyDerivationPrf.HMACSHA1,
+            iterationCount: 10000,
+            numBytesRequested: 256 / 8));
+            return hashedToCheck == pReal;
+
         }
 
         public static string RandomString(int length)

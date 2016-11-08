@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace myVegAppDbAPI.ViewModels.Email.EmailTemplates
+namespace myVegAppDbAPI.ViewModels.EmailTemplates
 {
-    public class EmailViewModel
+    public class RegistrationCompleteViewModel
     {
         public String Name { get; set; }
     }
