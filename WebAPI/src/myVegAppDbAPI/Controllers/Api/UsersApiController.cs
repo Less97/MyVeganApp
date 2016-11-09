@@ -51,13 +51,13 @@ namespace myVegAppDbAPI.Controllers.Api
                 var userExists = users.Any(u => u.Email == model.Email);
 
                 if (!userExists)
-                    return Json(new { isLoggedIn = false });
+                    return Json(new { isLoggedIn = false }.ToJson(jsonWriterSettings));
 
                 var myUser = users.Single(x => x.Email == model.Email);
                 var isValid = AuthHelper.CheckPassword(model.Password, myUser.Password, myUser.Salt);
 
                 if (!isValid)
-                    return Json(new { isLoggedIn = false }.ToJson());
+                    return Json(new { isLoggedIn = false }.ToJson(jsonWriterSettings));
                 else
                     return Json(new
                     {
@@ -70,7 +70,7 @@ namespace myVegAppDbAPI.Controllers.Api
                         Email = myUser.Email,
                         Id = myUser.Id
                     }
-                    }.ToJson());
+                    }.ToJson(jsonWriterSettings));
             }
             catch (Exception ex)
             {
@@ -98,7 +98,7 @@ namespace myVegAppDbAPI.Controllers.Api
                 //checking if the user already exists.
                 var isAlreadyPresent = collForReading.AsQueryable().Any(x=>x.Email == model.Email);
                 if (isAlreadyPresent)
-                    return Json(new { Error = 0, Message = "Sorry, the email has already been used. Please use the procedure to retrieve your password instead" });
+                    return Json(new { Error = 0, Message = "Sorry, the email has already been used. Please use the procedure to retrieve your password instead" }.ToJson(jsonWriterSettings));
 
                 String salt = String.Empty;
                 user.Password = AuthHelper.EncryptPassword(user.Password, out salt);
@@ -115,7 +115,7 @@ namespace myVegAppDbAPI.Controllers.Api
                 });
                 await Task.Run(() => _emailHelper.SendEmail("The Curious Carrot - Verify Your Email", "noreply@thecuriouscarrot.com", user.Email, body));
 
-                return Json(new { Error = 0, GeneratedCode = randomCode });
+                return Json(new { Error = 0, GeneratedCode = randomCode }.ToJson(jsonWriterSettings));
 
             }
 
@@ -132,7 +132,7 @@ namespace myVegAppDbAPI.Controllers.Api
             InsertUser t;
             if (!temporaryUsers.TryGetValue(model.Email, out t))
             {
-                return Json(new { Error = 1, Message = "Sorry there was a problem with the registration procedure, Please try again" });
+                return Json(new { Error = 1, Message = "Sorry there was a problem with the registration procedure, Please try again" }.ToJson(jsonWriterSettings));
             }
 
             var users = _database.GetCollection<InsertUser>("users");
@@ -142,7 +142,7 @@ namespace myVegAppDbAPI.Controllers.Api
                 Name = t.FirstName
             });
             await Task.Run(() => _emailHelper.SendEmail("The Curious Carrot - Registration Completed", "noreply@thecuriouscarrot.com", t.Email, body));
-            return Json(new { Error = 0, Result = "User correctly created" });
+            return Json(new { Error = 0, Result = "User correctly created" }.ToJson(jsonWriterSettings));
         }
     }
 }

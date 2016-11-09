@@ -260,7 +260,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /* Register Controller */
-.controller('RegisterCtrl', function ($scope, $state) {
+.controller('RegisterCtrl', function ($scope, $state,$ionicSlideBoxDelegate) {
 
 })
 

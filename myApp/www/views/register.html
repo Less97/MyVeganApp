@@ -1,30 +1,35 @@
-     <ion-view view-title="Create User">
-        <ion-content>
-          <div class="list">
-            <label class="item item-input">
-              <span class="input-label">Email</span>
-              <input type="text" ng-model="user.email">
-            </label>
-             <label class="item item-input">
-              <span class="input-label">First Name</span>
-              <input type="password" ng-model="user.firstName">
-            </label>
-            <label class="item item-input">
-              <span class="input-label">Last Name</span>
-              <input type="password" ng-model="user.lastName">
-            </label>
-            <label class="item item-input">
-              <span class="input-label">Password</span>
-              <input type="password" ng-model="user.password">
-            </label>
-          <label class="item" ng-show="user.loginError">
-              <span class="red-warning">Please insert valid credentials</span>
-          </label>
-          </div>
-          <div class="padding">
-            <button class="button button-block button-positive" ng-click="signIn(user)">
-             Join the community
-            </button>
-          </div>
-        </ion-content>
-      </ion-view>
+<ion-view view-title="Create User">
+  <ion-content>
+    <ion-slide-box on-slide-changed="slideHasChanged($index)">
+      <ion-slide class="slider">
+        <h3>Welcome in our amazing community!</h3>
+        <div id="logo">
+          <img src="http://thecuriouscarrot.com/Content/img/CuriousCarrotLogo.png">
+        </div>
+        <p>
+          We've worked super hard to make you happy.
+        </p>
+        <p>
+          But if you are angry, too bad.
+        </p>
+      </ion-slide>
+      <ion-slide>
+       <h3>Thank you for choosing the Awesome App!</h3>
+        <div id="logo">
+          <img src="http://code.ionicframework.com/assets/img/app_icon.png">
+        </div>
+        <p>
+          We've worked super hard to make you happy.
+        </p>
+        <p>
+          But if you are angry, too bad.
+        </p>
+      </ion-slide>
+      <ion-slide>
+        <div class="box pink">
+          <h1>PINK</h1>
+        </div>
+      </ion-slide>
+    </ion-slide-box>
+  </ion-content>
+</ion-view>

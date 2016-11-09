@@ -98,3 +98,16 @@ ul.rating li i {
 .item.item-avatar>.imageTypeList{
     border-radius:0;
 }
+
+.slider{
+    position: relative;
+    visibility: hidden;
+    overflow: hidden;
+}
+.slider {
+    height: 100%;
+}
+
+#logo {
+    margin: 30px 0px;
+}
