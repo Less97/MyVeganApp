@@ -1,12 +1,12 @@
-var address = "http://thecuriouscarrot.com/api/myVegAppApi";
-//var address = "http://localhost:51067/api/myVegAppApi";
+//var address = "http://thecuriouscarrot.com/api/";
+var address = "http://localhost:51067/api/";
 var currentLoginData = {};
 angular.module('myApp.Service', [])
   .factory('LoginService', function ($http) {
     return {
       login: function (eml, pwd, callback) {
        var req = {
-            url:address+"/login",
+            url:address+"users/login",
             data:{email:eml,password:pwd},
             method:'POST',
             headers:{'Content-Type':"application/json"}
@@ -32,7 +32,7 @@ angular.module('myApp.Service', [])
       return {
         getPlaces: function (lat,lng,txt,maxDist,type,callback) {
           var req = {
-            url:address+"/getPlaces",
+            url:address+"places/getPlaces",
             params:{latitude:lat,longitude:lng,searchText:txt,maxDistance:3000,tipology:0},
             method:'GET',
           }
@@ -45,7 +45,7 @@ angular.module('myApp.Service', [])
         },
         getDetails: function (id,latitude,longitude,callback) {
            var req = {
-            url:address+"/getPlaceDetails",
+            url:address+"/places/getPlaceDetails",
             params:{placeId:id,latitude:latitude,longitude:longitude},
             method:'GET',
           }
@@ -63,7 +63,7 @@ angular.module('myApp.Service', [])
     return {
       getReviews: function (id,callback) {
        var req = {
-            url:address+"/getReviews",
+            url:address+"reviews/getReviews",
             params:{placeId:id},
             method:'GET',
           };
@@ -76,24 +76,6 @@ angular.module('myApp.Service', [])
       }
     }
   })
-
-.factory('MenuService', function () {
-  var menu = [{
-    "name": "The amazing salad",
-    "price": 10.5,
-    "tipology": 7
-  }, {
-    "name": "The vegan lasagna",
-    "price": 12.5,
-    "tipology": 7
-  }]
-
-  return {
-    getMenu: function (placeId) {
-      return menu;
-    }
-  }
-})
 
 // Define an Angular service to wrap the plugin
   .service('$cordovaLaunchNavigator', ['$q', function ($q) {

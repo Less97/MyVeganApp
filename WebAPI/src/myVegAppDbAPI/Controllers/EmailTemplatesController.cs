@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -9,19 +10,18 @@ using System.Threading.Tasks;
 
 namespace myVegAppDbAPI.Controllers
 {
-    public class EmailTemplateController : Controller
+    [Route("emailtemplates")]
+    public class EmailTemplatesController : Controller
     {
-
-        private readonly IViewRenderService _viewRenderService;
-
+        [HttpGet("confirmEmail")]
         public ActionResult ConfirmEmail() {
             return View(new ConfirmEmailViewModel() {
                 Name = "Alessandro",
                 Code = "MGX198"
             });
          }
-        
 
+        [HttpGet("emailVerificationSuccessful")]
         public ActionResult EmailVerificationSuccessful() {
             return View();
         }

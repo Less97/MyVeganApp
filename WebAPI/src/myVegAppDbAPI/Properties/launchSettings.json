@@ -11,7 +11,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/myVegAppApi",
+      "launchUrl": "emailtemplates/confirmemail",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

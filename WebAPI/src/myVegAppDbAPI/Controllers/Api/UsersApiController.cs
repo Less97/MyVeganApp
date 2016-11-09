@@ -48,8 +48,12 @@ namespace myVegAppDbAPI.Controllers.Api
             {
                 model.Email = model.Email.ToLower();
                 var users = _database.GetCollection<ReadUser>("users").AsQueryable();
-                var myUser = users.Single(u => u.Email == model.Email);
+                var userExists = users.Any(u => u.Email == model.Email);
 
+                if (!userExists)
+                    return Json(new { isLoggedIn = false });
+
+                var myUser = users.Single(x => x.Email == model.Email);
                 var isValid = AuthHelper.CheckPassword(model.Password, myUser.Password, myUser.Salt);
 
                 if (!isValid)
@@ -70,7 +74,7 @@ namespace myVegAppDbAPI.Controllers.Api
             }
             catch (Exception ex)
             {
-                return Json(new { Error = 1, Message = ex });
+                return Json(new { Error = true, Message = ex });
             }
         }
 
