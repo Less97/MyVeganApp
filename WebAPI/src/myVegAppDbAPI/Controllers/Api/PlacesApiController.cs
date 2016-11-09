@@ -2,33 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using myVegAppDbAPI.Model;
-using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-using MongoDB.Bson.Serialization.Serializers;
-using myVegAppDbAPI.Model.APIModels;
-using Microsoft.Extensions.Options;
 using myVegAppDbAPI.Helpers;
-using myVegAppDbAPI.Model.DbModels;
-using Microsoft.AspNetCore.Cors;
-using MongoDB.Bson.IO;
-using MongoDB.Driver.Linq;
-using MongoDB.Driver.GeoJsonObjectModel;
-using myVegAppDbAPI.Model.DbModels.InsertModels;
-using myVegAppDbAPI.Model.DbModels.ReadModels;
-using System.Text.RegularExpressions;
-using myVegAppDbAPI.Model.Settings;
 using myVegAppDbAPI.Helpers.Project.Utilities;
-using myVegAppDbAPI.ViewModels.EmailTemplates;
+using myVegAppDbAPI.Model.APIModels;
+using myVegAppDbAPI.Model.DbModels.ReadModels;
+using myVegAppDbAPI.Model.Settings;
+using System;
+using MongoDB.Driver;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson.IO;
+using MongoDB.Bson;
+using myVegAppDbAPI.Model.DbModels;
+using myVegAppDbAPI.Model.DbModels.InsertModels;
+using myVegAppDbAPI.Model;
+using Microsoft.AspNetCore.Cors;
 
-namespace myVegAppDbAPI.Controllers
+namespace myVegAppDbAPI.Controllers.Api
 {
-    [Route("api/myVegAppAPI")]
+    [Route("api/Places")]
     [EnableCors("MyPolicy")]
-    public class myVegAppAPIController : Controller
+    public class PlacesApiController : Controller
     {
         private MongoClient _client;
         private IMongoDatabase _database;
@@ -37,11 +31,9 @@ namespace myVegAppDbAPI.Controllers
         private EmailHelper _emailHelper;
         private IViewRenderService _renderService;
 
-        private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict};
-        private static Dictionary<String, InsertUser> temporaryUsers = new Dictionary<String,InsertUser>();
-        
+        private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
 
-        public myVegAppAPIController(IOptions<MongoSettings> mongoSettings,IOptions<EmailSettings> emailSettings,IViewRenderService viewRenderService)
+        public PlacesApiController(IOptions<MongoSettings> mongoSettings, IOptions<EmailSettings> emailSettings, IViewRenderService viewRenderService)
         {
             _MongoSettings = mongoSettings.Value;
             _EmailSettings = emailSettings.Value;
@@ -49,105 +41,6 @@ namespace myVegAppDbAPI.Controllers
             _database = _client.GetDatabase(_MongoSettings.DatabaseName);
             _emailHelper = new EmailHelper(_EmailSettings);
             this._renderService = viewRenderService;
-        }
-
-        // GET api/values
-        [HttpGet]
-        public String Get()
-        {
-            return "Hello MyVegAppDbAPI";
-        }
-
-        [HttpPost("login")]
-        public async Task<JsonResult> Login([FromBody]Login model)
-        {
-            try
-            {
-                model.Email = model.Email.ToLower();
-                var users = _database.GetCollection<ReadUser>("users").AsQueryable();
-                var myUser = users.Single(u => u.Email == model.Email);
-
-                var isValid = AuthHelper.CheckPassword(model.Password, myUser.Password, myUser.Salt);
-
-                if (!isValid)
-                    return Json(new { isLoggedIn = false }.ToJson());
-                else
-                    return Json(new { isLoggedIn = true, user = 
-                    new {
-                        FirstName = myUser.FirstName,
-                        LastName = myUser.LastName,
-                        Email = myUser.Email,
-                        Id = myUser.Id
-                    } }.ToJson());
-            }
-            catch (Exception ex)
-            {
-                return Json(new { Error = 1, Message = ex });
-            }
-        }
-
-        [HttpPost("createUser")]
-        public async Task<JsonResult> CreateUser([FromBody] CreateUser model)
-        {
-            try
-            {
-                var collForInserting = _database.GetCollection<InsertUser>("users");
-                var collForReading = _database.GetCollection<ReadUser>("users");
-
-                var user = new InsertUser()
-                {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Email = model.Email,
-                    Type = 0,
-                    Password = model.Password
-                };
-
-                //checking if the user already exists.
-                var isAlreadyPresent = await collForReading.AsQueryable().AnyAsync(u => u.Email == model.Email);
-                if(isAlreadyPresent)
-                     return Json(new { Error = 0, Message = "Sorry, the email has already been used. Please use the procedure to retrieve your password instead" });
-
-                String salt = String.Empty;
-                user.Password = AuthHelper.EncryptPassword(user.Password, out salt);
-                user.Salt = salt;
-                if (temporaryUsers.ContainsKey(model.Email))
-                    temporaryUsers.Remove(model.Email);
-
-                temporaryUsers.Add(model.Email, user);
-                var randomCode = Randomizer.RandomString(5);
-                var body = await _renderService.RenderToStringAsync("EmailTemplates/ConfirmEmail", new ConfirmEmailViewModel() {
-                    Name = user.FirstName,
-                    Code = randomCode
-                });
-                 await Task.Run(()=>_emailHelper.SendEmail("The Curious Carrot - Verify Your Email", "noreply@thecuriouscarrot.com", user.Email,body));
-
-                return Json(new { Error = 0, GeneratedCode = randomCode});
-
-            }
-
-            catch (Exception ex)
-            {
-
-                return Json(ex.RaiseException());
-            }
-        }
-
-        [HttpPost("confirmEmail")]
-        public async Task<JsonResult> ConfirmEmail([FromBody] ConfirmEmail model) {
-            InsertUser t;
-            if (!temporaryUsers.TryGetValue(model.Email, out t)) {
-                return Json(new { Error = 1, Message = "Sorry there was a problem with the registration procedure, Please try again" });
-            }
-
-            var users = _database.GetCollection<InsertUser>("users");
-            await users.InsertOneAsync(t);
-            var body = await _renderService.RenderToStringAsync("EmailTemplates/RegistrationComplete", new RegistrationCompleteViewModel()
-            {
-                Name = t.FirstName
-            });
-            await Task.Run(() => _emailHelper.SendEmail("The Curious Carrot - Registration Completed", "noreply@thecuriouscarrot.com", t.Email, body));
-            return Json(new { Error = 0, Result= "User correctly created"});
         }
 
         [HttpGet("getplaces")]
@@ -220,7 +113,7 @@ namespace myVegAppDbAPI.Controllers
                     { "distance","$_id.distance"},
                     { "location","$_id.location"}
                 })
-                .SortBy<BsonDocument>(x=>x["distance"]) //Forse sono gia ordinati
+                .SortBy<BsonDocument>(x => x["distance"]) //Forse sono gia ordinati
                 .As<ReadPlace>()
 
                 .ToListAsync();
@@ -308,7 +201,8 @@ namespace myVegAppDbAPI.Controllers
             {
                 IMongoCollection<InsertPlace> places = _database.GetCollection<InsertPlace>("places");
 
-                var myNewPlace = new InsertPlace() {
+                var myNewPlace = new InsertPlace()
+                {
                     Name = model.Name,
                     Description = model.Description,
                     Website = model.Website,
@@ -318,7 +212,7 @@ namespace myVegAppDbAPI.Controllers
                     Email = model.Email,
                     CountryId = new ObjectId(model.CountryId),
                     Menu = new MenuItem[0],
-                    Location = new GeoLoc(model.Latitude,model.Longitude),
+                    Location = new GeoLoc(model.Latitude, model.Longitude),
                     PhoneNumber = model.PhoneNumber
                 };
                 await places.InsertOneAsync(myNewPlace);
@@ -329,72 +223,6 @@ namespace myVegAppDbAPI.Controllers
                 return Json(ex.RaiseException());
             }
         }
-
-        [HttpPost("createMenuItem")]
-        public async Task<JsonResult> CreateMenuItem([FromBody]CreateMenuItem model)
-        {
-            return Json(new { });
-        }
-
-        [HttpPost("addReview")]
-        public async Task<JsonResult> AddReview([FromBody] CreateReview model)
-        {
-            try
-            {
-                var placesCollection = _database.GetCollection<BsonDocument>("places");
-                var usersCollection = _database.GetCollection<BsonDocument>("users");
-                var reviewsCollection = _database.GetCollection<BsonDocument>("reviews");
-
-                var findMyPlaceFilter = Builders<BsonDocument>.Filter.Where(x => x["_id"] == ObjectId.Parse(model.PlaceId));
-                var findMyReviewerFilter = Builders<BsonDocument>.Filter.Where(x => x["_id"] == ObjectId.Parse(model.ReviewerId));
-                var place = await placesCollection.Find(findMyPlaceFilter).FirstAsync();
-                if (place == null)
-                    return Json(new { error = 1, errorMessage = "Place not found" });
-                var reviewer = await usersCollection.Find(findMyReviewerFilter).FirstAsync();
-                if (reviewer == null)
-                    return Json(new { error = 1, errorMessage = "Reviewer not found" });
-                await reviewsCollection.InsertOneAsync(new BsonDocument() {
-                    { "placeId",ObjectId.Parse(model.PlaceId)},
-                    { "reviewerId",ObjectId.Parse(model.ReviewerId)},
-                    { "rating",model.Rating},
-                    { "description",model.Description}
-                });
-                return Json(new { error = 0, result = 1 });
-            }
-            catch (Exception ex)
-            {
-                return Json(ex.RaiseException());
-            }
-        }
-
-
-        [HttpGet("getReviews")]
-        public async Task<JsonResult> GetReviews(String placeId)
-        {
-            try
-            {
-                var reviews = _database.GetCollection<Review>("reviews");
-                var users = _database.GetCollection<ReadUser>("users");
-                var result = await reviews.Aggregate().Match(x => x.PlaceId == ObjectId.Parse(placeId))
-                        .Lookup<Review, ReadUser, BsonDocument>(users, x => x.ReviewerId, y => y.Id, d => d["reviewer"])
-                         .Unwind(x => x["reviewer"]).Project(new BsonDocument() {
-                             { "reviewer","$reviewer.firstName"},
-                             { "reviewerId",1},
-                             { "placeId",1},
-                             { "description",1},
-                             { "rating",1}
-                         }).As<Review>().
-                         ToListAsync();
-                return Json(result.ToJson(jsonWriterSettings));
-            }
-            catch (Exception ex)
-            {
-                return Json(ex.RaiseException());
-            }
-        }
-
-
-
 
     }
 }
