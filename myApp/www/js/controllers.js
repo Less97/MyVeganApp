@@ -215,8 +215,6 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 /*Info Controller*/
 .controller('InfoCtrl', function ($scope) {
-
-
 })
 
 

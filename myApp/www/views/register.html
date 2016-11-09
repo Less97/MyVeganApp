@@ -1,33 +1,73 @@
 <ion-view view-title="Create User">
   <ion-content>
     <ion-slide-box on-slide-changed="slideHasChanged($index)">
-      <ion-slide class="slider">
-        <h3>Welcome in our amazing community!</h3>
-        <div id="logo">
-          <img src="http://thecuriouscarrot.com/Content/img/CuriousCarrotLogo.png">
+      <ion-slide class="register-slideContainer">
+        <div class="register-slide">
+          <h3>Join now a friendly Community</h3>
+          <div>
+            <img src="http://thecuriouscarrot.com/Content/images/ccLogo.png">
+          </div>
+          <div class="register-text">
+            Find easily the place you're looking for. Near you!
+          </div>
+          <div class="register-spacer"></div>
         </div>
-        <p>
-          We've worked super hard to make you happy.
-        </p>
-        <p>
-          But if you are angry, too bad.
-        </p>
       </ion-slide>
-      <ion-slide>
-       <h3>Thank you for choosing the Awesome App!</h3>
-        <div id="logo">
-          <img src="http://code.ionicframework.com/assets/img/app_icon.png">
+      <ion-slide class="register-slideContainer">
+        <div class="register-slide">
+          <h3>Share your favourite place</h3>
+          <div>
+            <img src="http://thecuriouscarrot.com/Content/images/ccLogo.png">
+          </div>
+          <div class="register-text">
+            Share with us your favourite place, and what is your favourite dish there!
+          </div>
         </div>
-        <p>
-          We've worked super hard to make you happy.
-        </p>
-        <p>
-          But if you are angry, too bad.
-        </p>
       </ion-slide>
-      <ion-slide>
-        <div class="box pink">
-          <h1>PINK</h1>
+      <ion-slide class="register-slide">
+        <h3>Register now</h3>
+        <img src="img/CuriousCarrotLogo.png" class="logoImg register" />
+        <div class="list">
+          <label class="item item-input">
+              <span class="input-label">First Name</span>
+              <input type="text" ng-model="userRegister.firstName">
+            </label>
+          <label class="item" ng-show="userRegister.firstNameError">
+              <span class="red-warning">Please insert first name</span>
+          </label>
+          <label class="item item-input">
+              <span class="input-label">Last Name</span>
+              <input type="text" ng-model="userRegister.lastName">
+            </label>
+          <label class="item" ng-show="userRegister.lastName">
+              <span class="red-warning">Please insert last name</span>
+          </label>
+          <label class="item item-input">
+              <span class="input-label">Email</span>
+              <input type="text" ng-model="userRegister.email">
+            </label>
+          <label class="item" ng-show="userRegister.emailError">
+              <span class="red-warning">Please insert a valid email</span>
+          </label>
+          <label class="item item-input">
+              <span class="input-label">Password</span>
+              <input type="password" ng-model="userRegister.password">
+            </label>
+          <label class="item" ng-show="userRegister.PasswordError">
+              <span class="red-warning">Please insert a password of at least 8 characters</span>
+          </label>
+          <label class="item item-input">
+        <span class="input-label">Confirm Password</span>
+        <input type="password" ng-model="userRegister.password">
+         <label class="item" ng-show="userRegister.confirmPasswordError">
+              <span class="red-warning">The inserted passwords don't match.</span>
+          </label>
+          </label>
+          <div class="padding">
+            <button class="button button-block button-positive" ng-click="register(user)">
+             Register
+            </button>
+          </div>
         </div>
       </ion-slide>
     </ion-slide-box>

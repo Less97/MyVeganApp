@@ -99,15 +99,31 @@ ul.rating li i {
     border-radius:0;
 }
 
-.slider{
-    position: relative;
-    visibility: hidden;
-    overflow: hidden;
-}
-.slider {
-    height: 100%;
+.register-slideContainer{
+    position:relative;
 }
 
-#logo {
-    margin: 30px 0px;
+.register-slide{
+    width: 350px;
+    margin:70px auto;
+}
+
+.register-img{
+    margin:10px;
+}
+
+.register-text{
+    text-align: center;
+    font-size:1.2em;
+}
+.register-slide>h3{
+    text-align: center;
+}
+.register logoImg{
+    margin-bottom:20px;
+}
+
+
+.slider-pager{
+    position:fixed;
 }
