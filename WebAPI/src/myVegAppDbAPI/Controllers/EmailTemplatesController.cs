@@ -25,5 +25,14 @@ namespace myVegAppDbAPI.Controllers
         public ActionResult EmailVerificationSuccessful() {
             return View();
         }
+
+        [HttpGet("changingPassword")]
+        public ActionResult ChangingPassword() {
+            return View(new ChangingPasswordViewModel()
+            {
+                Name = "Alessandro",
+                Code = "MGX198"
+            });
+        }
     }
 }

@@ -45,7 +45,7 @@ angular.module('myApp.Service', [])
         },
         getDetails: function (id,latitude,longitude,callback) {
            var req = {
-            url:address+"/places/getPlaceDetails",
+            url:address+"places/getPlaceDetails",
             params:{placeId:id,latitude:latitude,longitude:longitude},
             method:'GET',
           }

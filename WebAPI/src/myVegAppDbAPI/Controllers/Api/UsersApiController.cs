@@ -30,9 +30,13 @@ namespace myVegAppDbAPI.Controllers.Api
         private IViewRenderService _renderService;
 
         private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
-        private static Dictionary<String, InsertUser> temporaryUsers = new Dictionary<String, InsertUser>();
 
-        public UsersApiController(IOptions<MongoSettings> mongoSettings, IOptions<EmailSettings> emailSettings, IViewRenderService viewRenderService) {
+        private static Dictionary<String, InsertUser> temporaryUsers = new Dictionary<String, InsertUser>();
+        private static Dictionary<String, ReadUser> usersChangingPassword = new Dictionary<String, ReadUser>();
+
+
+        public UsersApiController(IOptions<MongoSettings> mongoSettings, IOptions<EmailSettings> emailSettings, IViewRenderService viewRenderService)
+        {
             _MongoSettings = mongoSettings.Value;
             _EmailSettings = emailSettings.Value;
             _client = new MongoClient(_MongoSettings.MongoDbHost);
@@ -96,7 +100,7 @@ namespace myVegAppDbAPI.Controllers.Api
                 };
 
                 //checking if the user already exists.
-                var isAlreadyPresent = collForReading.AsQueryable().Any(x=>x.Email == model.Email);
+                var isAlreadyPresent = collForReading.AsQueryable().Any(x => x.Email == model.Email);
                 if (isAlreadyPresent)
                     return Json(new { Error = 0, Message = "Sorry, the email has already been used. Please use the procedure to retrieve your password instead" }.ToJson(jsonWriterSettings));
 
@@ -144,5 +148,73 @@ namespace myVegAppDbAPI.Controllers.Api
             await Task.Run(() => _emailHelper.SendEmail("The Curious Carrot - Registration Completed", "noreply@thecuriouscarrot.com", t.Email, body));
             return Json(new { Error = 0, Result = "User correctly created" }.ToJson(jsonWriterSettings));
         }
+
+        [HttpPost("forgotPassword")]
+        public async Task<JsonResult> ForgotPassword([FromBody] ForgotPassword model)
+        {
+            try
+            {
+                var collForInserting = _database.GetCollection<InsertUser>("users");
+                var collForReading = _database.GetCollection<ReadUser>("users");
+
+                //checking if the user already exists.
+                var user = collForReading.AsQueryable().SingleOrDefault(x => x.Email == model.Email);
+                if (user == null)
+                    return Json(new { Error = 0, Message = "Sorry, there is no a user with that email" }.ToJson(jsonWriterSettings));
+
+
+                usersChangingPassword.Add(model.Email, user);
+                var randomCode = Randomizer.RandomString(5);
+                var body = await _renderService.RenderToStringAsync("EmailTemplates/ChangingPassword", new ChangingPasswordViewModel()
+                {
+                    Name = user.FirstName,
+                    Code = randomCode
+                });
+                await Task.Run(() => _emailHelper.SendEmail("The Curious Carrot - Forgot your Password?", "noreply@thecuriouscarrot.com", user.Email, body));
+
+                return Json(new { Error = 0, GeneratedCode = randomCode }.ToJson(jsonWriterSettings));
+
+            }
+
+            catch (Exception ex)
+            {
+
+                return Json(ex.RaiseException());
+            }
+        }
+
+        [HttpPost("changePassword")]
+        public async Task<JsonResult> ChangePassword([FromBody] ChangePassword changePassword)
+        {
+            try
+            {
+                if (!usersChangingPassword.ContainsKey(changePassword.Email))
+                    return Json(new { Error = 1, Message = "Sorry we haven't found any request of changing password from this email. Please try again." }.ToJson());
+
+                ReadUser myUser = null;
+                usersChangingPassword.TryGetValue(changePassword.Email ,out myUser);
+
+                var users = _database.GetCollection<ReadUser>("users");
+             
+                if (myUser == null)
+                    return Json(new { Error = 1, Message= "Sorry there has been a problem during changing your password" }.ToJson());
+
+                String salt = String.Empty;
+                myUser.Password = AuthHelper.EncryptPassword(changePassword.Password, out salt);
+
+                var updatePasswordDefinition = Builders<ReadUser>.Update.Set("password", myUser.Password).Set("salt", salt);
+
+                await users.UpdateOneAsync<ReadUser>(u => u.Email == changePassword.Email, updatePasswordDefinition);
+
+                return Json(new { Error = 0, Message = "Password Changed correctly" });
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.RaiseException());
+            }
+
+
+        }
+
     }
 }
