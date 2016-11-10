@@ -146,6 +146,7 @@ namespace myVegAppDbAPI.Controllers.Api
                 Name = t.FirstName
             });
             await Task.Run(() => _emailHelper.SendEmail("The Curious Carrot - Registration Completed", "noreply@thecuriouscarrot.com", t.Email, body));
+            temporaryUsers.Remove(model.Email);
             return Json(new { Error = 0, Result = "User correctly created" }.ToJson(jsonWriterSettings));
         }
 
@@ -205,6 +206,7 @@ namespace myVegAppDbAPI.Controllers.Api
                 var updatePasswordDefinition = Builders<ReadUser>.Update.Set("password", myUser.Password).Set("salt", salt);
 
                 await users.UpdateOneAsync<ReadUser>(u => u.Email == changePassword.Email, updatePasswordDefinition);
+                usersChangingPassword.Remove(myUser.Email);
 
                 return Json(new { Error = 0, Message = "Password Changed correctly" });
             }
