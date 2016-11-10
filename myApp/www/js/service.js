@@ -21,8 +21,8 @@ angular.module('myApp.Service', [])
        }).error(function () {
           callback(false);
       })},
-      createUser: function () {
-
+      register: function () {
+          return true
       }
     }
   })

@@ -26,40 +26,40 @@
       </ion-slide>
       <ion-slide class="register-slide">
         <h3>Register now</h3>
-        <img src="img/CuriousCarrotLogo.png" class="logoImg register" />
+        <img src="img/CuriousCarrotLogo.png" class="logoImg last-slide" />
         <div class="list">
           <label class="item item-input">
               <span class="input-label">First Name</span>
-              <input type="text" ng-model="userRegister.firstName">
+              <input type="text" ng-model="newUser.firstName">
             </label>
-          <label class="item" ng-show="userRegister.firstNameError">
+          <label class="item" ng-show="newUser.isFirstNameValid">
               <span class="red-warning">Please insert first name</span>
           </label>
           <label class="item item-input">
               <span class="input-label">Last Name</span>
-              <input type="text" ng-model="userRegister.lastName">
+              <input type="text" ng-model="newUser.lastName">
             </label>
-          <label class="item" ng-show="userRegister.lastName">
+          <label class="item" ng-show="newUser.isLastNameValid">
               <span class="red-warning">Please insert last name</span>
           </label>
           <label class="item item-input">
               <span class="input-label">Email</span>
-              <input type="text" ng-model="userRegister.email">
+              <input type="text" ng-model="newUser.email">
             </label>
-          <label class="item" ng-show="userRegister.emailError">
+          <label class="item" ng-show="newUser.isEmailValid">
               <span class="red-warning">Please insert a valid email</span>
           </label>
           <label class="item item-input">
               <span class="input-label">Password</span>
-              <input type="password" ng-model="userRegister.password">
+              <input type="password" ng-model="newUser.password">
             </label>
-          <label class="item" ng-show="userRegister.PasswordError">
+          <label class="item" ng-show="newUser.isPasswordValid">
               <span class="red-warning">Please insert a password of at least 8 characters</span>
           </label>
           <label class="item item-input">
         <span class="input-label">Confirm Password</span>
-        <input type="password" ng-model="userRegister.password">
-         <label class="item" ng-show="userRegister.confirmPasswordError">
+        <input type="password" ng-model="newUser.confirmPassword">
+         <label class="item" ng-show="newUser.isConfirmPasswordValid">
               <span class="red-warning">The inserted passwords don't match.</span>
           </label>
           </label>
