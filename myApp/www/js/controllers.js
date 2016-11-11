@@ -260,45 +260,14 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 /* Register Controller */
 .controller('RegisterCtrl', function ($scope, $state,$ionicSlideBoxDelegate) {
  
- function validateEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
- }
- 
-  $scope.newUser = {
-    firstName:"",
-    lastName:"",
-    password:"",
-    email:"",
-    confirmPassword:"",
-    isFirstNameValid : true,
-    isLastNameValid:true,
-    isEmailValid:true,
-    isPasswordValid:true,
-    isConfirmPasswordValid:true,
-    validate: function(){
-      $scope.newUser.isFirstNameValid = true;
-      $scope.newUser.isLastNameValid = true;
-      $scope.newUser.isPasswordValid =true;
-      $scope.newUser.isConfirmPasswordValid =true;
-      $scope.newUser.isEmailValid = true;
-      if($scope.newUser.firstName.length<2) $scope.newUser.isFirstNameValid = false;
-      if($scope.newUser.lastName.length<2) $scope.newUser.isLastNameValid = false;
-      if($scope.newUser.password.length<6) $scope.newUser.isPasswordValid =false;
-      if($scope.newUser.confirmPassword!==password) $scope.newUser.isConfirmPasswordValid =false;
-      if(!validateEmail($scope.newUser.email)) $scope.newUser.isEmailValid = false;
-      return ($scope.newUser.isFirstNameValid&&$scope.newUser.isLastNameValid&&$scope.newUser.isEmailValid&&$scope.newUser.isPasswordValid&&$scope.newUser.isConfirmPasswordValid);
-    }
-  }
-    $scope.register = function(){
-      if($scope.newUser.validate()){
-          //register
-          $scope.isUserRegistered = true;
-      }
-    }
-    $scope.isUserRegistered = false;
-    
-  })
+  $scope.User = {};
+  $scope.register = function(user){
+    debugger;
+    console.dir(user);
+  }   
+
+
+})
 
 
 

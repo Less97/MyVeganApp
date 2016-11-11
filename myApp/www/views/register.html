@@ -27,48 +27,49 @@
       <ion-slide class="register-slide">
         <h3>Register now</h3>
         <img src="img/CuriousCarrotLogo.png" class="logoImg last-slide" />
+        <form name="form">
         <div class="list">
           <label class="item item-input">
               <span class="input-label">First Name</span>
-              <input type="text" ng-model="newUser.firstName">
+              <input type="text" ng-model="user.firstName" required>
             </label>
-          <label class="item" ng-show="newUser.isFirstNameValid">
+          <label class="item" ng-show="user.firstName.$error.required" >
               <span class="red-warning">Please insert first name</span>
           </label>
           <label class="item item-input">
               <span class="input-label">Last Name</span>
-              <input type="text" ng-model="newUser.lastName">
+              <input type="text" ng-model="user.lastName" required>
             </label>
-          <label class="item" ng-show="newUser.isLastNameValid">
+          <label class="item" ng-show="user.lastName.$error.required">
               <span class="red-warning">Please insert last name</span>
           </label>
           <label class="item item-input">
               <span class="input-label">Email</span>
-              <input type="text" ng-model="newUser.email">
+              <input type="email" ng-model="user.email" required>
             </label>
-          <label class="item" ng-show="newUser.isEmailValid">
-              <span class="red-warning">Please insert a valid email</span>
+          <label class="item" ng-show="user.email.$error.required">
+              <span class="red-warning"  ng-show="user.email.$error.required" >You need to insert a valid email</span>
+              <span class="red-warning"  ng-show="user.email.$error.email" >This is not a valid email</span>
           </label>
           <label class="item item-input">
               <span class="input-label">Password</span>
-              <input type="password" ng-model="newUser.password">
-            </label>
-          <label class="item" ng-show="newUser.isPasswordValid">
+              <input type="password" ng-model="user.password" required>
+          </label>
+          <label class="item" ng-show="user.password.$error.required" >
               <span class="red-warning">Please insert a password of at least 8 characters</span>
           </label>
-          <label class="item item-input">
-        <span class="input-label">Confirm Password</span>
-        <input type="password" ng-model="newUser.confirmPassword">
-         <label class="item" ng-show="newUser.isConfirmPasswordValid">
-              <span class="red-warning">The inserted passwords don't match.</span>
+           <label class="item item-input">
+              <span class="input-label">Confirm Password</span>
+              <input type="password" ng-model="user.confirmPassword" required>
           </label>
+          <label class="item" ng-show="user.confirmPassword.$error.required" >
+              <span class="red-warning">Please insert a password of at least 8 characters</span>
           </label>
           <div class="padding">
-            <button class="button button-block button-positive" ng-click="register(user)">
-             Register
-            </button>
+            <input type="submit" value="Register" class="button button-block button-positive" ng-click="register(click)"/>
           </div>
         </div>
+        </form>
       </ion-slide>
     </ion-slide-box>
   </ion-content>
