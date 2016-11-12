@@ -47,9 +47,9 @@
           </label>
               <label class="item item-input">
               <span class="input-label">Email</span>
-              <input type="text" ng-model="user.email" name="email" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/"  ng-model-options="{ debounce: 500 }" required>
+              <input type="text" ng-model="user.email" name="email" ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-z]{2,4})$/"  ng-model-options="{ debounce: 500 }" required>
             </label>
-              <label class="item" ng-show="(form.email.$error.pattern || form.email.$error.required)&&(form.$submitted || form.lastName.$touched)">
+              <label class="item" ng-show="(form.email.$error.pattern || form.email.$error.required)&&(form.$submitted || form.email.$touched)">
               <span class="red-warning"  ng-show="form.email.$error.required" >You need to insert a valid email</span>
               <span class="red-warning"  ng-show="form.email.$error.pattern" >You need to insert a valid email</span>
           </label>
@@ -57,7 +57,7 @@
               <span class="input-label">Password</span>
               <input type="password" ng-model="user.password" ng-pattern="/^[ A-Za-z0-9_@./#&+-]{8,}$/" name="password" required>
           </label>
-              <label class="item" ng-show="(form.password.$error.required||form.password.$error.pattern)&&(form.$submitted || form.lastName.$touched)">
+              <label class="item" ng-show="(form.password.$error.required||form.password.$error.pattern)&&(form.$submitted || form.password.$touched)">
               <span class="red-warning" ng-show="form.password.$error.required" >Please insert a password</span>
               <span class="red-warning" ng-show="form.password.$error.pattern" >Please insert password of at least 8 characters</span>
           </label>
@@ -65,7 +65,7 @@
               <span class="input-label">Confirm Password</span>
               <input type="password" ng-model="user.confirmPassword" name="confirmPassword" compare-to="user.password" ng-model-options="{ debounce: 500 }" required >
           </label>
-              <label class="item" ng-show="(form.$submitted || form.password.$touched)&&(form.confirmPassword.$error||form.confirmPasswrd.$error.required)">
+              <label class="item" ng-show="(form.$submitted || form.password.$touched)&&(form.confirmPassword.$error||form.confirmPassword.$error.required)">
                <span class="red-warning" ng-show="form.confirmPassword.$invalid" >The inserted passwords don't match</span>
           </label>
               <div class="padding">

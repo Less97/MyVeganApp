@@ -5,10 +5,73 @@
         </button>
   </ion-nav-buttons>
   <ion-content>
-    <div class="card">
-      <div class="item item-text-wrap main-message">
-        Did you find a place you want to share with our community? Please fill the following, Trying to be the more precise you can.
-      </div>
-    </div>
+    <h3 class="center">Add your favorite place!</h3>
+    <img src="img/CuriousCarrotLogo.png" class="logoImg last-slide" />
+    <form name="form" novalidate>
+      <div class="list">
+          <label class="item item-input">
+              <span class="input-label">Name</span>
+              <input type="text" ng-model="place.name" name="name"  ng-model-options="{ debounce: 500 }" required>
+          </label>
+           <label class="item" ng-show="form.name.$error.required&&(form.$submitted || form.name.$touched)">
+              <span class="red-warning" >Please insert a name</span>
+          </label>
+
+           <label class="item item-input">
+              <span class="input-label">Email</span>
+              <input type="text" ng-model="place.email" name="email" ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-z]{2,4})$/" ng-model-options="{ debounce: 500 }" required>
+          </label>
+           <label class="item" ng-show="(form.email.$error.pattern || form.email.$error.required)&&(form.$submitted || form.email.$touched)">
+              <span class="red-warning"  ng-show="form.email.$error.required" >Please specify an email</span>
+              <span class="red-warning"  ng-show="form.email.$error.pattern" >You need to insert a valid email</span>
+          </label>
+
+          <label class="item item-input">
+              <span class="input-label">Website</span>
+              <input type="text" ng-model="place.website" placeholder="http://www.example.com" name="website" ng-pattern="/^(http|https)://[\w-]+(\.[\w-]*)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?$/" ng-model-options="{ debounce: 500 }" required>
+          </label>
+           <label class="item" ng-show="(form.website.$error.pattern || form.website.$error.required)&&(form.$submitted || form.website.$touched)">
+              <span class="red-warning"  ng-show="form.website.$error.required" >Please specify a website</span>
+              <span class="red-warning"  ng-show="form.website.$error.pattern" >You need to insert a valid website address</span>
+          </label>
+
+
+           <label class="item item-input">
+              <span class="input-label">Phone Number</span>
+              <input type="text" ng-model="place.phoneNumber" name="phoneNumber" ng-pattern="/^[+0-9 ]{0,4}[0-9\(\)\- +]{8,15}$/" ng-model-options="{ debounce: 500 }" required>
+          </label>
+           <label class="item" ng-show="(form.phoneNumber.$error.pattern || form.phoneNumber.$error.required)&&(form.$submitted || form.phoneNumber.$touched)">
+              <span class="red-warning"  ng-show="form.phoneNumber.$error.required" >Please specify an phone number</span>
+              <span class="red-warning"  ng-show="form.phoneNumber.$error.pattern" >You need to insert a valid phone number</span>
+          </label>
+
+           <label class="item item-input">
+              <span class="input-label">Opening Hours</span>
+              <input type="text" ng-model="place.openingHours" name="openingHours" ng-model-options="{ debounce: 500 }" required>
+          </label>
+
+          <!--TODO Autocomplete-->
+          <label class="item item-input">
+              <span class="input-label">Address</span>
+              <input type="text" ng-model="place.address" name="address"  ng-model-options="{ debounce: 500 }" required>
+          </label>
+ 
+           <label class="item item-input">
+              <span class="input-label">Description</span>
+              <textarea placeholder="Description" name="description" ng-model="place.description" ng-pattern="/^[0-9a-zA-Z ]{50,200}$/"  ng-model-options="{ debounce: 500 }" required></textarea>
+          </label>
+             <label class="item" ng-show="(form.description.$error.pattern || form.description.$error.required)&&(form.$submitted || form.description.$touched)">
+              <span class="red-warning"  ng-show="form.description.$error.required" >Please insert a description</span>
+              <span class="red-warning"  ng-show="form.description.$error.pattern" >You need to insert a description of at least between 50 and 200 characters</span>
+          </label>
+      
+
+          <!--Button-->
+           <div class="padding">
+                <button type="submit" class="button button-block button-positive" ng-click="addPlace(place,form)">Submit</button>
+              </div>
+            </div>
+      <div>
+    </form>
   </ion-content>
 </ion-view>

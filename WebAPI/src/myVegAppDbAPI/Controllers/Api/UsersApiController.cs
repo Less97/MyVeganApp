@@ -90,6 +90,8 @@ namespace myVegAppDbAPI.Controllers.Api
                 var collForInserting = _database.GetCollection<InsertUser>("users");
                 var collForReading = _database.GetCollection<ReadUser>("users");
 
+                model.Email = model.Email.ToLower();
+
                 var user = new InsertUser()
                 {
                     FirstName = model.FirstName,
@@ -135,6 +137,8 @@ namespace myVegAppDbAPI.Controllers.Api
         {
             try
             {
+                model.Email = model.Email.ToLower();
+
                 InsertUser t;
                 if (!temporaryUsers.TryGetValue(model.Email, out t))
                 {
@@ -161,6 +165,8 @@ namespace myVegAppDbAPI.Controllers.Api
         {
             try
             {
+                model.Email = model.Email.ToLower();
+
                 var collForInserting = _database.GetCollection<InsertUser>("users");
                 var collForReading = _database.GetCollection<ReadUser>("users");
 
@@ -197,6 +203,9 @@ namespace myVegAppDbAPI.Controllers.Api
         {
             try
             {
+
+                changePassword.Email = changePassword.Email.ToLower();
+
                 if (!usersChangingPassword.ContainsKey(changePassword.Email))
                     return Json(new { Error = 1, Message = "Sorry we haven't found any request of changing password from this email. Please try again." }.ToJson());
 
