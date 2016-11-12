@@ -1,58 +1,84 @@
-<ion-view view-title="Create User">
+<ion-view view-title="Register">
   <ion-content>
     <ion-slide-box on-slide-changed="slideHasChanged($index)">
- <ion-slide class="register-slide">
-        <h3>Register now</h3>
-        <img src="img/CuriousCarrotLogo.png" class="logoImg last-slide" />
-        <form name="form" novalidate>
-        <div class="list">
-          <label class="item item-input">
+      <ion-slide class="register-slide">
+        <div ng-hide="showInsertCode">
+          <h3 class="center">Register now</h3>
+          <img src="img/CuriousCarrotLogo.png" class="logoImg last-slide" />
+          <form name="form" novalidate>
+            <div class="list">
+              <label class="item item-input">
               <span class="input-label">First Name</span>
               <input type="text" ng-model="user.firstName" name="firstName"  ng-model-options="{ debounce: 500 }" required>
             </label>
-          <label class="item" ng-show="form.firstName.$error.required&&(form.$submitted || form.firstName.$touched)">
+              <label class="item" ng-show="form.firstName.$error.required&&(form.$submitted || form.firstName.$touched)">
               <span class="red-warning" >Please insert first name</span>
           </label>
-          <label class="item item-input">
+              <label class="item item-input">
               <span class="input-label">Last Name</span>
               <input type="text" ng-model="user.lastName" name="lastName"  ng-model-options="{ debounce: 500 }" required>
             </label>
-          <label class="item" ng-show="(form.lastName.$error.required)&&(form.$submitted || form.lastName.$touched)" >
+              <label class="item" ng-show="(form.lastName.$error.required)&&(form.$submitted || form.lastName.$touched)">
               <span class="red-warning" >Please insert last name</span>
           </label>
-          <label class="item item-input">
+              <label class="item item-input">
               <span class="input-label">Email</span>
-              <input type="email" ng-model="user.email" name="email"  ng-model-options="{ debounce: 500 }" required="">
+              <input type="text" ng-model="user.email" name="email" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/"  ng-model-options="{ debounce: 500 }" required>
             </label>
-          <label class="item" ng-show="(form.email.$error.required||form.email.$error.email)&&(form.$submitted || form.email.$touched)">
+              <label class="item" ng-show="(form.email.$error.pattern || form.email.$error.required)&&(form.$submitted || form.lastName.$touched)">
               <span class="red-warning"  ng-show="form.email.$error.required" >You need to insert a valid email</span>
-              <span class="red-warning"  ng-show="form.email.$error.email" >This is not a valid email</span>
+              <span class="red-warning"  ng-show="form.email.$error.pattern" >You need to insert a valid email</span>
           </label>
-          <label class="item item-input">
+              <label class="item item-input">
               <span class="input-label">Password</span>
-              <input type="password" ng-model="user.password" data-password-verify="user.password" ng-model-options="{ debounce: 500 }" name="password" required>
+              <input type="password" ng-model="user.password" ng-pattern="/^[ A-Za-z0-9_@./#&+-]{8,}$/" name="password" required>
           </label>
-          <label class="item" ng-show="form.password.$invalid&&(form.$submitted || form.password.$touched)" >
-              <span class="red-warning"  >Please insert a password of at least 8 characters</span>
+              <label class="item" ng-show="(form.password.$error.required||form.password.$error.pattern)&&(form.$submitted || form.lastName.$touched)">
+              <span class="red-warning" ng-show="form.password.$error.required" >Please insert a password</span>
+              <span class="red-warning" ng-show="form.password.$error.pattern" >Please insert password of at least 8 characters</span>
           </label>
-           <label class="item item-input">
+              <label class="item item-input">
               <span class="input-label">Confirm Password</span>
-              <input type="password" ng-model="user.password_verify" name="confirmPassword" data-password-verify="user.password" ng-model-options="{ debounce: 500 }" required >
+              <input type="password" ng-model="user.confirmPassword" name="confirmPassword" compare-to="user.password" ng-model-options="{ debounce: 500 }" required >
           </label>
-           <label class="item"  ng-show="(form.$submitted || form.password.$touched)&&form.confirmPassword.$error.required" >
-              <span class="red-warning" >Please confirm the password</span>
+              <label class="item" ng-show="(form.$submitted || form.password.$touched)&&(form.confirmPassword.$error||form.confirmPasswrd.$error.required)">
+               <span class="red-warning" ng-show="form.confirmPassword.$invalid" >The inserted passwords don't match</span>
           </label>
-          <label class="item"  ng-show="form.confirmPassword.$error.passwordVerify" >
-              <span class="red-warning" >The inserted passwords don't match</span>
+              <div class="padding">
+                <button type="submit" value="Register" class="button button-block button-positive" ng-click="register(user,form)">Register</button>
+              </div>
+            </div>
+        </div>
+        <div ng-show="showInsertCode">
+          <h3 class="center">Enter the code</h3>
+          <img src="img/CuriousCarrotLogo.png" class="logoImg last-slide" />
+          <div ng-hide="isUserCorrectlyCreated">
+          <p class="center">Please enter the code we sent you by email</p>
+          <form name="form" novalidate>
+            <label class="item item-input">
+              <span class="input-label">Code</span>
+              <input type="text" ng-model="code.enteredCode" name="enteredCode"  ng-model-options="{ debounce: 500 }" required>
+            </label>
+            <label class="item" ng-show="codeForm.enteredCode.$error.required&&(codeForm.$submitted || codeForm.enteredCode.$touched)">
+              <span class="red-warning" >Please insert the code we sent you</span>
           </label>
-          <div class="padding">
-            <button type="submit" value="Register" class="button button-block button-positive" ng-click="register(user,form)"/>
+            <div class="padding">
+              <button type="submit" class="button button-block button-positive" ng-click="confirmCode(code,form)">Confirm Email</button>
+            </div>
+          </form>
+          </div>
+          <div class="card " ng-click="goToLogin()" ng-show="isUserCorrectlyCreated">
+          <div class="item item-text-wrap register-correctly-message">
+           Congratulations, you registered correctly to our community. Click here to go the login page.
           </div>
         </div>
-        </form>
+        <div class="card " ng-click="goToLogin()" ng-show="isCodeNotValid">
+          <div class="item item-text-wrap register-failed-message">
+          Sorry the code you've inserted is not valid
+          </div>
+        </div>
+        </div>
       </ion-slide>
-
-
       <ion-slide class="register-slideContainer">
         <div class="register-slide">
           <h3>Join now a friendly Community</h3>
@@ -76,7 +102,6 @@
           </div>
         </div>
       </ion-slide>
-     
     </ion-slide-box>
   </ion-content>
 </ion-view>

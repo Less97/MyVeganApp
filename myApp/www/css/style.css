@@ -127,4 +127,19 @@ ul.rating li i {
     margin-bottom:20px;
 }
 
+.center{
+    text-align: center;
+}
+.register-correctly-message{
+    border-color: #28a54c;
+    background-color: #33cd5f;
+    color: #fff; 
+}
+
+.register-failed-message{
+    border-color: #e42112;
+    background-color: #ef473a;
+    color: #fff;
+}
+
 

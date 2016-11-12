@@ -130,7 +130,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
   LoadingHelper.show();
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
-   
+
     PlacesService.getDetails($stateParams.id, position.coords.latitude, position.coords.longitude,
       function (details) {
         $scope.details = details;
@@ -214,8 +214,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Info Controller*/
-.controller('InfoCtrl', function ($scope) {
-})
+.controller('InfoCtrl', function ($scope) {})
 
 
 /*Menu Controller*/
@@ -258,22 +257,62 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /* Register Controller */
-.controller('RegisterCtrl', function ($scope, $state,$ionicSlideBoxDelegate) {
- 
+.controller('RegisterCtrl', function ($scope, $state, $ionicSlideBoxDelegate, RegisterService, LoadingHelper) {
+  $scope.showInsertCode = false;
   $scope.user = {};
-  
-		$scope.register = function(user,form) {
+  $scope.code = {
+    code: "",
+    generatedCode: ""
+  }
+  $scope.register = function (user, form) {
 
-			// check to make sure the form is completely valid
-			if (form.$valid) {
-				alert('our form is valid');
-			}else{
-        alert('our form is not valid');
+    // check to make sure the form is completely valid
+    if (form.$valid) {
+      LoadingHelper.show();
+      RegisterService.register(user, function (result) {
+        LoadingHelper.hide();
+        if (result === false) {
+          alert("Sorry, we haven't been able to create the user. Check the connection and retry.");
+        }
+        if (result.Error === 0 && result.hasOwnProperty("Message")) {
+          alert(result.Message)
+        } else if (result.hasOwnProperty("GeneratedCode")) {
+          $scope.code.generatedCode = result.GeneratedCode;
+          $scope.showInsertCode = true;
+        }
+      })
+    }
+  }; //register
+
+  $scope.goToLogin = function () {
+    $state.go('login');
+  }
+
+
+  $scope.confirmCode = function (code, codeForm) {
+    LoadingHelper.show();
+    $scope.isCodeNotValid = false;
+    $scope.isUserCorrectlyCreated = false;
+    if (codeForm.$valid) {
+      if (code.enteredCode === $scope.code.generatedCode) {
+       
+        RegisterService.confirm($scope.user.email, function (result) {
+           LoadingHelper.hide();
+          if(result===false){
+            alert("sorry, there was an error registering your user");
+          }
+          if (result.Error === 0) {
+            $scope.isUserCorrectlyCreated = true;
+          }
+        })
+      } else {
+        $scope.isCodeNotValid = true;
+         LoadingHelper.hide();
       }
-      console.dir($scope.user)
-		};
 
+    }
 
+  }
 })
 
 

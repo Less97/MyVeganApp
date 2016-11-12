@@ -1,5 +1,5 @@
-var address = "http://thecuriouscarrot.com/api/";
-//var address = "http://localhost:51067/api/";
+//var address = "http://thecuriouscarrot.com/api/";
+var address = "http://localhost:51067/api/";
 var currentLoginData = {};
 angular.module('myApp.Service', [])
   .factory('LoginService', function ($http) {
@@ -21,12 +21,38 @@ angular.module('myApp.Service', [])
        }).error(function () {
           callback(false);
       })},
-      register: function () {
-          return true
-      }
     }
   })
+.factory("RegisterService",function($http){
+  return{
+    register:function(user,callback){
+      var req = {
+            url:address+"users/register",
+            data:user,
+            method:'POST',
+         };
+         $http(req).success(function(data){
+          callback(JSON.parse(data));
+         }).error(function(){
+           callback(false)
+         })
+    },
+    confirm:function(eml,callback){
+        var req = {
+          url:address+"users/confirmEmail",
+          data:{email:eml},
+          method:'POST'
+        }
+        $http(req).success(function(data){
+          var data = JSON.parse(data)
+          callback(data);
+        }).error(function(){
+          callback(false);
+        })
+    }
+  }
 
+})
 .factory('PlacesService', function ($http) {
     {
       return {

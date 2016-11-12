@@ -82,8 +82,8 @@ namespace myVegAppDbAPI.Controllers.Api
             }
         }
 
-        [HttpPost("createUser")]
-        public async Task<JsonResult> CreateUser([FromBody] CreateUser model)
+        [HttpPost("register")]
+        public async Task<JsonResult> Register([FromBody] CreateUser model)
         {
             try
             {
@@ -133,21 +133,27 @@ namespace myVegAppDbAPI.Controllers.Api
         [HttpPost("confirmEmail")]
         public async Task<JsonResult> ConfirmEmail([FromBody] ConfirmEmail model)
         {
-            InsertUser t;
-            if (!temporaryUsers.TryGetValue(model.Email, out t))
+            try
             {
-                return Json(new { Error = 1, Message = "Sorry there was a problem with the registration procedure, Please try again" }.ToJson(jsonWriterSettings));
-            }
+                InsertUser t;
+                if (!temporaryUsers.TryGetValue(model.Email, out t))
+                {
+                    return Json(new { Error = 1, Message = "Sorry there was a problem with the registration procedure, Please try again" }.ToJson(jsonWriterSettings));
+                }
 
-            var users = _database.GetCollection<InsertUser>("users");
-            await users.InsertOneAsync(t);
-            var body = await _renderService.RenderToStringAsync("EmailTemplates/RegistrationComplete", new RegistrationCompleteViewModel()
-            {
-                Name = t.FirstName
-            });
-            await Task.Run(() => _emailHelper.SendEmail("The Curious Carrot - Registration Completed", "noreply@thecuriouscarrot.com", t.Email, body));
-            temporaryUsers.Remove(model.Email);
-            return Json(new { Error = 0, Result = "User correctly created" }.ToJson(jsonWriterSettings));
+                var users = _database.GetCollection<InsertUser>("users");
+                await users.InsertOneAsync(t);
+                var body = await _renderService.RenderToStringAsync("EmailTemplates/RegistrationComplete", new RegistrationCompleteViewModel()
+                {
+                    Name = t.FirstName
+                });
+                await Task.Run(() => _emailHelper.SendEmail("The Curious Carrot - Registration Completed", "noreply@thecuriouscarrot.com", t.Email, body));
+                temporaryUsers.Remove(model.Email);
+                return Json(new { Error = 0, Result = "User correctly created" }.ToJson(jsonWriterSettings));
+            }
+            catch (Exception ex) {
+                return Json(ex.RaiseException());
+            }
         }
 
         [HttpPost("forgotPassword")]

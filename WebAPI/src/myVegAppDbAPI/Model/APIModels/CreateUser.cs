@@ -15,6 +15,8 @@ namespace myVegAppDbAPI.Model.APIModels
 
         public String Password { get; set; }
 
+        public String ConfirmPassword { get; set; }
+
         public Int32 Type { get; set; }
     }
 }
