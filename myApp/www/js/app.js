@@ -51,6 +51,13 @@ angular.module('starter', ['ionic', 'ngCordova', 'myApp.Controllers', 'myApp.Ser
     controller: 'ForgotPasswordCtrl'
   })
 
+   .state('changePassword', {
+    url: '/changePassword',
+    templateUrl: 'views/changePassword.html',
+    controller: 'ChangePasswordCtrl',
+    params: { email: { dynamic: true } }
+  })
+
   .state('register', {
     templateUrl: 'views/register.html',
     controller: 'RegisterCtrl'

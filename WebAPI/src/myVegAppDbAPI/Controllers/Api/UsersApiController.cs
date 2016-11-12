@@ -156,8 +156,8 @@ namespace myVegAppDbAPI.Controllers.Api
             }
         }
 
-        [HttpPost("forgotPassword")]
-        public async Task<JsonResult> ForgotPassword([FromBody] ForgotPassword model)
+        [HttpPost("restorePassword")]
+        public async Task<JsonResult> RestorePassword([FromBody] ForgotPassword model)
         {
             try
             {
@@ -167,8 +167,10 @@ namespace myVegAppDbAPI.Controllers.Api
                 //checking if the user already exists.
                 var user = collForReading.AsQueryable().SingleOrDefault(x => x.Email == model.Email);
                 if (user == null)
-                    return Json(new { Error = 0, Message = "Sorry, there is no a user with that email" }.ToJson(jsonWriterSettings));
+                    return Json(new { Error = 1, Message = "Sorry, there is no a user with that email" }.ToJson(jsonWriterSettings));
 
+                if (usersChangingPassword.ContainsKey(model.Email))
+                    usersChangingPassword.Remove(model.Email);
 
                 usersChangingPassword.Add(model.Email, user);
                 var randomCode = Randomizer.RandomString(5);
@@ -214,7 +216,7 @@ namespace myVegAppDbAPI.Controllers.Api
                 await users.UpdateOneAsync<ReadUser>(u => u.Email == changePassword.Email, updatePasswordDefinition);
                 usersChangingPassword.Remove(myUser.Email);
 
-                return Json(new { Error = 0, Message = "Password Changed correctly" });
+                return Json(new { Error = 0, Message = "Password Changed correctly" }.ToJson(jsonWriterSettings));
             }
             catch (Exception ex)
             {

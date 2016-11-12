@@ -1,6 +1,30 @@
 <ion-view view-title="Register">
   <ion-content>
     <ion-slide-box on-slide-changed="slideHasChanged($index)">
+      
+      <ion-slide class="register-slideContainer">
+        <div class="register-slide">
+          <h3>Join now a friendly Community</h3>
+          <div>
+            <img src="http://thecuriouscarrot.com/Content/images/ccLogo.png">
+          </div>
+          <div class="register-text">
+            Find easily the place you're looking for. Near you!
+          </div>
+          <div class="register-spacer"></div>
+        </div>
+      </ion-slide>
+      <ion-slide class="register-slideContainer">
+        <div class="register-slide">
+          <h3>Share your favourite place</h3>
+          <div>
+            <img src="http://thecuriouscarrot.com/Content/images/ccLogo.png">
+          </div>
+          <div class="register-text">
+            Share with us your favourite place, and what is your favourite dish there!
+          </div>
+        </div>
+      </ion-slide>
       <ion-slide class="register-slide">
         <div ng-hide="showInsertCode">
           <h3 class="center">Register now</h3>
@@ -72,34 +96,11 @@
            Congratulations, you registered correctly to our community. Click here to go the login page.
           </div>
         </div>
-        <div class="card " ng-click="goToLogin()" ng-show="isCodeNotValid">
+        <div class="card "ng-show="isCodeNotValid">
           <div class="item item-text-wrap register-failed-message">
           Sorry the code you've inserted is not valid
           </div>
         </div>
-        </div>
-      </ion-slide>
-      <ion-slide class="register-slideContainer">
-        <div class="register-slide">
-          <h3>Join now a friendly Community</h3>
-          <div>
-            <img src="http://thecuriouscarrot.com/Content/images/ccLogo.png">
-          </div>
-          <div class="register-text">
-            Find easily the place you're looking for. Near you!
-          </div>
-          <div class="register-spacer"></div>
-        </div>
-      </ion-slide>
-      <ion-slide class="register-slideContainer">
-        <div class="register-slide">
-          <h3>Share your favourite place</h3>
-          <div>
-            <img src="http://thecuriouscarrot.com/Content/images/ccLogo.png">
-          </div>
-          <div class="register-text">
-            Share with us your favourite place, and what is your favourite dish there!
-          </div>
         </div>
       </ion-slide>
     </ion-slide-box>

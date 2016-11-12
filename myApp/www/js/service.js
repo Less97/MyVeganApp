@@ -53,6 +53,40 @@ angular.module('myApp.Service', [])
   }
 
 })
+.factory("RestorePasswordService",function($http){
+    return {
+      restorePassword: function(eml,callback){
+        var req = {
+          url:address+'users/restorePassword',
+          data:{email:eml},
+          method:'POST'
+        }
+        $http(req).success(function(data){
+          var data = JSON.parse(data);
+          callback(data);
+        }).error(function(){
+          callback(false)
+        })
+      },
+      changePassword: function(userDetails,callback){
+          var req = {
+            url:address +'users/changePassword',
+            data:{email:userDetails.email,password:userDetails.password},
+            method:'POST'
+          };
+        $http(req).success(function(data){
+          var data = JSON.parse(data);
+          callback(data);
+        }).error(function(){
+          callback(false)
+        })
+      }
+
+    }
+
+})
+
+
 .factory('PlacesService', function ($http) {
     {
       return {

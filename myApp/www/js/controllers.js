@@ -295,10 +295,10 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $scope.isUserCorrectlyCreated = false;
     if (codeForm.$valid) {
       if (code.enteredCode === $scope.code.generatedCode) {
-       
+
         RegisterService.confirm($scope.user.email, function (result) {
-           LoadingHelper.hide();
-          if(result===false){
+          LoadingHelper.hide();
+          if (result === false) {
             alert("sorry, there was an error registering your user");
           }
           if (result.Error === 0) {
@@ -307,7 +307,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         })
       } else {
         $scope.isCodeNotValid = true;
-         LoadingHelper.hide();
+        LoadingHelper.hide();
       }
 
     }
@@ -318,11 +318,61 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Forget Password Controller*/
-.controller('ForgotPasswordCtrl', function ($scope, $state) {
-  $scope.sendPassword = function (user) {
-    $state.go('login');
+.controller('ForgotPasswordCtrl', function ($scope, $state, $ionicHistory, LoadingHelper, RestorePasswordService) {
+  $scope.sendPassword = function (email) {
+    LoadingHelper.show();
+    $scope.code = {};
+    RestorePasswordService.restorePassword(email, function (data) {
+      LoadingHelper.hide();
+      if (data === false || data.Error === 1) {
+        $scope.showMessage = true;
+        $scope.message = data.Message;
+      } else if (data.Error === 0) {
+        $scope.email = email;
+        $scope.EnterCodeState = 1;
+        $scope.code.generatedCode = data.GeneratedCode;
+      }
+    })
   };
+
+  $scope.confirmCode = function (code) {
+    if (code === $scope.code.generatedCode) {
+      $state.go("changePassword", {
+        email: $scope.email
+      });
+    } else {
+      $scope.codeInvalidMessageVisible = true;
+    }
+  }
 })
+
+.controller("ChangePasswordCtrl", function ($scope, $state, $stateParams, LoadingHelper, RestorePasswordService) {
+
+  $scope.changePassword = function (user, form) {
+
+    if (form.$valid) {
+      LoadingHelper.show();
+      var userDetails = {
+        email: $stateParams.email,
+        password: user.password
+      }
+      RestorePasswordService.changePassword(userDetails, function (data) {
+        LoadingHelper.hide();
+        if (data === false || data.Error === 1) {
+          $scope.changeError = true;
+          $scope.errorMessage = data.Message;
+        } else if (data.Error === 0) {
+         $scope.changeSuccess = true;
+        }
+      })
+    }
+  }
+
+  $scope.goToLogin = function () {
+    $state.go('login');
+  }
+})
+
 
 /*AccountCtrl*/
 .controller('AccountCtrl', function ($scope) {
