@@ -260,11 +260,18 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 /* Register Controller */
 .controller('RegisterCtrl', function ($scope, $state,$ionicSlideBoxDelegate) {
  
-  $scope.User = {};
-  $scope.register = function(user){
-    debugger;
-    console.dir(user);
-  }   
+  $scope.user = {};
+  
+		$scope.register = function(user,form) {
+
+			// check to make sure the form is completely valid
+			if (form.$valid) {
+				alert('our form is valid');
+			}else{
+        alert('our form is not valid');
+      }
+      console.dir($scope.user)
+		};
 
 
 })
