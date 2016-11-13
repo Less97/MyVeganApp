@@ -179,6 +179,11 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   $scope.goBack = function () {
     $state.go('tab.list')
   }
+
+  $scope.onAddressSelection = function(location){
+    alert("selection changed")
+  }
+
 })
 
 /*Add Controller*/
@@ -362,7 +367,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           $scope.changeError = true;
           $scope.errorMessage = data.Message;
         } else if (data.Error === 0) {
-         $scope.changeSuccess = true;
+          $scope.changeSuccess = true;
         }
       })
     }
