@@ -181,9 +181,14 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   }
 
   $scope.onAddressSelection = function(location){
-    alert("selection changed")
+   
   }
 
+  $scope.submit = function(place,form){
+      if(form.$valid){
+         alert("isvalid");
+      }
+  }
 })
 
 /*Add Controller*/

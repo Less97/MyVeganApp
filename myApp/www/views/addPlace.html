@@ -27,7 +27,7 @@
           </label>
         <label class="item item-input">
               <span class="input-label">Website</span>
-              <input type="text" ng-model="place.website"  name="website" ng-pattern="/^(http|https)://[\w-]+(\.[\w-]*)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?$/" ng-model-options="{ debounce: 500 }" required>
+              <input type="text" ng-model="place.website" placeholder="http://www.example.com"  name="website" ng-pattern="/^(http|https)://[\w-]+(\.[\w-]*)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?$/" ng-model-options="{ debounce: 500 }" required>
           </label>
         <label class="item" ng-show="(form.website.$error.pattern || form.website.$error.required)&&(form.$submitted || form.website.$touched)">
               <span class="red-warning"  ng-show="form.website.$error.required" >Please specify a website</span>
@@ -55,7 +55,7 @@
           </label>
           <label class="item item-input">
               <span class="input-label">Address</span>
-              <input type="text" placeholder="address" google-autocomplete-suggestion location="place.location" on-selection="onAddressSelection(location)" ng-model="data.location.formatted_address" required>
+              <input type="text" placeholder="address" google-autocomplete-suggestion location="place.location" on-selection="onAddressSelection(location)" ng-model="place.location.formatted_address" required>
           </label>
        <label class="item" ng-show="form.address.$error.required&&(form.$submitted || form.address.$touched)">
               <span class="red-warning" >Please define the address</span>
@@ -77,7 +77,7 @@
 
         <!--Button-->
         <div class="padding">
-          <button type="submit" class="button button-block button-positive" ng-click="addPlace(place,form)">Submit</button>
+          <button type="submit" class="button button-block button-positive" ng-click="submit(place,form)">Submit</button>
         </div>
       </div>
       <div>
