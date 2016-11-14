@@ -93,9 +93,9 @@ angular.module('starter', ['ionic','ngCordova','myApp.Controllers', 'myApp.Servi
     controller: 'AddMenuItemCtrl'
   })
 
-  .state('menu', {
-    url: '/menu/{id}',
-    templateUrl: 'views/menu.html',
+  .state('gallery', {
+    url: '/gallery/{id}',
+    templateUrl: 'views/gallery.html',
     controller: 'MenuCtrl'
   })
 

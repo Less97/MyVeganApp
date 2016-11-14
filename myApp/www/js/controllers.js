@@ -165,7 +165,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   $scope.openPage = function (website) {
     window.open(website, '_blank');
   }
-  $scope.goToMenu = function (details) {
+  $scope.goToGallery = function (details) {
     $state.go('menu', {
       id: details._id
     })
