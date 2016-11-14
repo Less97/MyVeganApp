@@ -1,5 +1,5 @@
-//var address = "http://thecuriouscarrot.com/api/";
-var address = "http://localhost:51067/api/";
+var address = "http://thecuriouscarrot.com/api/";
+//var address = "http://localhost:51067/api/";
 var currentLoginData = {};
 angular.module('myApp.Service', [])
   .factory('LoginService', function ($http) {

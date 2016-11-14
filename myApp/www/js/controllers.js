@@ -189,8 +189,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
    
   }
 
-  $scope.goToListing = function(){
-    $scope.go("tabs.list");
+  $scope.goToList = function(){
+    $state.go("tab.list");
   }
 
   $scope.submit = function(place,form){
