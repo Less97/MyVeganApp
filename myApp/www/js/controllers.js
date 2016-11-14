@@ -175,18 +175,39 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Add Controller*/
-.controller('AddPlaceCtrl', function ($scope, $state) {
+.controller('AddPlaceCtrl', function ($scope, $state,PlacesService,LoadingHelper) {
+  
+  $scope.isErrorMessageShown = false;
+  $scope.isSuccessMessageShown = false;
+  
   $scope.goBack = function () {
     $state.go('tab.list')
   }
+
 
   $scope.onAddressSelection = function(location){
    
   }
 
+  $scope.goToListing = function(){
+    $scope.go("tabs.list");
+  }
+
   $scope.submit = function(place,form){
       if(form.$valid){
-         alert("isvalid");
+        LoadingHelper.show();
+        PlacesService.submitPlace(place,function(result){
+           LoadingHelper.hide();
+            if(result===false){
+                $scope.isErrorMessageShown = true
+            }else if(result.hasOwnProperty("Error")){
+                $scope.isErrorMessageShown =true;
+                $scope.errorMessage = result.Message;
+            }else if(result.result===true){
+               $scope.isErrorMessageShown =false;
+                $scope.isSuccessMessageShown = true;
+            }
+        })
       }
   }
 })

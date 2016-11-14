@@ -75,10 +75,41 @@
               <span class="red-warning" >Please select a type</span>
           </label>
 
+
+         <label class="item item-input item-select">
+            <div class="input-label">
+            Country
+            </div>
+            <select ng-model="place.country" name="country" required>
+                <option selected value="">Select a Country</option>
+                <option value="5813305e3db657f2417b3cc9">Nothern Ireland</option>
+                <option value="581330733db657f2417b3cca">Ireland</option>
+                <option value="581e52943db657f2417b3ccd">Spain</option>
+                <option value="5828ff623db657f2417b3cdb">Italy</option>
+            </select>
+        </label>
+           <label class="item" ng-show="form.country.$error.required&&(form.$submitted || form.country.$touched)">
+              <span class="red-warning" >Please select a country</span>
+          </label>
+
+        
         <!--Button-->
         <div class="padding">
           <button type="submit" class="button button-block button-positive" ng-click="submit(place,form)">Submit</button>
         </div>
+
+         <div class="card " ng-click="goToList()" ng-show="isSuccessMessageShown">
+          <div class="item item-text-wrap register-correctly-message">
+           Thanks. We inserted correctly the place in our Archive. Thanks for letting us know! Click here to go back to the listing page.
+          </div>
+        </div>
+        <div class="card "ng-show="isErrorMessageShown">
+          <div class="item item-text-wrap register-failed-message">
+         Sorry, there was a problem during saving the place. {{errorMessage}}
+          </div>
+        </div>
+
+
       </div>
       <div>
     </form>

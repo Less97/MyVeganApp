@@ -1,5 +1,5 @@
-var address = "http://thecuriouscarrot.com/api/";
-//var address = "http://localhost:51067/api/";
+//var address = "http://thecuriouscarrot.com/api/";
+var address = "http://localhost:51067/api/";
 var currentLoginData = {};
 angular.module('myApp.Service', [])
   .factory('LoginService', function ($http) {
@@ -138,6 +138,31 @@ angular.module('myApp.Service', [])
           }).error(function () {
             callback([]);
           })
+        },
+        submitPlace:function(plc,callback){
+            var req = {
+              url:address+'places/createPlace',
+              data:{
+                name:plc.name,
+                type:plc.type,
+                website:plc.website,
+                description:plc.description,
+                openingHours:plc.openingHours,
+                phoneNumber:plc.phoneNumber,
+                email:plc.email,
+                latitude:plc.location.geometry.location.lat(),
+                longitude:plc.location.geometry.location.lng(),
+                address:plc.location.formatted_address,
+                countryId:plc.country
+              },
+              method:'POST'
+            }
+            $http(req).success(function(data){
+                var obj = JSON.parse(data);
+                callback(obj);
+            }).error(function(){
+              callback(false);
+            })
         }
       }
     }

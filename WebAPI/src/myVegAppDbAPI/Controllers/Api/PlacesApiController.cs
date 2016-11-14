@@ -216,7 +216,7 @@ namespace myVegAppDbAPI.Controllers.Api
                     PhoneNumber = model.PhoneNumber
                 };
                 await places.InsertOneAsync(myNewPlace);
-                return Json(new { result = true });
+                return Json(new { result = true }.ToJson(jsonWriterSettings));
             }
             catch (Exception ex)
             {
