@@ -38,7 +38,7 @@ namespace myVegAppDbAPI.Controllers.Api
 
         private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
 
-        public PlacesApiController(IOptions<MongoSettings> mongoSettings, IOptions<EmailSettings> emailSettings, IViewRenderService viewRenderService, IHostingEnvironment env)
+        public PlacesApiController(IOptions<MongoSettings> mongoSettings, IOptions<EmailSettings> emailSettings, IViewRenderService viewRenderService)
         {
             _MongoSettings = mongoSettings.Value;
             _EmailSettings = emailSettings.Value;
@@ -46,7 +46,6 @@ namespace myVegAppDbAPI.Controllers.Api
             _database = _client.GetDatabase(_MongoSettings.DatabaseName);
             _emailHelper = new EmailHelper(_EmailSettings);
             this._renderService = viewRenderService;
-            hostingEnv = env;
         }
 
         [HttpGet("getplaces")]
@@ -230,27 +229,7 @@ namespace myVegAppDbAPI.Controllers.Api
             }
         }
 
-        [HttpPost("addImage")]
-public IActionResult UploadFiles(IList<IFormFile> files)
-        {
-            long size = 0;
-            foreach (var file in files)
-            {
-                var filename = ContentDispositionHeaderValue
-                                .Parse(file.ContentDisposition)
-                                .FileName
-                                .Trim('"');
-                filename = hostingEnv.WebRootPath + $@"\{file.FileName}";
-                size += file.Length;
-                using (FileStream fs = System.IO.File.Create(filename))
-                {
-                    file.CopyTo(fs);
-                    fs.Flush();
-                }
-            }
-            return Json(new { Result = 1 });
         
-        }
 
     }
 }

@@ -1607,6 +1607,21 @@
           "lib/netstandard1.5/MongoDB.Driver.Core.dll": {}
         }
       },
+      "MongoDB.Driver.GridFS/2.3.0": {
+        "type": "package",
+        "dependencies": {
+          "MongoDB.Bson": "2.3.0",
+          "MongoDB.Driver": "2.3.0",
+          "MongoDB.Driver.Core": "2.3.0",
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "lib/netstandard1.5/MongoDB.Driver.GridFS.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.5/MongoDB.Driver.GridFS.dll": {}
+        }
+      },
       "NETStandard.Library/1.6.0": {
         "type": "package",
         "dependencies": {
@@ -5104,6 +5119,20 @@
         "lib/net45/MongoDB.Driver.Core.dll",
         "lib/netstandard1.5/MongoDB.Driver.Core.dll",
         "lib/netstandard1.5/MongoDB.Driver.Core.xml"
+      ]
+    },
+    "MongoDB.Driver.GridFS/2.3.0": {
+      "sha512": "vWlQuQiyprEABKOctybVvuc+7CefcJqJ9Mgf6hY7SgRbDpj7z331RfEZVBspVs4K/4giaQ+kITFJtBYEzyrTkw==",
+      "type": "package",
+      "path": "MongoDB.Driver.GridFS/2.3.0",
+      "files": [
+        "License.rtf",
+        "MongoDB.Driver.GridFS.2.3.0.nupkg.sha512",
+        "MongoDB.Driver.GridFS.nuspec",
+        "lib/net45/MongoDB.Driver.GridFS.XML",
+        "lib/net45/MongoDB.Driver.GridFS.dll",
+        "lib/netstandard1.5/MongoDB.Driver.GridFS.dll",
+        "lib/netstandard1.5/MongoDB.Driver.GridFS.xml"
       ]
     },
     "NETStandard.Library/1.6.0": {
@@ -9947,6 +9976,7 @@
       "MongoDB.Bson >= 2.3.0",
       "MongoDB.Driver >= 2.3.0",
       "MongoDB.Driver.Core >= 2.3.0",
+      "MongoDB.Driver.GridFS >= 2.3.0",
       "mongocsharpdriver >= 2.3.0"
     ],
     ".NETCoreApp,Version=v1.0": []
