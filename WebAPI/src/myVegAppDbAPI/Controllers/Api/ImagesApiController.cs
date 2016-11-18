@@ -13,16 +13,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver.GridFS;
 using myVegAppDbAPI.Helpers;
+using Microsoft.AspNetCore.Cors;
+using MongoDB.Bson;
 
 namespace myVegAppDbAPI.Controllers.Api
 {
+    [Route("api/images")]
+    [EnableCors("MyPolicy")]
     public class ImagesApiController : Controller
     {
         private MongoClient _client;
         private IMongoDatabase _database;
         private MongoSettings _mongoSettings;
         private IHostingEnvironment hostingEnv;
-        private GridFSBucket _galleryBucket;
+        private GridFSBucket _imagesBucket;
       
 
         public ImagesApiController(IHostingEnvironment env, IOptions<MongoSettings> mongoSettings)
@@ -31,14 +35,16 @@ namespace myVegAppDbAPI.Controllers.Api
             _mongoSettings = mongoSettings.Value;
             _client = new MongoClient(_mongoSettings.MongoDbHost);
             _database = _client.GetDatabase(_mongoSettings.DatabaseName);
-            _galleryBucket = new GridFSBucket(_database, new GridFSBucketOptions() {
+            _imagesBucket = new GridFSBucket(_database, new GridFSBucketOptions() {
                 BucketName = "gallery"
             });
         }
 
 
-        [HttpPost("uploadToGallery")]
-        public async Task<IActionResult> UploadToGallery(IFormFile file)
+        [HttpPost("uploadImage")]
+        [Produces("application/json")]
+        [Consumes("application/json","application/json-patch+json","multipart/form-data")]
+        public async Task<IActionResult> UploadImage(IFormFile file)
         {
             try
             {
@@ -51,14 +57,29 @@ namespace myVegAppDbAPI.Controllers.Api
                 filename = hostingEnv.WebRootPath + $@"\{file.FileName}";
                 size += file.Length;
                 Stream stream = file.OpenReadStream();
+                ObjectId myId = ObjectId.Empty;
                 using (var memoryStream = new MemoryStream())
                 {
-                   await _galleryBucket.UploadFromStreamAsync(filename, stream);
+                    myId = await _imagesBucket.UploadFromStreamAsync(filename, stream);
                 }
-                return Json(new { Result = 1 });
+                return Json(new { result = 1, imageId = myId });
             }
             catch (Exception ex) {
                 return Json(ex.RaiseException());
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RetrieveImage(String imgId)
+        {
+            try
+            {
+                _imagesBucket.FindAsync(imgId);
+
+            }
+            catch (Exception ex)
+            {
+
             }
         }
     }
