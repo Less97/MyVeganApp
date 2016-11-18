@@ -74,12 +74,11 @@ namespace myVegAppDbAPI.Controllers.Api
         {
             try
             {
-                _imagesBucket.FindAsync(imgId);
-
+                return Json(_imagesBucket.FindAsync(imgId));
             }
             catch (Exception ex)
             {
-
+                return Json(new {});
             }
         }
     }
