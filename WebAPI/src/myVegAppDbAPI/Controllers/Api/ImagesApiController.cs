@@ -15,6 +15,7 @@ using MongoDB.Driver.GridFS;
 using myVegAppDbAPI.Helpers;
 using Microsoft.AspNetCore.Cors;
 using MongoDB.Bson;
+using MongoDB.Bson.IO;
 
 namespace myVegAppDbAPI.Controllers.Api
 {
@@ -27,7 +28,7 @@ namespace myVegAppDbAPI.Controllers.Api
         private MongoSettings _mongoSettings;
         private IHostingEnvironment hostingEnv;
         private GridFSBucket _imagesBucket;
-      
+        private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
 
         public ImagesApiController(IHostingEnvironment env, IOptions<MongoSettings> mongoSettings)
         {
@@ -57,28 +58,35 @@ namespace myVegAppDbAPI.Controllers.Api
                 filename = hostingEnv.WebRootPath + $@"\{file.FileName}";
                 size += file.Length;
                 Stream stream = file.OpenReadStream();
-                ObjectId myId = ObjectId.Empty;
                 using (var memoryStream = new MemoryStream())
                 {
-                    myId = await _imagesBucket.UploadFromStreamAsync(filename, stream);
+                    var myId = await _imagesBucket.UploadFromStreamAsync(filename, stream);
+                    return Json(new { result = 1, imageId = myId }.ToJson(jsonWriterSettings));
                 }
-                return Json(new { result = 1, imageId = myId });
+              
             }
             catch (Exception ex) {
                 return Json(ex.RaiseException());
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> RetrieveImage(String imgId)
+        [HttpGet("get")]
+        public async Task<IActionResult> Get(String imgId)
         {
             try
             {
-                return Json(_imagesBucket.FindAsync(imgId));
+                ObjectId oid = new ObjectId(imgId);
+                Byte[] result;
+                using (var d = new MemoryStream())
+                {
+                   await _imagesBucket.DownloadToStreamAsync(oid, d);
+                    result = d.ToArray();
+                }
+                return File(result, "image/jpeg");
             }
             catch (Exception ex)
             {
-                return Json(new {});
+                return Json(ex.RaiseException());
             }
         }
     }
