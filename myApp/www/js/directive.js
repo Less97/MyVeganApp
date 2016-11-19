@@ -10,33 +10,43 @@ angular.module("myApp.Widgets", [])
       }
     }
   }])
-   .directive("myGalleryItem", ['$window', function ($parse, $window) {
-    var myWidth = window.innerWidth - 30;
-    var myHeight = window.innerHeight - 75;
-    return function(scope, element, attrs){
-        element.css({
-                'background-image': 'url(' + attrs.mysrc +')',
-                'background-size':'cover',
-                height:myHeight+'px'
-            });
-    }
+  .directive("myGalleryItem", ['$window', function ($parse, $window) {
 
-  }])
-  .directive("compareTo",function() {
+    var myWidth = (window.innerWidth - 30) + 'px';
+    var myHeight = (window.innerHeight - 50) + 'px';
     return {
-        require: "ngModel",
-        scope: {
-            otherModelValue: "=compareTo"
-        },
-        link: function(scope, element, attributes, ngModel) {
-             
-            ngModel.$validators.compareTo = function(modelValue) {
-                return modelValue == scope.otherModelValue;
-            };
- 
-            scope.$watch("otherModelValue", function() {
-                ngModel.$validate();
-            });
-        }
+      replace: true,
+      scope: {
+        src: "&imgPath"
+      },
+      link: function (scope, element, attrs, controllers) {
+        element.css({
+          height: myHeight,
+          width: myWidth,
+          'background-image': 'url("' + attrs.imgpath + '")',
+          'background-size': 'contain',
+          'background-repeat': 'no-repeat',
+          'margin':'0 auto',
+          display:'block'
+        })
+      },
     };
-});
+  }])
+  .directive("compareTo", function () {
+    return {
+      require: "ngModel",
+      scope: {
+        otherModelValue: "=compareTo"
+      },
+      link: function (scope, element, attributes, ngModel) {
+
+        ngModel.$validators.compareTo = function (modelValue) {
+          return modelValue == scope.otherModelValue;
+        };
+
+        scope.$watch("otherModelValue", function () {
+          ngModel.$validate();
+        });
+      }
+    };
+  });

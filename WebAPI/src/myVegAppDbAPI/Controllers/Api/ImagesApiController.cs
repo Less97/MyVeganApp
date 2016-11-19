@@ -79,7 +79,7 @@ namespace myVegAppDbAPI.Controllers.Api
                 Byte[] result;
                 using (var d = new MemoryStream())
                 {
-                   await _imagesBucket.DownloadToStreamAsync(oid, d);
+                    await _imagesBucket.DownloadToStreamAsync(oid, d);
                     result = d.ToArray();
                 }
                 return File(result, "image/jpeg");

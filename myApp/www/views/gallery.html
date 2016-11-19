@@ -13,7 +13,7 @@
 
       <ion-slide-box>
           <ion-slide ng-repeat="img in imgsId">
-            <div my-gallery-item mySrc="http://localhost:51067/api/images/get?imgId=582fa1a87b14990060c36988"></div>
+            <my-gallery-item imgPath="{{getFullUrl(img)}}"></my-gallery-item>
           </ion-slide>
      </ion-slide-box>
 
