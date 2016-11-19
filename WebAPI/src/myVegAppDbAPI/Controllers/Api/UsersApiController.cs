@@ -46,7 +46,7 @@ namespace myVegAppDbAPI.Controllers.Api
         }
 
         [HttpPost("login")]
-        public async Task<JsonResult> Login([FromBody]Login model)
+        public JsonResult Login([FromBody]Login model)
         {
             try
             {

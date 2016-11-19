@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using MongoDB.Bson;
+using MongoDB.Bson.IO;
+using MongoDB.Driver;
 using myVegAppDbAPI.Helpers;
 using myVegAppDbAPI.Helpers.Project.Utilities;
+using myVegAppDbAPI.Model;
 using myVegAppDbAPI.Model.APIModels;
+using myVegAppDbAPI.Model.DbModels;
+using myVegAppDbAPI.Model.DbModels.InsertModels;
 using myVegAppDbAPI.Model.DbModels.ReadModels;
 using myVegAppDbAPI.Model.Settings;
 using System;
-using MongoDB.Driver;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson.IO;
-using MongoDB.Bson;
-using myVegAppDbAPI.Model.DbModels;
-using myVegAppDbAPI.Model.DbModels.InsertModels;
-using myVegAppDbAPI.Model;
-using Microsoft.AspNetCore.Cors;
-using System.IO;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Net.Http.Headers;
-using Microsoft.AspNetCore.Hosting;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace myVegAppDbAPI.Controllers.Api
 {
@@ -34,7 +29,6 @@ namespace myVegAppDbAPI.Controllers.Api
         private EmailSettings _EmailSettings;
         private EmailHelper _emailHelper;
         private IViewRenderService _renderService;
-        private IHostingEnvironment hostingEnv;
 
         private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
 

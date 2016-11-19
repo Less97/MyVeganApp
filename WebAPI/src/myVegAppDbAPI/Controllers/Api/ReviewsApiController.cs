@@ -21,20 +21,18 @@ namespace myVegAppDbAPI.Controllers.Api
     [EnableCors("MyPolicy")]
     public class ReviewsApiController : Controller
     {
-
         private MongoClient _client;
         private IMongoDatabase _database;
         private MongoSettings _MongoSettings;
-        private EmailSettings _EmailSettings;
-        private EmailHelper _emailHelper;
-        private IViewRenderService _renderService;
 
         private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
        
 
         public ReviewsApiController(IOptions<MongoSettings> mongoSettings, IOptions<EmailSettings> emailSettings, IViewRenderService viewRenderService)
         {
-
+            _MongoSettings = mongoSettings.Value;
+            _client = new MongoClient(_MongoSettings.MongoDbHost);
+            _database = _client.GetDatabase(_MongoSettings.DatabaseName);
         }
 
 

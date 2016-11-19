@@ -11,7 +11,7 @@
       </div>
     </a>
     <div class="list">
-      <a ng-repeat="place in places" class="item item-avatar" ng-click="$parent.gotoDetails(place)">
+      <a ng-repeat="place in places" class="item item-avatar" ng-click="$parent.gotoDetails(place)" ng-class="{'bottom-space-20':$last}">
         <img ng-src="{{getImage(place.type)}}" class="imageTypeList"/>
         <h2>{{place.name}}</h2>
         <p>{{place.type}}</p>

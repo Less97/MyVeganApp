@@ -27,7 +27,7 @@ namespace myVegAppDbAPI.Controllers
             {
                 messageToSend.Status = 1;
             }
-            catch (Exception ex)
+            catch 
             {
                 messageToSend.Status = -1;
             }
