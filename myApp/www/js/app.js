@@ -74,6 +74,11 @@ angular.module('starter', ['ionic','ngCordova','myApp.Controllers', 'myApp.Servi
     templateUrl: 'views/reviews.html',
     controller: 'ReviewsCtrl'
   })
+   .state('addReviews', {
+      url: '/reviews',
+      templateUrl: 'views/addReview.html',
+      controller: 'AddReviewCtrl'
+    })
 
   .state('addPlace', {
       url: '/addPlace',
@@ -81,22 +86,16 @@ angular.module('starter', ['ionic','ngCordova','myApp.Controllers', 'myApp.Servi
       controller: 'AddPlaceCtrl'
     })
 
-  .state('addReview', {
-      url: '/addReview',
-      templateUrl: 'views/addReview.html',
-      controller: 'AddReviewCtrl'
-    })
-  
-  .state('addMenuItem', {
-     url: '/addMenuItem',
-    templateUrl: 'views/addMenuItem.html',
-    controller: 'AddMenuItemCtrl'
-  })
-
   .state('gallery', {
-    url: '/gallery/{id}',
+    url: '/gallery/',
     templateUrl: 'views/gallery.html',
-    controller: 'MenuCtrl'
+    controller: 'GalleryCtrl',
+    params: {id:{dynamic:true}, imgs: { dynamic: true } }
+  })
+  .state('addImage', {
+    url: '/gallery/addImage',
+    templateUrl: 'views/addImage.html',
+    controller: 'AddImageCtrl'
   })
 
   .state('tab.map', {

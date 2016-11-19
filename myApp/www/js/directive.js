@@ -9,7 +9,20 @@ angular.module("myApp.Widgets", [])
         width: '=width'
       }
     }
-  }]).directive("compareTo",function() {
+  }])
+   .directive("myGalleryItem", ['$window', function ($parse, $window) {
+    var myWidth = window.innerWidth - 30;
+    var myHeight = window.innerHeight - 75;
+    return function(scope, element, attrs){
+        element.css({
+                'background-image': 'url(' + attrs.mysrc +')',
+                'background-size':'cover',
+                height:myHeight+'px'
+            });
+    }
+
+  }])
+  .directive("compareTo",function() {
     return {
         require: "ngModel",
         scope: {

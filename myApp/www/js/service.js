@@ -1,7 +1,15 @@
-var address = "http://thecuriouscarrot.com/api/";
-//var address = "http://localhost:51067/api/";
+//var address = "http://thecuriouscarrot.com/api/";
+var address = "http://localhost:51067/api/";
 var currentLoginData = {};
 angular.module('myApp.Service', [])
+  .factory('UtilsService',function($http){
+      return {
+        getBaseUrl:function(){
+          return address;
+        }
+
+      }
+  })
   .factory('LoginService', function ($http) {
     return {
       login: function (eml, pwd, callback) {
@@ -170,6 +178,25 @@ angular.module('myApp.Service', [])
   .factory('ReviewsService', function ($http) {
     return {
       getReviews: function (id, callback) {
+        var req = {
+          url: address + "reviews/getReviews",
+          params: {
+            placeId: id
+          },
+          method: 'GET',
+        };
+        $http(req).success(function (data) {
+          data = JSON.parse(data);
+          callback(data)
+        }).error(function () {
+          callback([]);
+        })
+      }
+    }
+  })
+   .factory('GalleryService', function ($http) {
+    return {
+      get: function (id, callback) {
         var req = {
           url: address + "reviews/getReviews",
           params: {

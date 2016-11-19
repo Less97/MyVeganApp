@@ -1,23 +1,21 @@
 <ion-view view-title="Gallery">
-<!--<ion-nav-buttons side="left">
-    <button class="button back-button buttons button-clear header-item" ng-click="goBack()">
-      <i class="icon ion-ios-arrow-back"> Back</i> 
-    </button>
-  </ion-nav-buttons>-->
-
    <ion-content class="padding">
+   <!--Sorry there are not images yet.-->
+    <div ng-show="isGalleryEmpty">
       <a ng-click="addImage()">
-      <div class="card">
-        <div class="item item-text-wrap main-message padding">
-           Is there something we didn't know? Please tell us clicking here
+        <div class="card">
+          <div class="item item-text-wrap main-message">
+            Sorry, there are not images yet. Do you want to add it? Please do it clicking here
+          </div>
         </div>
-        </div></a>
-       <a ng-repeat="m in menu" class="item item-avatar">
-      <i class="icon ion-ios-nutrition-outline"></i>
-      <h2>{{m.name}}</h2>
-        <span class="item-note">
-      €&nbsp;{{m.price}}
-    </span>
-    </a>
+      </a>
+    </div>
+
+      <ion-slide-box>
+          <ion-slide ng-repeat="img in imgsId">
+            <div my-gallery-item mySrc="http://localhost:51067/api/images/get?imgId=582fa1a87b14990060c36988"></div>
+          </ion-slide>
+     </ion-slide-box>
+
    </ion-content>
 </ion-view>

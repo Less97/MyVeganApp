@@ -95,6 +95,7 @@ namespace myVegAppDbAPI.Controllers.Api
                         { "address","$address"},
                         { "description","$description"},
                         { "website","$website"},
+                        { "gallery","$gallery"},
                         { "type","$type"},
                         { "location","$location"}
                     } },
@@ -114,6 +115,7 @@ namespace myVegAppDbAPI.Controllers.Api
                     { "description","$_id.description"},
                     { "nReviews","$nReviews"},
                     { "type","$_id.type"},
+                    { "gallery","$_id.gallery"},
                     { "rating","$rating"},
                     { "distance","$_id.distance"},
                     { "location","$_id.location"}
@@ -154,9 +156,9 @@ namespace myVegAppDbAPI.Controllers.Api
                            { "name","$name"},
                            { "openingHours","$openingHours"},
                            { "type","$type"},
+                           { "gallery","$gallery"},
                            { "email","$email"},
                            { "location","$location"},
-                           { "menu","$menu"},
                            { "countryId","$countryId"},
                             { "_id","$_id"}
                        }},
@@ -177,11 +179,11 @@ namespace myVegAppDbAPI.Controllers.Api
                        { "name","$_id.name"},
                        { "description","$_id.description"},
                        { "type","$_id.type"},
+                       { "gallery","$_id.gallery"},
                        { "website","$_id.website"},
                        { "email","$_id.email"},
                        { "address","$_id.address"},
                        { "location","$_id.location"},
-                       { "menu","$_id.menu"},
                        { "openingHours","$_id.openingHours"},
                        { "phoneNumber","$_id.phoneNumber"},
                        { "country","$country"}
@@ -216,7 +218,6 @@ namespace myVegAppDbAPI.Controllers.Api
                     Address = model.Address,
                     Email = model.Email,
                     CountryId = new ObjectId(model.CountryId),
-                    Menu = new MenuItem[0],
                     Location = new GeoLoc(model.Latitude, model.Longitude),
                     PhoneNumber = model.PhoneNumber
                 };

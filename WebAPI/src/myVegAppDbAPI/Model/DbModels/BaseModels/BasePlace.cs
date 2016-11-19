@@ -37,9 +37,8 @@ namespace myVegAppDbAPI.Model.DbModels.BaseModels
         [BsonElement("openingHours")]
         public String OpeningHours { get; set; }
 
-        [BsonElement("menu")]
-        public MenuItem[] Menu { get; set; }
-
+        [BsonElement("gallery")]
+        public ObjectId[] Gallery { get; set; }
 
     }
 }

@@ -161,13 +161,13 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     })
   }
 
-
   $scope.openPage = function (website) {
     window.open(website, '_blank');
   }
   $scope.goToGallery = function (details) {
-    $state.go('menu', {
-      id: details._id
+    $state.go('gallery', {
+      id: details._id.$oid,
+      imgs:details.gallery
     })
   }
 })
@@ -249,17 +249,21 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Menu Controller*/
-.controller('MenuCtrl', function ($scope, $state, $stateParams, MenuService) {
-  $scope.menu = MenuService.getMenu($stateParams.id);
-  $scope.goBack = function () {
-    $state.go('details')
+.controller('GalleryCtrl', function ($scope, $state, $stateParams, GalleryService,UtilsService) {
+  $scope.imgsId = $stateParams.imgs;
+  $scope.addImage = function(){
+    $state.go('addImage')
+  };
+  $scope.isGalleryEmpty = $scope.imgsId.length == 0;
+  $scope.getFullUrl = function(img){
+    return UtilsService.getBaseUrl()+'images/get?imgId='+img.$oid;
   }
-  $scope.goToAddMenuItem = function () {
-    $state.go('addMenuItem')
-  }
-
 })
 
+/* Add Image controller*/
+.controller('AddImageCtrl', function ($scope, $state, $stateParams, GalleryService) {
+ 
+})
 
 /*Login Controller*/
 .controller('LoginCtrl', function ($scope, $state, $ionicLoading, LoginService, LoadingHelper) {
