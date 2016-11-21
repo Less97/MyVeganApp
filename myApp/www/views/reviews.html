@@ -1,28 +1,19 @@
 <ion-view view-title="Reviews">
-  <!--<ion-nav-buttons side="left">
-    <button class="button back-button buttons button-clear header-item" ng-click="goBack()">
-      <i class="icon ion-ios-arrow-back"> Back</i> 
-    </button>
-  </ion-nav-buttons>-->
   <ion-content class="padding">
-    <a ng-click="goToAddReview()">
-      <div class="card">
-        <div class="item item-text-wrap main-message" ng-show="isEmpty">
-          Sorry, we don't have any review for this place. You want to leave your feedback? Do it clicking here
+     <div ng-show="noReviews">
+      <a ng-click="addReviews()">
+        <div class="card">
+          <div class="item item-text-wrap main-message">
+            There are not reviews yet. Click here to add yours.
+          </div>
         </div>
-        <div class="item item-text-wrap main-message" ng-hide="isEmpty">
-          You want to leave your feedback? Do it clicking here
-        </div>
-      </div>
-    </a>
-    <ion-item ng-repeat="r in reviews" class="item-avatar">
-      <i class="icon {{r.rating>3?'ion-happy-outline':'ion-sad-outline'}}"></i>
-      <h2>{{r.reviewer}}</h2>
-      <p>{{r.description}}</p>
-      <div class="review">
-        <rating ng-model="r.rating" max="5"></rating>
-      </div>
-    </ion-item>
+      </a>
     </div>
+
+      <ion-slide-box>
+          <ion-slide ng-repeat="r in reviews">
+            <my-gallery-item imgPath="{{getFullUrl(r.imageId)}}"></my-gallery-item>
+          </ion-slide>
+     </ion-slide-box>
   </ion-content>
 </ion-view>

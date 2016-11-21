@@ -227,6 +227,13 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $scope.reviews = rs;
     $scope.isEmpty = rs.length == 0;
   });
+
+  $scope.noReviews = $scope.reviews == 0;
+  
+  $scope.getFullUrl = function(img){
+    return UtilsService.getBaseUrl()+'images/get?imgId='+img.$oid;
+  }
+
   $scope.goToAddReview = function () {
     $state.go('addReview')
   }
@@ -239,10 +246,6 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 .controller('AddReviewCtrl', function ($scope, $stateParams, ReviewsService) {
 
 })
-
-
-
-
 
 /*Info Controller*/
 .controller('InfoCtrl', function ($scope) {})
