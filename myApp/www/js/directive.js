@@ -24,7 +24,7 @@ angular.module("myApp.Widgets", [])
           height: myHeight,
           width: myWidth,
           'background-image': 'url("' + attrs.imgpath + '")',
-          'background-size': 'contain',
+          'background-size': 'cover',
           'background-repeat': 'no-repeat',
           'margin':'0 auto',
           display:'block'

@@ -83,7 +83,9 @@ namespace myVegAppDbAPI.Controllers.Api
                              { "reviewerId",1},
                              { "placeId",1},
                              { "description",1},
-                             { "rating",1}
+                             { "rating",1},
+                             { "imageId",1},
+                             { "title",1}
                          }).As<Review>().
                          ToListAsync();
                 return Json(result.ToJson(jsonWriterSettings));

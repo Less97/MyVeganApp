@@ -19,11 +19,17 @@ namespace myVegAppDbAPI.Model.DbModels
         [BsonElement("reviewerId")]
         public ObjectId ReviewerId { get; set; }
 
+        [BsonElement("imageId")]
+        public ObjectId ImageId { get; set; }
+
         [BsonElement("reviewer")]
         public String Reviewer { get; set; }
 
         [BsonElement("rating")]
         public Double Rating { get; set; }
+
+        [BsonElement("title")]
+        public String Title { get; set; }
 
         [BsonElement("description")]
         public String Description { get; set; }

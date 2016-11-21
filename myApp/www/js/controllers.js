@@ -222,10 +222,11 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Reviews Controller*/
-.controller('ReviewsCtrl', function ($scope, $state, $stateParams, ReviewsService) {
+.controller('ReviewsCtrl', function ($scope, $state, $stateParams, ReviewsService,UtilsService,$ionicSlideBoxDelegate) {
   $scope.reviews = ReviewsService.getReviews($stateParams.id, function (rs) {
     $scope.reviews = rs;
     $scope.isEmpty = rs.length == 0;
+    $ionicSlideBoxDelegate.update()
   });
   $scope.goToAddReview = function () {
     $state.go('addReview')
@@ -233,6 +234,10 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   $scope.goBack = function () {
     $state.go('details')
   }
+  $scope.getFullUrl = function(imgId){
+    return UtilsService.getBaseUrl()+'images/get?imgId='+imgId.$oid;
+  }
+
 })
 
 /*Reviews Controller*/

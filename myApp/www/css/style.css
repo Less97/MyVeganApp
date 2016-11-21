@@ -146,4 +146,23 @@ ul.rating li i {
     margin-bottom:20px;
 }
 
+.review-textContainer{
+    position:absolute;
+    background-color: slategrey;
+    opacity: 0.8;
+   bottom:50px;
+   height:15%;
+   width:100%;
+   padding:0 30px;
+}
+
+.review-internalTextContainer{
+    margin:0 auto;
+    color:white !important;
+}
+
+.review-internalTextContainer h2{
+    color:white;
+}
+
 
