@@ -11,6 +11,9 @@
               <div class="review-internalTextContainer">
                   <h2>{{r.title}}</h2>
                   <p>{{r.description}}</p>
+                  <div class="review">
+                    <rating ng-model="r.rating" max="5" ></rating>
+                  </div>
               </div>
             </div>
           </ion-slide>
