@@ -13,7 +13,7 @@ angular.module("myApp.Widgets", [])
   .directive("myGalleryItem", ['$window', function ($parse, $window) {
 
     var myWidth = (window.innerWidth - 30) + 'px';
-    var myHeight = (window.innerHeight - 50) + 'px';
+    var myHeight = (window.innerHeight - 60) + 'px';
     return {
       replace: true,
       scope: {

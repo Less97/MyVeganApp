@@ -147,13 +147,13 @@ ul.rating li i {
 }
 
 .review-textContainer{
-    position:absolute;
+   position: absolute;
     background-color: slategrey;
     opacity: 0.8;
-   bottom:50px;
-   height:15%;
-   width:100%;
-   padding:0 30px;
+    bottom: 7%;
+    height: 25%;
+    width: 100%;
+    padding: 0 30px;
 }
 
 .review-internalTextContainer{
@@ -165,4 +165,7 @@ ul.rating li i {
     color:white;
 }
 
+.review-textContainer .review .icon.ion-ios-star{
+    font-size:20px;
+}
 
