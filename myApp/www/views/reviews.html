@@ -1,23 +1,19 @@
 <ion-view view-title="Reviews">
-
-
- 
   <ion-content class="padding">
-   
     <ion-slide-box>
-          <ion-slide ng-repeat="r in reviews">
-            <my-gallery-item imgPath="{{getFullUrl(r.imageId)}}"></my-gallery-item>
-            <div class="review-textContainer">
-              <div class="review-internalTextContainer">
-                  <h2>{{r.title}}</h2>
-                  <p>{{r.description}}</p>
-                  <div class="review">
-                    <rating ng-model="r.rating" max="5" ></rating>
-                  </div>
-              </div>
+      <ion-slide ng-repeat="r in reviews">
+        <my-gallery-item imgPath="{{getFullUrl(r.imageId)}}"></my-gallery-item>
+        <div class="review-textContainer">
+          <div class="review-internalTextContainer">
+            <h2>{{r.title}}</h2>
+            <p>{{r.description}}</p>
+            <div class="review">
+              <rating ng-model="r.rating" max="5"></rating>
             </div>
-          </ion-slide>
-     </ion-slide-box>
-
+            <button class="addReview button-balanced button" ng-click="addreview()">Add Review</a>
+          </div>
+        </div>
+      </ion-slide>
+    </ion-slide-box>
   </ion-content>
 </ion-view>

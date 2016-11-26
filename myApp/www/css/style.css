@@ -168,4 +168,13 @@ ul.rating li i {
 .review-textContainer .review .icon.ion-ios-star{
     font-size:20px;
 }
+.review-textContainer .addReview{
+    bottom:20px;
+    right:20px;
+    font-size:18px;
+    position:absolute;
+    text-transform: uppercase;
+    color:white;
+    
+}
 

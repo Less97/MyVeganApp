@@ -74,7 +74,7 @@ angular.module('starter', ['ionic','ngCordova','myApp.Controllers', 'myApp.Servi
     templateUrl: 'views/reviews.html',
     controller: 'ReviewsCtrl'
   })
-   .state('addReviews', {
+   .state('addReview', {
       url: '/reviews',
       templateUrl: 'views/addReview.html',
       controller: 'AddReviewCtrl'
