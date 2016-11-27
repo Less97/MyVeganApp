@@ -11,7 +11,6 @@ angular.module("myApp.Widgets", [])
     }
   }])
   .directive("myGalleryItem", ['$window', function ($parse, $window) {
-
     var myWidth = (window.innerWidth - 30) + 'px';
     var myHeight = (window.innerHeight - 60) + 'px';
     return {
@@ -26,27 +25,50 @@ angular.module("myApp.Widgets", [])
           'background-image': 'url("' + attrs.imgpath + '")',
           'background-size': 'cover',
           'background-repeat': 'no-repeat',
-          'margin':'0 auto',
-          display:'block'
+          'margin': '0 auto',
+          display: 'block'
         })
       },
     };
   }])
-  .directive("compareTo", function () {
-    return {
-      require: "ngModel",
-      scope: {
-        otherModelValue: "=compareTo"
-      },
-      link: function (scope, element, attributes, ngModel) {
+  .directive("myPicture", ['$window', function ($parse, $window) {
+        var myWidth = (window.innerWidth - 30) + 'px';
+        var myHeight = (window.innerHeight - 60) + 'px';
+        return {
+          replace: true,
+          scope: {
+            img: "="
+          },
+          link: function (scope, element, attrs, controllers) {
+            scope.$watch('img', function (v) {
+               element.css({
+                height: myHeight,
+                width: myWidth,
+                'background-image': 'url("' + v + '")',
+                'background-size': 'cover',
+                'background-repeat': 'no-repeat',
+                'margin': '0 auto',
+                display: 'block'
+               })
+            }, true);
+          }
+          };
+  }])
+.directive("compareTo", function () {
+  return {
+    require: "ngModel",
+    scope: {
+      otherModelValue: "=compareTo"
+    },
+    link: function (scope, element, attributes, ngModel) {
 
-        ngModel.$validators.compareTo = function (modelValue) {
-          return modelValue == scope.otherModelValue;
-        };
+      ngModel.$validators.compareTo = function (modelValue) {
+        return modelValue == scope.otherModelValue;
+      };
 
-        scope.$watch("otherModelValue", function () {
-          ngModel.$validate();
-        });
-      }
-    };
-  });
+      scope.$watch("otherModelValue", function () {
+        ngModel.$validate();
+      });
+    }
+  };
+});

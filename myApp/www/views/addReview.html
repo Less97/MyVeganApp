@@ -1,5 +1,25 @@
 <ion-view view-title="Leave a feedback">
-   <ion-content class="padding">
-       You'll can leave a feeback here.
-   </ion-content>
+  <ion-content class="padding">
+    <my-picture img="img"></my-picture>
+    <div class="addReviewFormContainer">
+    </div>
+    <div class="addReviewFormContainer-FormContainer">
+      <h3>Add your review</h3>
+      <label class="item item-input">
+            <input type="text" placeholder="Title">
+        </label>
+      <label class="item item-input">
+            <textarea placeholder="Add your Comment"></textarea>
+        </label>
+        <button class="button button-block button-positive">
+            Save Review
+        </button>
+    </div>
+    <ion-footer-bar align-title="left" class="bar-assertive">
+      <h1 class="title">Title!</h1>
+      <div class="buttons" ng-click="takePicture()">
+        <button class="button">TakePicture</button>
+      </div>
+    </ion-footer-bar>
+  </ion-content>
 </ion-view>
