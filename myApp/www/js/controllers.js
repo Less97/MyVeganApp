@@ -224,7 +224,11 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 })
 
 /*Reviews Controller*/
-.controller('AddReviewCtrl1', function ($scope, $stateParams, $cordovaCamera, ReviewsService, LoadingHelper) {
+.controller('AddReviewCtrl', function ($scope, $stateParams, $cordovaCamera, ReviewsService, LoadingHelper) {
+
+  $scope.review = {}
+  $scope.review.placeId = $stateParams.placeId;
+  $scope.review.reviewerId = UtilsService.getLoginData().user._id.$oid;
 
   var options = {
     quality: 75,
@@ -236,19 +240,26 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   };
 
   $cordovaCamera.getPicture(options).then(function (imageData) {
-    $scope.img = "data:image/jpeg;base64," + imageData;
+    $scope.review.image = "data:image/jpeg;base64," + imageData;
   }, function (err) {
     // An error occured. Show a message to the user
   });
 
 
-  $scope.review = {}
 
   $scope.addreview = function (review, form) {
 
     // check to make sure the form is completely valid
     if (form.$valid) {
-      console.log("valid")
+       LoadingHelper.show();
+       ReviewsService.addReview(review, function (result) {
+        LoadingHelper.hide();
+        if(false){
+          //error
+        }else{
+
+        }
+      })
     } else {
       console.log("invalid");
     }
@@ -256,7 +267,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 })
 
-.controller('AddReviewCtrl', function ($scope, $stateParams, $cordovaCamera, ReviewsService, LoadingHelper,UtilsService) {
+.controller('AddReviewCtrl1', function ($scope, $stateParams, $cordovaCamera, ReviewsService, LoadingHelper,UtilsService) {
    
   $scope.review = {}
   $scope.review.placeId = $stateParams.placeId;
