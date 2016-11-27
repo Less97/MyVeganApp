@@ -1,11 +1,14 @@
-var address = "http://thecuriouscarrot.com/api/";
-//var address = "http://localhost:51067/api/";
+//var address = "http://thecuriouscarrot.com/api/";
+var address = "http://localhost:51067/api/";
 var currentLoginData = {};
 angular.module('myApp.Service', [])
   .factory('UtilsService', function ($http) {
     return {
       getBaseUrl: function () {
         return address;
+      },
+      getLoginData:function(){
+        return currentLoginData;
       }
 
     }
@@ -178,21 +181,24 @@ angular.module('myApp.Service', [])
   .factory('ImageService', function ($http) {
     return {
       saveImage: function (imgData, callback) {
-          var req = {
-            url: address + "images/uploadImage",
-            data: {
-              file: imgData
-            },
-            method: 'POST'
-          };
-          $http(req).success(function (data) {
-
-          }).error(function () {
-            callback(false);
-          })
-
-        } //saveImg
-
+          var fd = new FormData();
+        fd.append("file", imgData);
+        $http.post(address+'images/uploadimage', fd, {
+        withCredentials : false,
+        headers : {
+          'Content-Type' : undefined
+        },
+        transformRequest : angular.identity
+        })
+        .success(function(data)
+        {
+          console.log(data);
+        })
+        .error(function(data)
+        {
+          console.log(data);
+        });
+      }
     }
   })
   .factory('ReviewsService', function ($http) {
@@ -210,6 +216,19 @@ angular.module('myApp.Service', [])
           callback(data)
         }).error(function () {
           callback([]);
+        })
+      },
+      addReview:function(rev,callback){
+         var req = {
+          url: address + "reviews/addreview",
+          data: rev,
+          method: 'POST',
+        };
+        $http(req).success(function (data) {
+          data = JSON.parse(data);
+          callback(data)
+        }).error(function () {
+          callback(false)
         })
       }
     }

@@ -70,6 +70,16 @@ namespace myVegAppDbAPI.Controllers.Api
             }
         }
 
+        [HttpPost("uploadImage64")]
+        [Produces("application/json")]
+        [Consumes("application/json", "application/json-patch+json", "multipart/form-data")]
+        public async Task<IActionResult> UploadImage64([FromBody] UploadImage img)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
         [HttpGet("get")]
         public async Task<IActionResult> Get(String imgId)
         {

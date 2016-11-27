@@ -58,7 +58,8 @@ namespace myVegAppDbAPI.Controllers.Api
                     { "placeId",ObjectId.Parse(model.PlaceId)},
                     { "reviewerId",ObjectId.Parse(model.ReviewerId)},
                     { "rating",model.Rating},
-                    { "description",model.Description}
+                    { "description",model.Description},
+                    { "title",model.Title}
                 });
                 return Json(new { error = 0, result = 1 });
             }

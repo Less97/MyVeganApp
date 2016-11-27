@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace myVegAppDbAPI.Model.APIModels
 {
-    public class AddImage
+    public class UploadImage
     {
-        public String PlaceId { get; set; }
+        public String Image { get; set; }
     }
 }

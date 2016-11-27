@@ -19,14 +19,12 @@
    <label class="item" ng-show="form.comment.$error.required&&(form.$submitted || form.comment.$touched)">
     <span class="red-warning" >Please a valid Rating</span>
   </label>
-
-
         <label class="item item-input item-stacked-label">
-   <span class="input-label">Comment</span>
-   <textarea ng-model="review.comment" name="comment" placeholder="I had a really nice ..." required></textarea>
+   <span class="input-label">Description</span>
+   <textarea ng-model="review.description" name="comment" placeholder="I had a really nice ..." required></textarea>
   </label>
-        <label class="item" ng-show="form.comment.$error.required&&(form.$submitted || form.comment.$touched)">
-    <span class="red-warning" >Please insert a Comment</span>
+        <label class="item" ng-show="form.description.$error.required&&(form.$submitted || form.description.$touched)">
+    <span class="red-warning" >Please insert a Description</span>
   </label>
   
   <div class="padding">

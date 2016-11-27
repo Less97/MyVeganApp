@@ -77,7 +77,8 @@ angular.module('starter', ['ionic','ngCordova','myApp.Controllers', 'myApp.Servi
    .state('addReview', {
       url: '/reviews',
       templateUrl: 'views/addReview.html',
-      controller: 'AddReviewCtrl'
+      controller: 'AddReviewCtrl',
+      params:{placeId:{dynamic:true}}
     })
 
   .state('addPlace', {
