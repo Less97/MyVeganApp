@@ -201,3 +201,16 @@ ul.rating li i {
     color:white  ;
 }
 
+.centered-text{
+    text-align: center;
+}
+
+.addreview ul.rating li i {
+    font-size: 30px;
+}
+.reviewLabelFix{
+    padding: 6px 0 5px 16px;
+    display: block;
+    background-color: transparent;
+    box-shadow: none;
+}
