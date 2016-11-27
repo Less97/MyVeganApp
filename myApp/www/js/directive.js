@@ -23,7 +23,7 @@ angular.module("myApp.Widgets", [])
           height: myHeight,
           width: myWidth,
           'background-image': 'url("' + attrs.imgpath + '")',
-          'background-size': 'cover',
+          'background-size': 'contain',
           'background-repeat': 'no-repeat',
           'margin': '0 auto',
           display: 'block'
@@ -45,7 +45,7 @@ angular.module("myApp.Widgets", [])
                 height: myHeight,
                 width: myWidth,
                 'background-image': 'url("' + v + '")',
-                'background-size': 'cover',
+                'background-size': 'contain',
                 'background-repeat': 'no-repeat',
                 'margin': '0 auto',
                 display: 'block'
