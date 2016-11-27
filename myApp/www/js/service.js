@@ -2,13 +2,13 @@ var address = "http://thecuriouscarrot.com/api/";
 //var address = "http://localhost:51067/api/";
 var currentLoginData = {};
 angular.module('myApp.Service', [])
-  .factory('UtilsService',function($http){
-      return {
-        getBaseUrl:function(){
-          return address;
-        }
-
+  .factory('UtilsService', function ($http) {
+    return {
+      getBaseUrl: function () {
+        return address;
       }
+
+    }
   })
   .factory('LoginService', function ($http) {
     return {
@@ -147,32 +147,52 @@ angular.module('myApp.Service', [])
             callback([]);
           })
         },
-        submitPlace:function(plc,callback){
-            var req = {
-              url:address+'places/createPlace',
-              data:{
-                name:plc.name,
-                type:plc.type,
-                website:plc.website,
-                description:plc.description,
-                openingHours:plc.openingHours,
-                phoneNumber:plc.phoneNumber,
-                email:plc.email,
-                latitude:plc.location.geometry.location.lat(),
-                longitude:plc.location.geometry.location.lng(),
-                address:plc.location.formatted_address,
-                countryId:plc.country
-              },
-              method:'POST'
-            }
-            $http(req).success(function(data){
-                var obj = JSON.parse(data);
-                callback(obj);
-            }).error(function(){
-              callback(false);
-            })
+        submitPlace: function (plc, callback) {
+          var req = {
+            url: address + 'places/createPlace',
+            data: {
+              name: plc.name,
+              type: plc.type,
+              website: plc.website,
+              description: plc.description,
+              openingHours: plc.openingHours,
+              phoneNumber: plc.phoneNumber,
+              email: plc.email,
+              latitude: plc.location.geometry.location.lat(),
+              longitude: plc.location.geometry.location.lng(),
+              address: plc.location.formatted_address,
+              countryId: plc.country
+            },
+            method: 'POST'
+          }
+          $http(req).success(function (data) {
+            var obj = JSON.parse(data);
+            callback(obj);
+          }).error(function () {
+            callback(false);
+          })
         }
       }
+    }
+  })
+  .factory('ImageService', function ($http) {
+    return {
+      saveImage: function (imgData, callback) {
+          var req = {
+            url: address + "images/uploadImage",
+            data: {
+              file: imgData
+            },
+            method: 'POST'
+          };
+          $http(req).success(function (data) {
+
+          }).error(function () {
+            callback(false);
+          })
+
+        } //saveImg
+
     }
   })
   .factory('ReviewsService', function ($http) {
@@ -194,7 +214,7 @@ angular.module('myApp.Service', [])
       }
     }
   })
-   .factory('GalleryService', function ($http) {
+  .factory('GalleryService', function ($http) {
     return {
       get: function (id, callback) {
         var req = {

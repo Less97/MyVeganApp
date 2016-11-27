@@ -222,7 +222,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 })
 
 /*Reviews Controller*/
-.controller('AddReviewCtrl', function ($scope, $stateParams, $cordovaCamera, ReviewsService) {
+.controller('AddReviewCtrl1', function ($scope, $stateParams, $cordovaCamera, ReviewsService) {
 
   var options = {
     quality: 75,
@@ -254,7 +254,7 @@ $scope.review = { }
 
 })
 
-.controller('AddReviewCtrl1', function ($scope, $stateParams, $cordovaCamera, ReviewsService) {
+.controller('AddReviewCtrl', function ($scope, $stateParams, $cordovaCamera, ReviewsService) {
   $scope.img = "";
 
   $scope.takePicture = function () {
@@ -267,9 +267,11 @@ $scope.review = { }
 
     // check to make sure the form is completely valid
     if (form.$valid) {
-     console.log("valid")
+     
+
+     
     }else{
-      console.log("invalid");
+      
     }
   }; //register
 
