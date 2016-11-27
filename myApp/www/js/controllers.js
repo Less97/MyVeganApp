@@ -224,7 +224,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 })
 
 /*Reviews Controller*/
-.controller('AddReviewCtrl', function ($scope, $stateParams, $cordovaCamera, ReviewsService, LoadingHelper) {
+.controller('AddReviewCtrl1', function ($scope, $stateParams, $cordovaCamera, ReviewsService, LoadingHelper,UtilsService) {
 
   $scope.review = {}
   $scope.review.placeId = $stateParams.placeId;
@@ -244,8 +244,6 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   }, function (err) {
     // An error occured. Show a message to the user
   });
-
-
 
   $scope.addreview = function (review, form) {
 
@@ -267,7 +265,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 })
 
-.controller('AddReviewCtrl1', function ($scope, $stateParams, $cordovaCamera, ReviewsService, LoadingHelper,UtilsService) {
+.controller('AddReviewCtrl', function ($scope, $stateParams, $cordovaCamera, ReviewsService, LoadingHelper,UtilsService) {
    
   $scope.review = {}
   $scope.review.placeId = $stateParams.placeId;

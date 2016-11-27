@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
 using myVegAppDbAPI.Helpers;
 using myVegAppDbAPI.Helpers.Project.Utilities;
 using myVegAppDbAPI.Model.APIModels;
@@ -12,7 +13,9 @@ using myVegAppDbAPI.Model.DbModels.ReadModels;
 using myVegAppDbAPI.Model.Settings;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace myVegAppDbAPI.Controllers.Api
@@ -24,7 +27,7 @@ namespace myVegAppDbAPI.Controllers.Api
         private MongoClient _client;
         private IMongoDatabase _database;
         private MongoSettings _MongoSettings;
-
+        private GridFSBucket _imagesBucket;
         private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
        
 
@@ -33,9 +36,22 @@ namespace myVegAppDbAPI.Controllers.Api
             _MongoSettings = mongoSettings.Value;
             _client = new MongoClient(_MongoSettings.MongoDbHost);
             _database = _client.GetDatabase(_MongoSettings.DatabaseName);
+            _imagesBucket = new GridFSBucket(_database, new GridFSBucketOptions()
+            {
+                BucketName = "gallery"
+            });
         }
 
+        [NonAction]
+        public async Task<String> SaveImage(String image) {
+            image = image.Replace("data:image/jpeg;base64,", "");
+            byte[] toBytes = Encoding.ASCII.GetBytes(image);
+            using (Stream mystream = new MemoryStream(toBytes)) {
+                var myId = await _imagesBucket.UploadFromStreamAsync(String.Empty, mystream);
+                return myId.ToString();
+            }
 
+        }
 
         [HttpPost("addReview")]
         public async Task<JsonResult> AddReview([FromBody] CreateReview model)
@@ -54,12 +70,16 @@ namespace myVegAppDbAPI.Controllers.Api
                 var reviewer = await usersCollection.Find(findMyReviewerFilter).FirstAsync();
                 if (reviewer == null)
                     return Json(new { error = 1, errorMessage = "Reviewer not found" });
+
+                var imgId = await SaveImage(model.Image);
+
                 await reviewsCollection.InsertOneAsync(new BsonDocument() {
                     { "placeId",ObjectId.Parse(model.PlaceId)},
                     { "reviewerId",ObjectId.Parse(model.ReviewerId)},
                     { "rating",model.Rating},
                     { "description",model.Description},
-                    { "title",model.Title}
+                    { "title",model.Title},
+                    { "imageId",imgId}
                 });
                 return Json(new { error = 0, result = 1 });
             }
