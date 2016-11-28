@@ -43,9 +43,14 @@ namespace myVegAppDbAPI.Controllers.Api
         }
 
         [NonAction]
-        public async Task<String> SaveImage(String image) {
-            image = image.Replace("data:image/jpeg;base64,", "");
-            byte[] toBytes = Encoding.ASCII.GetBytes(image);
+        public async Task<String> SaveImage(String image)
+        {
+            image = image.Replace("data:image/jpeg;base64,", String.Empty)
+                .Replace("data:image/png;base64,", String.Empty)
+                .Replace("data:image/gif;base64,", String.Empty)
+                .Replace("data:image/bmp;base64,", String.Empty);
+            byte[] toBytes = Convert.FromBase64String(image);
+           
             using (Stream mystream = new MemoryStream(toBytes)) {
                 var myId = await _imagesBucket.UploadFromStreamAsync(String.Empty, mystream);
                 return myId.ToString();
