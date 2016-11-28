@@ -41,41 +41,29 @@ namespace myVegAppDbAPI.Controllers.Api
             });
         }
 
-
-        [HttpPost("uploadImage")]
-        [Produces("application/json")]
-        [Consumes("application/json","application/json-patch+json","multipart/form-data")]
-        public async Task<IActionResult> UploadImage(IFormFile file)
-        {
-            try
-            {
-                long size = 0;
-
-                var filename = ContentDispositionHeaderValue
-                                .Parse(file.ContentDisposition)
-                                .FileName
-                                .Trim('"');
-                filename = hostingEnv.WebRootPath + $@"\{file.FileName}";
-                size += file.Length;
-                Stream stream = file.OpenReadStream();
-                using (var memoryStream = new MemoryStream())
-                {
-                    var myId = await _imagesBucket.UploadFromStreamAsync(filename, stream);
-                    return Json(new { result = 1, imageId = myId }.ToJson(jsonWriterSettings));
-                }
-              
-            }
-            catch (Exception ex) {
-                return Json(ex.RaiseException());
-            }
-        }
-
         [HttpPost("uploadImage64")]
         [Produces("application/json")]
         [Consumes("application/json", "application/json-patch+json", "multipart/form-data")]
         public async Task<IActionResult> UploadImage64([FromBody] UploadImage img)
         {
-            throw new NotImplementedException();
+            try
+            {
+                img.Image = img.Image.Replace("data:image/jpeg;base64,", String.Empty)
+                    .Replace("data:image/png;base64,", String.Empty)
+                    .Replace("data:image/gif;base64,", String.Empty)
+                    .Replace("data:image/bmp;base64,", String.Empty);
+                byte[] toBytes = Convert.FromBase64String(img.Image);
+
+                using (Stream mystream = new MemoryStream(toBytes))
+                {
+                    var myId = await _imagesBucket.UploadFromStreamAsync(String.Empty, mystream);
+                    return Json(new {id = myId.ToString()}.ToJson(jsonWriterSettings));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.RaiseException());
+            }
         }
 
 
