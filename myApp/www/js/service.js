@@ -1,5 +1,5 @@
-//var address = "http://thecuriouscarrot.com/api/";
-var address = "http://localhost:51067/api/";
+var address = "http://thecuriouscarrot.com/api/";
+//var address = "http://localhost:51067/api/";
 var currentLoginData = {};
 angular.module('myApp.Service', [])
   .factory('UtilsService', function ($http) {
@@ -224,10 +224,15 @@ angular.module('myApp.Service', [])
           data: rev,
           method: 'POST',
         };
+        
+        console.dir(req)
+        console.dir(rev);
         $http(req).success(function (data) {
+          console.log("received data"+data);
           data = JSON.parse(data);
           callback(data)
-        }).error(function () {
+        }).error(function (error) {
+          console.log("add review call didn't work"+error)
           callback(false)
         })
       }
