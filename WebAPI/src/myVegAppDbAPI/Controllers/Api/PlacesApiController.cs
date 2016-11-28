@@ -14,8 +14,11 @@ using myVegAppDbAPI.Model.DbModels.InsertModels;
 using myVegAppDbAPI.Model.DbModels.ReadModels;
 using myVegAppDbAPI.Model.Settings;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Driver.Builders;
+using MongoDB.Driver.GridFS;
 
 namespace myVegAppDbAPI.Controllers.Api
 {
@@ -28,7 +31,9 @@ namespace myVegAppDbAPI.Controllers.Api
         private MongoSettings _MongoSettings;
         private EmailSettings _EmailSettings;
         private EmailHelper _emailHelper;
+        private GridFSBucket _imagesBucket;
         private IViewRenderService _renderService;
+      
 
         private readonly JsonWriterSettings jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
 
@@ -39,6 +44,10 @@ namespace myVegAppDbAPI.Controllers.Api
             _client = new MongoClient(_MongoSettings.MongoDbHost);
             _database = _client.GetDatabase(_MongoSettings.DatabaseName);
             _emailHelper = new EmailHelper(_EmailSettings);
+            _imagesBucket = new GridFSBucket(_database, new GridFSBucketOptions()
+            {
+                BucketName = "gallery"
+            });
             this._renderService = viewRenderService;
         }
 
@@ -224,7 +233,42 @@ namespace myVegAppDbAPI.Controllers.Api
             }
         }
 
-        
+        [HttpPost("createPlace")]
+        public async Task<JsonResult> AddGalleryItem([FromBody] GalleryItem model)
+        {
+            try
+            {
+                IMongoCollection<ReadPlace> places = _database.GetCollection<ReadPlace>("places");
+                var myPlaceId = ObjectId.Parse(model.placeId);
+                var myImgId = await SaveImage(model.Image);
+                var addImageFilter = Builders<ReadPlace>.Update.Push(x => x.Gallery, ObjectId.Parse(myImgId));
+                await places.UpdateOneAsync(x=>x.Id== myPlaceId, addImageFilter);
+                return Json(new {result = 1});
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.RaiseException());
+            }
+        }
+
+        [NonAction]
+        public async Task<String> SaveImage(String image)
+        {
+            image = image.Replace("data:image/jpeg;base64,", String.Empty)
+                .Replace("data:image/png;base64,", String.Empty)
+                .Replace("data:image/gif;base64,", String.Empty)
+                .Replace("data:image/bmp;base64,", String.Empty);
+            byte[] toBytes = Convert.FromBase64String(image);
+
+            using (Stream mystream = new MemoryStream(toBytes))
+            {
+                var myId = await _imagesBucket.UploadFromStreamAsync(String.Empty, mystream);
+                return myId.ToString();
+            }
+
+        }
+
+
 
     }
 }
