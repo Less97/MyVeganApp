@@ -279,8 +279,11 @@ angular.module('myApp.Controllers', ['ionic.rating'])
       LoadingHelper.show();
       ReviewsService.addReview(review, function (result) {
         LoadingHelper.hide();
-        if(false){
+        if(result==false){
           //error
+          alert("Sorry, there was a problem during saving the review. Please Check the connection and retry");
+        }else if(result.result==1){
+          alert("Review created correctly.")
         }
       })
 
