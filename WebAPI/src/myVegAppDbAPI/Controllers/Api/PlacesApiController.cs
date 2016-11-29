@@ -239,7 +239,7 @@ namespace myVegAppDbAPI.Controllers.Api
             try
             {
                 IMongoCollection<ReadPlace> places = _database.GetCollection<ReadPlace>("places");
-                var myPlaceId = ObjectId.Parse(model.placeId);
+                var myPlaceId = ObjectId.Parse(model.PlaceId);
                 var myImgId = await SaveImage(model.Image);
                 var addImageFilter = Builders<ReadPlace>.Update.Push(x => x.Gallery, ObjectId.Parse(myImgId));
                 await places.UpdateOneAsync(x=>x.Id== myPlaceId, addImageFilter);
