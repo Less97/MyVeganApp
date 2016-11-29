@@ -86,7 +86,7 @@ namespace myVegAppDbAPI.Controllers.Api
                     { "title",model.Title},
                     { "imageId",imgId}
                 });
-                return Json(new { error = 0, result = 1 });
+                return Json(new { error = 0, result = 1 }.ToJson(jsonWriterSettings));
             }
             catch (Exception ex)
             {

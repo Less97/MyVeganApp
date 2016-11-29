@@ -7,7 +7,7 @@ namespace myVegAppDbAPI.Model.APIModels
 {
     public class GalleryItem
     {
-        public String placeId { get; set; }
+        public String PlaceId { get; set; }
         public String Image { get; set; }
     }
 }
