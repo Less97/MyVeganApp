@@ -282,7 +282,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 })
 
 /* Add Image controller*/
-.controller('AddImageCtrl', function ($scope, $state, $stateParams, PlacesService) {
+.controller('AddImageCtrl', function ($scope, $state, $stateParams,$cordovaCamera, PlacesService) {
 
   var pId = $stateParams.placeId;
 
