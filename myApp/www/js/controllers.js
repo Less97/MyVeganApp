@@ -273,7 +273,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 .controller('GalleryCtrl', function ($scope, $state, $stateParams, GalleryService, UtilsService) {
   $scope.imgsId = $stateParams.imgs;
   $scope.addImage = function () {
-    $state.go('addImage')
+    $state.go('addImage',{placeId:$stateParams.id})
   };
   $scope.isGalleryEmpty = $scope.imgsId.length == 0;
   $scope.getFullUrl = function (img) {
@@ -282,8 +282,24 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 })
 
 /* Add Image controller*/
-.controller('AddImageCtrl', function ($scope, $state, $stateParams, GalleryService) {
+.controller('AddImageCtrl', function ($scope, $state, $stateParams, PlacesService) {
 
+  var pId = $stateParams.placeId;
+
+  var options = {
+    quality: 75,
+    destinationType: Camera.DestinationType.DATA_URL,
+    sourceType: Camera.PictureSourceType.CAMERA,
+    encodingType: Camera.EncodingType.JPEG,
+    saveToPhotoAlbum: true,
+    correctOrientation: true
+  };
+
+  $cordovaCamera.getPicture(options).then(function (imageData) {
+    $scope.image = "data:image/jpeg;base64," + imageData;
+  }, function (err) {
+    // An error occured. Show a message to the user
+  });
 })
 
 /*Login Controller*/

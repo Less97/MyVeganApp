@@ -1,5 +1,12 @@
 <ion-view view-title="Reviews">
   <ion-content class="padding">
+     <a ng-click="addreview()" ng-show="reviews.length==0">
+      <div class="card">
+        <div class="item item-text-wrap main-message">
+          Sorry, we haven't any review of this place yet. Please feel free to add yours clicking here'
+        </div>
+      </div>
+    </a>
     <ion-slide-box>
       <ion-slide ng-repeat="r in reviews">
         <my-gallery-item imgPath="{{getFullUrl(r.imageId)}}"></my-gallery-item>

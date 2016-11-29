@@ -96,7 +96,8 @@ angular.module('starter', ['ionic','ngCordova','myApp.Controllers', 'myApp.Servi
   .state('addImage', {
     url: '/gallery/addImage',
     templateUrl: 'views/addImage.html',
-    controller: 'AddImageCtrl'
+    controller: 'AddImageCtrl',
+    params:{placeId:{dynamic:true}}
   })
 
   .state('tab.map', {
