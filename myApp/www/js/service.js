@@ -174,6 +174,20 @@ angular.module('myApp.Service', [])
           }).error(function () {
             callback(false);
           })
+        },
+        addGalleryItem: function(galleryItm,callback){
+          var req = {
+            url: address + 'places/addGalleryItem',
+            method:'POST',
+            data:galleryItm
+          }
+          $http(req)
+          .success(function(data){
+            callback(data);
+          })
+          .error(function(){
+            callback(false)
+          })
         }
       }
     }

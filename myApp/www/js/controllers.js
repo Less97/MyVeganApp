@@ -210,8 +210,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   }
 
   $scope.addreview = function () {
-    $state.go('addReview',{
-      placeId:$stateParams.id
+    $state.go('addReview', {
+      placeId: $stateParams.id
     })
   }
   $scope.goBack = function () {
@@ -224,7 +224,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 })
 
 /*Reviews Controller*/
-.controller('AddReviewCtrl', function ($scope, $stateParams, $cordovaCamera, ReviewsService, LoadingHelper,UtilsService) {
+.controller('AddReviewCtrl', function ($scope, $stateParams, $cordovaCamera, ReviewsService, LoadingHelper, UtilsService) {
 
   $scope.review = {}
   $scope.review.placeId = $stateParams.placeId;
@@ -249,12 +249,12 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
     // check to make sure the form is completely valid
     if (form.$valid) {
-       LoadingHelper.show();
-       ReviewsService.addReview(review, function (result) {
+      LoadingHelper.show();
+      ReviewsService.addReview(review, function (result) {
         LoadingHelper.hide();
-        if(false){
+        if (false) {
           //error
-        }else{
+        } else {
 
         }
       })
@@ -273,7 +273,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 .controller('GalleryCtrl', function ($scope, $state, $stateParams, GalleryService, UtilsService) {
   $scope.imgsId = $stateParams.imgs;
   $scope.addImage = function () {
-    $state.go('addImage',{placeId:$stateParams.id})
+    $state.go('addImage', {
+      placeId: $stateParams.id
+    })
   };
   $scope.isGalleryEmpty = $scope.imgsId.length == 0;
   $scope.getFullUrl = function (img) {
@@ -282,7 +284,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 })
 
 /* Add Image controller*/
-.controller('AddImageCtrl', function ($scope, $state, $stateParams,$cordovaCamera, PlacesService) {
+.controller('AddImageCtrl', function ($scope, $state, $stateParams, $cordovaCamera, PlacesService) {
 
   var pId = $stateParams.placeId;
 
@@ -297,6 +299,17 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
   $cordovaCamera.getPicture(options).then(function (imageData) {
     $scope.image = "data:image/jpeg;base64," + imageData;
+    var myObj = {
+      img: $scope.image,
+      placeId: pId
+    }
+    PlacesService.addGalleryItem(myObj,function(result){
+      if(result.hasOwnProperty("error")&&result.error==true){
+        //showError
+      }else{
+        $state.go("details",{id:pId});
+      }
+    });
   }, function (err) {
     // An error occured. Show a message to the user
   });
