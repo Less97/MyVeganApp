@@ -224,7 +224,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 })
 
 /*Reviews Controller*/
-.controller('AddReviewCtrl', function ($scope, $stateParams, $cordovaCamera, ReviewsService, LoadingHelper, UtilsService) {
+.controller('AddReviewCtrl', function ($scope, $stateParams, $cordovaCamera, ReviewsService, LoadingHelper, UtilsService,ResponseHelper) {
 
   $scope.review = {}
   $scope.review.placeId = $stateParams.placeId;
@@ -242,7 +242,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   $cordovaCamera.getPicture(options).then(function (imageData) {
     $scope.review.image = "data:image/jpeg;base64," + imageData;
   }, function (err) {
-    // An error occured. Show a message to the user
+    
   });
 
   $scope.addreview = function (review, form) {
@@ -252,15 +252,17 @@ angular.module('myApp.Controllers', ['ionic.rating'])
       LoadingHelper.show();
       ReviewsService.addReview(review, function (result) {
         LoadingHelper.hide();
-        if (false) {
-          //error
-        } else {
-
-        }
+        ResponseHelper.handleSaveResponse(result,
+          {
+            successText:"Thank you. Your review has been saved correctly",
+            errorText:"Sorry, there was a problem saving your review. Please retry."
+          },function(){
+            $state.go("details",{id:$stateParams.placeId})
+          })
       })
     } else {
       console.log("invalid");
-    }
+    } 
   }; //register
 
 })
@@ -284,7 +286,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 })
 
 /* Add Image controller*/
-.controller('AddImageCtrl', function ($scope, $state, $stateParams, $cordovaCamera, PlacesService) {
+.controller('AddImageCtrl', function ($scope, $state, $stateParams, $ionicPopup, $cordovaCamera, LoadingHelper, PlacesService, ResponseHelper) {
 
   var pId = $stateParams.placeId;
 
@@ -300,20 +302,29 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   $cordovaCamera.getPicture(options).then(function (imageData) {
     $scope.image = "data:image/jpeg;base64," + imageData;
     var myObj = {
-      img: $scope.image,
+      image: $scope.image,
       placeId: pId
     }
-    PlacesService.addGalleryItem(myObj,function(result){
-      if(result.hasOwnProperty("error")&&result.error==true){
-        //showError
-      }else{
-        $state.go("details",{id:pId});
-      }
+    LoadingHelper.show();
+    PlacesService.addGalleryItem(myObj, function (result) {
+      LoadingHelper.hide();
+      ResponseHelper.handleSaveResponse(result,{
+        errorText: "Sorry, an error occurred during saving.",
+        successText: "Thank you. We saved correctly your image"
+      },function(){
+        $state.go("details",{id:pId})
+      });
+      
     });
   }, function (err) {
-    // An error occured. Show a message to the user
+    ResponseHelper.showError({
+      errorText: "Sorry, there was an error taking the picture"
+    }, function () {
+      $state.go("details",{id:pId})
+    })
   });
 })
+
 
 /*Login Controller*/
 .controller('LoginCtrl', function ($scope, $state, $ionicLoading, LoginService, LoadingHelper) {
