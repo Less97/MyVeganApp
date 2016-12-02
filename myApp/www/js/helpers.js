@@ -27,39 +27,46 @@ angular.module('myApp.Helpers', [])
   })
   .factory("ResponseHelper", function ($ionicPopup) {
     return {
-      handleSaveResponse: function (result,messages, callback) {
-        if (result.hasOwnProperty("error") && result.error == true) {
-         
-            var alertPopup = $ionicPopup.alert({
-              title: 'Error',
-              template: messages.errorText
-            });
+      handleSaveResponse: function (result, messages, callback) {
+        if (result.hasOwnProperty("Error") && result.Error == true) {
 
-            alertPopup.then(function (res) {
-              callback()
-            });
-
-
-        } else {
-            var alertPopup = $ionicPopup.alert({
-              title: 'Success',
-              template: messages.successText
-            });
-
-            alertPopup.then(function (res) {
-              callback()
-            });
-        }
-
-      },
-      showError: function (messages, callback) {
           var alertPopup = $ionicPopup.alert({
             title: 'Error',
             template: messages.errorText
           });
+
           alertPopup.then(function (res) {
             callback()
           });
+
+
+        } else {
+          var alertPopup = $ionicPopup.alert({
+            title: 'Success',
+            template: messages.successText
+          });
+
+          alertPopup.then(function (res) {
+            callback()
+          });
+        }
+
       }
+
     }
-  });
+  })
+  .factory("PopupHelper", function ($ionicPopup) {
+    return {
+      showError: function (messages, callback) {
+        var alertPopup = $ionicPopup.alert({
+          title: 'Error',
+          template: messages.errorText
+        });
+        alertPopup.then(function (res) {
+          callback()
+        });
+      }
+
+    }
+
+  })

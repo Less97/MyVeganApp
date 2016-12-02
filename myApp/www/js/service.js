@@ -176,16 +176,25 @@ angular.module('myApp.Service', [])
           })
         },
         addGalleryItem: function(galleryItm,callback){
+          console.log("adding gallery item;");
+          console.log("myItm:");
+          console.dir(galleryItm)
           var req = {
             url: address + 'places/addGalleryItem',
             method:'POST',
             data:galleryItm
           }
+          console.log("request");
+          console.dir(req);
           $http(req)
           .success(function(data){
-            callback(data);
+            var result = JSON.parse(data);
+            console.log("success result:"+result);
+            callback(result);
           })
-          .error(function(){
+          .error(function(result){
+            console.log("cannot connect error: "+result);
+            console.dir(result);
             callback(false)
           })
         }
@@ -233,20 +242,22 @@ angular.module('myApp.Service', [])
         })
       },
       addReview:function(rev,callback){
+         console.log("adding review");
+         console.dir(rev);
          var req = {
           url: address + "reviews/addreview",
           data: rev,
           method: 'POST',
         };
-        
-        console.dir(req)
-        console.dir(rev);
+        console.log("----------");
+        console.dir(req);
         $http(req).success(function (data) {
-          console.log("received data"+data);
           data = JSON.parse(data);
+          console.log(data);
           callback(data)
         }).error(function (error) {
-          console.log("add review call didn't work"+error)
+          console.log("error connecting to add review");
+          console.dir(error);
           callback(false)
         })
       }
