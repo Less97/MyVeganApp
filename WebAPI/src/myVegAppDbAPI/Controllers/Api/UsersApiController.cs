@@ -78,7 +78,7 @@ namespace myVegAppDbAPI.Controllers.Api
             }
             catch (Exception ex)
             {
-                return Json(new { Error = true, Message = ex });
+                return Json(new { Error = true, Message = ex }.ToJson(jsonWriterSettings));
             }
         }
 

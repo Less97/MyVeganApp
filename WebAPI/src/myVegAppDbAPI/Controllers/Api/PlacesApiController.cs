@@ -233,7 +233,7 @@ namespace myVegAppDbAPI.Controllers.Api
             }
         }
 
-        [HttpPost("createPlace")]
+        [HttpPost("AddGalleryItem")]
         public async Task<JsonResult> AddGalleryItem([FromBody] GalleryItem model)
         {
             try
@@ -243,11 +243,11 @@ namespace myVegAppDbAPI.Controllers.Api
                 var myImgId = await SaveImage(model.Image);
                 var addImageFilter = Builders<ReadPlace>.Update.Push(x => x.Gallery, ObjectId.Parse(myImgId));
                 await places.UpdateOneAsync(x=>x.Id== myPlaceId, addImageFilter);
-                return Json(new {result = 1});
+                return Json(new {result = 1}.ToJson(jsonWriterSettings));
             }
             catch (Exception ex)
             {
-                return Json(ex.RaiseException());
+                return Json(ex.RaiseException().ToJson(jsonWriterSettings));
             }
         }
 

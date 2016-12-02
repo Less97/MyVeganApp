@@ -352,7 +352,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 
 /*Login Controller*/
-.controller('LoginCtrl', function ($scope, $state, $ionicLoading, LoginService, LoadingHelper) {
+.controller('LoginCtrl', function ($scope, $state, $ionicLoading, LoginService, LoadingHelper,PopupHelper) {
   $scope.user = {
     email: '',
     password: '',
@@ -366,6 +366,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     LoadingHelper.show();
 
     LoginService.login(user.email, user.password, function (result, data) {
+      if(result==false){
+        PopupHelper.showError({errorText:"Sorry there was a problem connecting to the service."})
+      }
       LoadingHelper.hide();
       if (result == true) {
         $state.go("tab.map")
