@@ -1,5 +1,5 @@
-var address = "http://thecuriouscarrot.com/api/";
-//var address = "http://localhost:51067/api/";
+//var address = "http://thecuriouscarrot.com/api/";
+var address = "http://localhost:51067/api/";
 var currentLoginData = {};
 angular.module('myApp.Service', [])
   .factory('UtilsService', function ($http) {
@@ -130,7 +130,7 @@ angular.module('myApp.Service', [])
             data = JSON.parse(data);
             callback(data)
           }).error(function () {
-            callback([]);
+            callback(false);
           })
         },
         getDetails: function (id, latitude, longitude, callback) {
@@ -147,7 +147,7 @@ angular.module('myApp.Service', [])
             data = JSON.parse(data);
             callback(data)
           }).error(function () {
-            callback([]);
+            callback(false);
           })
         },
         submitPlace: function (plc, callback) {

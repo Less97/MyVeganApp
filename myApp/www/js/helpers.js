@@ -50,7 +50,21 @@ angular.module('myApp.Helpers', [])
             callback()
           });
         }
+      },
+      handleResponse:function(result,messages,callbackSuccess,callbackFailed){
+         if (result == false) {
 
+          var alertPopup = $ionicPopup.alert({
+            title: 'Error',
+            template: messages.errorText
+          });
+
+          alertPopup.then(function (res) {
+            callbackFailed()
+          });
+        }else{
+          callbackSuccess();
+        }
       }
 
     }
