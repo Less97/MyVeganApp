@@ -115,17 +115,19 @@ $ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper) {
 })
 
 /*Details Controller*/
-.controller('DetailsCtrl', function ($scope, $stateParams, $state, PlacesService, $cordovaGeolocation, $cordovaLaunchNavigator, LoadingHelper) {
+.controller('DetailsCtrl', function ($scope, $stateParams, $state, PlacesService,
+ $cordovaGeolocation, $cordovaLaunchNavigator, LoadingHelper,PopupHelper) {
   var options = {
     timeout: 10000,
     enableHighAccuracy: true
   };
-
+  $scope.isDetailVisible = false;
   LoadingHelper.show();
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
     PlacesService.getDetails($stateParams.id, position.coords.latitude, position.coords.longitude,
       function (details) {
+        $scope.isDetailVisible = true;
         $scope.details = details;
         $scope.details.latitude = $scope.details.location.coordinates[1];
         $scope.details.longitude = $scope.details.location.coordinates[0];
@@ -137,9 +139,9 @@ $ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper) {
             start: [position.coords.latitude, position.coords.longitude],
             enableDebug: true
           }).then(function () {
-            alert("Navigator launched");
+            
           }, function (err) {
-            alert(err);
+            PopupHelper.showError({errorText:"Sorry, there was an error opening google maps. Please check that you have google or apple map on your device."})
           });
         };
 
@@ -166,7 +168,7 @@ $ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper) {
 })
 
 /*Add Controller*/
-.controller('AddPlaceCtrl', function ($scope, $state, PlacesService, LoadingHelper) {
+.controller('AddPlaceCtrl', function ($scope, $state, PlacesService, LoadingHelper,ResponseHelper) {
 
   $scope.isErrorMessageShown = false;
   $scope.isSuccessMessageShown = false;

@@ -8,6 +8,10 @@
 
 
    <ion-content class="padding">
+     <div ng-hide="isDetailVisible">
+       <h3 class="center">Loading Details...</h3>
+       </div>
+     <div ng-show="isDetailVisible">
  <div class="item item-divider">
     <h2>{{details.name}}</h2>
     <p>{{details.type}}</p>
@@ -78,6 +82,7 @@
 
   
 
+</div>
 </div>
    </ion-content>
 </ion-view>
