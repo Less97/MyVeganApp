@@ -109,7 +109,7 @@ ul.rating li i {
 }
 
 .register-slide{
-    width: 350px;
+    width: 100%;
     margin:20px auto;
 }
 
@@ -229,4 +229,8 @@ ul.rating li i {
 .gallery-button{
     margin-top: 26px;
     float: right;
+}
+.registerItemLogo{
+    width:75%;
+    margin-left:10%;
 }
