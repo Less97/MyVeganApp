@@ -234,17 +234,46 @@ $ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper) {
 })
 
 /*Reviews Controller*/
-.controller('AddReviewCtrl', function ($scope, $stateParams, $cordovaCamera,$ionicHistory,
+.controller('AddReviewCtrl', function ($scope, $stateParams, $cordovaCamera,$ionicHistory,$ionicPopup,
  ReviewsService, LoadingHelper, UtilsService,ResponseHelper,PopupHelper) {
 
   $scope.review = {}
   $scope.review.placeId = $stateParams.placeId;
   $scope.review.reviewerId = UtilsService.getLoginData().user._id.$oid;
 
+  var cameraMethod = null;
+
+    $ionicPopup.show({
+      title:'Select Source',
+      subTitle:'Where do you want to get the image from?',
+      scope: $scope,
+      buttons: [
+      {
+        text: '<b>Take Picture</b>',
+        type: 'button-positive',
+        onTap: function(e) {
+          cameraMethod = Camera.PictureSourceType.CAMERA;
+          getPicture(cameraMethod);
+        }
+      },
+      {
+        text: '<b>Open Library</b>',
+        type: 'button-positive',
+        onTap: function(e) {
+          cameraMethod = Camera.PictureSourceType.PHOTOLIBRARY;
+          getPicture(cameraMethod);
+        }
+      }
+    ]
+    })
+
+
+  function getPicture(source){
+
   var options = {
     quality: 75,
     destinationType: Camera.DestinationType.DATA_URL,
-    sourceType: Camera.PictureSourceType.CAMERA,
+    sourceType: source,
     encodingType: Camera.EncodingType.JPEG,
     correctOrientation: true
   };
@@ -274,7 +303,7 @@ $ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper) {
       
     } 
   }; //register
-
+  }
 })
 
 /*Info Controller*/
@@ -300,11 +329,39 @@ $ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper) {
   $cordovaCamera, LoadingHelper, PlacesService, ResponseHelper,PopupHelper) {
 
   var pId = $stateParams.placeId;
+  
+  var cameraMethod = null;
 
-  var options = {
+    $ionicPopup.show({
+      title:'Select Source',
+      subTitle:'Where do you want to get the image from?',
+      scope: $scope,
+      buttons: [
+      {
+        text: '<b>Take Picture</b>',
+        type: 'button-positive',
+        onTap: function(e) {
+          cameraMethod = Camera.PictureSourceType.CAMERA;
+          getPicture(cameraMethod);
+        }
+      },
+      {
+        text: '<b>Open Library</b>',
+        type: 'button-positive',
+        onTap: function(e) {
+          cameraMethod = Camera.PictureSourceType.PHOTOLIBRARY;
+          getPicture(cameraMethod);
+        }
+      }
+    ]
+    })
+
+  
+function getPicture(source){
+var options = {
     quality: 75,
     destinationType: Camera.DestinationType.DATA_URL,
-    sourceType: Camera.PictureSourceType.CAMERA,
+    sourceType: source,
     encodingType: Camera.EncodingType.JPEG,
     correctOrientation: true
   };
@@ -333,6 +390,8 @@ $ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper) {
       $ionicHistory.goBack(-1);
     })
   });
+  }
+
 })
 
 /*Login Controller*/
