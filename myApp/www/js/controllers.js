@@ -20,7 +20,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
     $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
     //Wait until the map is loaded
-
+ var myInfoWindow = new google.maps.InfoWindow({
+            content: ''
+          });
     google.maps.event.addListenerOnce($scope.map, 'idle', function () {
 
       PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, 0, 300, function (items) {
@@ -36,20 +38,17 @@ angular.module('myApp.Controllers', ['ionic.rating'])
             animation: google.maps.Animation.DROP,
             position: pos,
             title: $scope.places[i].name,
-            icon: ImageHelper.getPinIcon($scope.places[i].type)
+            icon: ImageHelper.getPinIcon($scope.places[i].type),
+            idx:i
           });
 
-          $scope.places[i].marker.addListener('click', function (idx) {
-            var placeWindow = new google.maps.InfoWindow({
-              content: this.title
-            });
-            placeWindow.open($scope.map, this);
+          $scope.places[i].marker.addListener('click', function () {
+            myInfoWindow.setContent("<h5>"+$scope.places[this.idx].name+"</h5><div>"+$scope.places[this.idx].description+"</div><div style='float:right;margin-top:10px'><a href='/#/details/"+$scope.places[this.idx]._id.$oid+"'>See details</a></div>")
+            myInfoWindow.open($scope.map, this);
           });
         }
       });
-      var uWindow = new google.maps.InfoWindow({
-        content: '<h4>You</h4>'
-      });
+     
 
       var uMarker = new google.maps.Marker({
         map: $scope.map,
@@ -58,7 +57,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         icon: 'img/pins/home.png'
       });
       uMarker.addListener('click', function () {
-        uWindow.open($scope.map, this);
+        myInfoWindow.setContent('your position')
+        myInfoWindow.open($scope.map, this);
       });
     });
   }, function (error) {
