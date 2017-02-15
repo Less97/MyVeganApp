@@ -6,7 +6,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     timeout: 10000,
     enableHighAccuracy: true
   };
-
+  $scope.goFromMap = function(oid){
+    alert("go from map to: "+oid)
+  }
   LoadingHelper.show();
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
@@ -39,11 +41,16 @@ angular.module('myApp.Controllers', ['ionic.rating'])
             position: pos,
             title: $scope.places[i].name,
             icon: ImageHelper.getPinIcon($scope.places[i].type),
-            idx:i
+            idx:i,
+            oid:$scope.places[i]._id.$oid
           });
 
           $scope.places[i].marker.addListener('click', function () {
-            myInfoWindow.setContent("<h5>"+$scope.places[this.idx].name+"</h5><div>"+$scope.places[this.idx].description+"</div><div style='float:right;margin-top:10px'><a href='/#/details/"+$scope.places[this.idx]._id.$oid+"'>See details</a></div>")
+
+            var content = "<div class='scrollFix'><h5>"+$scope.places[this.idx].name+"</h5><div>"+$scope.places[this.idx].description+"</div><div style='float:right;margin-top:10px'><button class='button button-positive' ng-click='goFromMap()'>See details</button></div>"
+            
+
+            myInfoWindow.setContent(content)
             myInfoWindow.open($scope.map, this);
           });
         }
