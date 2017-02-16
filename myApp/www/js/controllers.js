@@ -1,13 +1,13 @@
 angular.module('myApp.Controllers', ['ionic.rating'])
 
 /*Around you Controller */
-.controller('AroundYouCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, PlacesService, LoadingHelper, ImageHelper) {
+.controller('AroundYouCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, $compile,PlacesService, LoadingHelper, ImageHelper) {
   var options = {
     timeout: 10000,
     enableHighAccuracy: true
   };
-  $scope.goFromMap = function(oid){
-    alert("go from map to: "+oid)
+  $scope.goFromMap = function(){
+    alert("go from map to:")
   }
   LoadingHelper.show();
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
@@ -48,9 +48,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           $scope.places[i].marker.addListener('click', function () {
 
             var content = "<div class='scrollFix'><h5>"+$scope.places[this.idx].name+"</h5><div>"+$scope.places[this.idx].description+"</div><div style='float:right;margin-top:10px'><button class='button button-positive' ng-click='goFromMap()'>See details</button></div>"
-            
-
-            myInfoWindow.setContent(content)
+            var compiled = $compile(content)($scope)
+            myInfoWindow.setContent(compiled[0])
             myInfoWindow.open($scope.map, this);
           });
         }
