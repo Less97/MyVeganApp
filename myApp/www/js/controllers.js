@@ -6,8 +6,13 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     timeout: 10000,
     enableHighAccuracy: true
   };
+  $scope.currentPlace = null;
   $scope.goFromMap = function(){
-    alert("go from map to:")
+    var myId = $scope.currentPlace._id.$oid;
+     $state.go('details', {
+      id: myId,
+      from:0,
+    })
   }
   LoadingHelper.show();
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
@@ -46,8 +51,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           });
 
           $scope.places[i].marker.addListener('click', function () {
-
-            var content = "<div class='scrollFix'><h5>"+$scope.places[this.idx].name+"</h5><div>"+$scope.places[this.idx].description+"</div><div style='float:right;margin-top:10px'><button class='button button-positive' ng-click='goFromMap()'>See details</button></div>"
+            $scope.currentPlace = $scope.places[this.idx];
+            var content = "<div class='scrollFix'><h5>"+$scope.currentPlace.name+"</h5><div>"+$scope.currentPlace.description+"</div><div style='float:right;margin-top:10px'><button class='button button-positive' ng-click='goFromMap()'>See details</button></div>"
             var compiled = $compile(content)($scope)
             myInfoWindow.setContent(compiled[0])
             myInfoWindow.open($scope.map, this);
@@ -102,6 +107,7 @@ $ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper) {
   $scope.gotoDetails = function (myPlace) {
     $state.go('details', {
       id: myPlace._id.$oid,
+      from:1
     })
   }
 
@@ -154,7 +160,12 @@ $ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper) {
       });
   });
   $scope.goBack = function () {
-    $state.go('tab.list')
+    if($stateParams.from==0){
+       $state.go('tab.map')
+    }else{
+      $state.go('tab.list')
+    }
+   
   }
   $scope.goToReviews = function (details) {
     $state.go('reviews', {
