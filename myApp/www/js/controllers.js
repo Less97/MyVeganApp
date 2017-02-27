@@ -1,12 +1,19 @@
 angular.module('myApp.Controllers', ['ionic.rating'])
 
 /*Around you Controller */
-.controller('AroundYouCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, PlacesService, LoadingHelper, ImageHelper) {
+.controller('AroundYouCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, $compile,PlacesService, LoadingHelper, ImageHelper) {
   var options = {
     timeout: 10000,
     enableHighAccuracy: true
   };
-
+  $scope.currentPlace = null;
+  $scope.goFromMap = function(){
+    var myId = $scope.currentPlace._id.$oid;
+     $state.go('details', {
+      id: myId,
+      from:0,
+    })
+  }
   LoadingHelper.show();
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
@@ -20,7 +27,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
     $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
     //Wait until the map is loaded
-
+ var myInfoWindow = new google.maps.InfoWindow({
+            content: ''
+          });
     google.maps.event.addListenerOnce($scope.map, 'idle', function () {
 
       PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, 0, 300, function (items) {
@@ -36,20 +45,21 @@ angular.module('myApp.Controllers', ['ionic.rating'])
             animation: google.maps.Animation.DROP,
             position: pos,
             title: $scope.places[i].name,
-            icon: ImageHelper.getPinIcon($scope.places[i].type)
+            icon: ImageHelper.getPinIcon($scope.places[i].type),
+            idx:i,
+            oid:$scope.places[i]._id.$oid
           });
 
-          $scope.places[i].marker.addListener('click', function (idx) {
-            var placeWindow = new google.maps.InfoWindow({
-              content: this.title
-            });
-            placeWindow.open($scope.map, this);
+          $scope.places[i].marker.addListener('click', function () {
+            $scope.currentPlace = $scope.places[this.idx];
+            var content = "<div class='scrollFix'><h5>"+$scope.currentPlace.name+"</h5><div>"+$scope.currentPlace.description+"</div><div style='float:right;margin-top:10px'><button class='button button-positive' ng-click='goFromMap()'>See details</button></div>"
+            var compiled = $compile(content)($scope)
+            myInfoWindow.setContent(compiled[0])
+            myInfoWindow.open($scope.map, this);
           });
         }
       });
-      var uWindow = new google.maps.InfoWindow({
-        content: '<h4>You</h4>'
-      });
+     
 
       var uMarker = new google.maps.Marker({
         map: $scope.map,
@@ -58,7 +68,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         icon: 'img/pins/home.png'
       });
       uMarker.addListener('click', function () {
-        uWindow.open($scope.map, this);
+        myInfoWindow.setContent('your position')
+        myInfoWindow.open($scope.map, this);
       });
     });
   }, function (error) {
@@ -96,6 +107,7 @@ $ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper) {
   $scope.gotoDetails = function (myPlace) {
     $state.go('details', {
       id: myPlace._id.$oid,
+      from:1
     })
   }
 
@@ -148,7 +160,12 @@ $ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper) {
       });
   });
   $scope.goBack = function () {
-    $state.go('tab.list')
+    if($stateParams.from==0){
+       $state.go('tab.map')
+    }else{
+      $state.go('tab.list')
+    }
+   
   }
   $scope.goToReviews = function (details) {
     $state.go('reviews', {

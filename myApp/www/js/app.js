@@ -64,9 +64,10 @@ angular.module('starter', ['ionic','ngCordova','myApp.Controllers', 'myApp.Servi
   })
 
   .state('details', {
-    url: '/details/{id}',
+    url: '/details/',
     templateUrl: 'views/details.html',
-    controller: 'DetailsCtrl'
+    controller: 'DetailsCtrl',
+    params:{id:{dynamic:true},from:{dynamic:true}}
   })
 
   .state('reviews', {
