@@ -18,10 +18,29 @@ angular.module('myApp.Helpers', [])
   .factory("ImageHelper", function () {
     return {
       getPinIcon: function (type) {
-        return "img/pins/restaurant.png";
+        switch(type){
+          case "restaurant":
+            return "img/pins/restaurant.png";
+          case "cafe":
+            return "img/pins/cafe.png";
+          case "shop":
+            return "img/pins/shop.png";
+          case "food truck":
+            return "";
+        }
       },
       getListImg: function (type) {
-        return "img/imgTypes/restaurant.png";
+        
+        switch(type){
+          case "restaurant":
+             return "img/imgTypes/restaurant.png";
+          case "cafe":
+             return "img/imgTypes/cafe.png";
+          case "shop":
+             return "img/imgTypes/shop.png";
+          case "food truck":
+            return "";
+        }
       }
     }
   })
