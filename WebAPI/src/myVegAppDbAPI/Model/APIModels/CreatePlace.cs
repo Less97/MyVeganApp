@@ -15,7 +15,7 @@ namespace myVegAppDbAPI.Model.APIModels
 
         public String Description { get; set; }
 
-        public String OpeningHours { get; set; }
+        public String[] OpeningHours { get; set; }
 
         public String PhoneNumber { get; set; }
 

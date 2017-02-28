@@ -37,10 +37,18 @@
 
  <div class="item item-icon-left ">
     <i class="icon ion-clock"></i>
-    {{details.openingHours}}
+    <div ng-repeat="hour in details.openingHours">
+        <li class="openingHour">{{hour}}</li>
+    </div>
   </div>
 
-  <div class="item">
+  <div class="item item-icon-left ">
+    <i class="icon ion-pricetags"></i>
+    <div ng-repeat="tag in details.tags">
+      <div class="tag">#{{tag}}</div>
+    </div>
+  </div>
+  <div class="item" ng-click="openMap()">
         <div my-static-map lat="details.latitude" lng="details.longitude" width="350"></div>
   </div>
   <!--<a class="item item-icon-left" href="maps://maps.apple.com/?q={{details.latitude}},{{details.longitude}}">

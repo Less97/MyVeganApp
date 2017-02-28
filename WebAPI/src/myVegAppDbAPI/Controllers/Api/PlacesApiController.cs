@@ -158,6 +158,7 @@ namespace myVegAppDbAPI.Controllers.Api
                            { "website","$website" },
                            { "name","$name"},
                            { "openingHours","$openingHours"},
+                           { "tags","$tags"},
                            { "type","$type"},
                            { "gallery","$gallery"},
                            { "email","$email"},
@@ -188,6 +189,7 @@ namespace myVegAppDbAPI.Controllers.Api
                        { "address","$_id.address"},
                        { "location","$_id.location"},
                        { "openingHours","$_id.openingHours"},
+                       { "tags","$_id.tags"},
                        { "phoneNumber","$_id.phoneNumber"},
                        { "country","$country"}
                    }).As<ReadPlace>()

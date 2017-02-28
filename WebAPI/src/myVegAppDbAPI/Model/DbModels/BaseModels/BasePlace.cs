@@ -33,9 +33,11 @@ namespace myVegAppDbAPI.Model.DbModels.BaseModels
         [BsonElement("location")]
         public GeoLoc Location { get; set; }
 
-       
+        [BsonElement("tags")]
+        public String[] Tags { get; set; }
+
         [BsonElement("openingHours")]
-        public String OpeningHours { get; set; }
+        public String[] OpeningHours { get; set; }
 
         [BsonElement("gallery")]
         public ObjectId[] Gallery { get; set; }

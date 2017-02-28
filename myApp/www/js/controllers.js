@@ -156,6 +156,11 @@ $ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper) {
             PopupHelper.showError({errorText:"Sorry, there was an error opening google maps. Please check that you have google or apple map on your device."})
           });
         };
+        
+
+       $scope.openMap = function(){
+           $cordovaLaunchNavigator.navigate([$scope.details.latitude, $scope.details.longitude], {enableDebug:true});
+       }
 
       });
   });

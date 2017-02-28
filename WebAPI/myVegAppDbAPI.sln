@@ -1,16 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26206.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E8386CBA-EAE6-4129-870F-9E5D8A3985E0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EECADE29-30FF-4A43-B6EF-670D3CC5A2C8}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "myVegAppDbAPI", "src\myVegAppDbAPI\myVegAppDbAPI.xproj", "{3CD4F2FD-D778-432A-BFF1-B2FC191AE1B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "myVegAppDbAPI", "src\myVegAppDbAPI\myVegAppDbAPI.csproj", "{3CD4F2FD-D778-432A-BFF1-B2FC191AE1B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
