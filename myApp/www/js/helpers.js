@@ -26,7 +26,7 @@ angular.module('myApp.Helpers', [])
           case "shop":
             return "img/pins/shop.png";
           case "food truck":
-            return "";
+            return "img/pins/foodtruck.png";
         }
       },
       getListImg: function (type) {
@@ -39,7 +39,7 @@ angular.module('myApp.Helpers', [])
           case "shop":
              return "img/imgTypes/shop.png";
           case "food truck":
-            return "";
+            return "img/imgTypes/foodtruck.png";
         }
       }
     }
