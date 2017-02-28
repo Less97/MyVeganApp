@@ -1,6 +1,5 @@
 var address = "http://thecuriouscarrot.com/api/";
 //var address = "http://localhost:51067/api/";
-var currentLoginData = {};
 angular.module('myApp.Service', [])
   .factory('UtilsService', function ($http) {
     return {
@@ -8,7 +7,7 @@ angular.module('myApp.Service', [])
         return address;
       },
       getLoginData:function(){
-        return currentLoginData;
+        return JSON.parse( window.localStorage.getItem('loginData' ));
       }
 
     }
@@ -30,14 +29,24 @@ angular.module('myApp.Service', [])
         $http(req).success(function (data) {
           data = JSON.parse(data);
           if (data.isLoggedIn)
-            currentLoginData = data;
-
+            window.localStorage.setItem( 'loginData', JSON.stringify(data));
+          
           callback(data.isLoggedIn);
 
         }).error(function () {
           callback(false);
         })
       },
+      isLogged: function(){
+          var data = JSON.parse( window.localStorage.getItem('loginData' ));
+          if(data==null)
+            return false;
+          return data.isLoggedIn;
+      },
+      logout : function(){
+         window.localStorage.setItem( 'loginData', {});
+      }
+
     }
   })
   .factory("RegisterService", function ($http) {

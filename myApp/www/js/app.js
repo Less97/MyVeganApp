@@ -132,12 +132,12 @@ angular.module('starter', ['ionic','ngCordova','myApp.Controllers', 'myApp.Servi
     }
   })
 
-  .state('tab.account', {
-    url: '/account',
+  .state('tab.home', {
+    url: '/home',
     views: {
-      'tabAccount': {
-        templateUrl: 'views/account.html',
-        controller: 'AccountCtrl'
+      'tabHome': {
+        templateUrl: 'views/home.html',
+        controller: 'HomeCtrl'
       }
     }
   });

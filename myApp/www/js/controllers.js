@@ -418,6 +418,10 @@ var options = {
 
 /*Login Controller*/
 .controller('LoginCtrl', function ($scope, $state, $ionicLoading, LoginService, LoadingHelper,PopupHelper) {
+  
+  if(LoginService.isLogged()){
+    $state.go("tab.home");
+  }
   $scope.user = {
     email: '',
     password: '',
@@ -556,7 +560,7 @@ var options = {
   }
 })
 
-/*AccountCtrl*/
-.controller('AccountCtrl', function ($scope) {
+/*Home Controller*/
+.controller('HomeCtrl', function ($scope) {
 
 });
