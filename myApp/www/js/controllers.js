@@ -561,6 +561,8 @@ var options = {
 })
 
 /*Home Controller*/
-.controller('HomeCtrl', function ($scope) {
+.controller('HomeCtrl', function ($scope,UtilsService) {
+
+    $scope.loginData = UtilsService.getLoginData();
 
 });
