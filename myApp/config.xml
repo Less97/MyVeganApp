@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="the.curiouscarrot.com" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="it.AlessandroOrlandi.theCuriousCarrot" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>The Curious Carrot</name>
   <description>
-       The Curious Carrot is a 
+       The Curious Carrot is a community which aim to help people with vegan diet to find their preferred place to eat and shop
     </description>
   <author email="team@thecuriouscarrot.com" href="http://thecuriouscarrot.com/">
       Alessandro Orlandi

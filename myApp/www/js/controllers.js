@@ -440,7 +440,7 @@ var options = {
       }
       LoadingHelper.hide();
       if (result == true) {
-        $state.go("tab.map")
+        $state.go("tab.home")
       } else {
         $scope.user.loginError = true;
       }
