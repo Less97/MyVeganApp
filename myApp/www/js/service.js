@@ -291,6 +291,14 @@ angular.module('myApp.Service', [])
       }
     }
   })
+.factory('TagService', function ($http) {
+    return {
+      getTags: function () {
+        return ["Vegan","Fully Vegan","Vegetarian","Italian","Falafel","Salads","Burgers","Lebanese"];
+      }
+    }
+  })
+
 
 // Define an Angular service to wrap the plugin
 .service('$cordovaLaunchNavigator', ['$q', function ($q) {

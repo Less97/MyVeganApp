@@ -561,8 +561,15 @@ var options = {
 })
 
 /*Home Controller*/
-.controller('HomeCtrl', function ($scope,UtilsService) {
-
+.controller('HomeCtrl', function ($scope,$state,UtilsService,TagService) {
+    $scope.maxDistance=30;
     $scope.loginData = UtilsService.getLoginData();
+    $scope.tags = TagService.getTags();
+    $scope.goNearby = function(){
+      $state.go("tab.map");
+    }
+    $scope.findAll = function(){
+      $state.go("tab.list");
+    }
 
 });
