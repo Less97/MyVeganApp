@@ -52,7 +52,7 @@ namespace myVegAppDbAPI.Controllers.Api
         }
 
         [HttpGet("getplaces")]
-        public async Task<JsonResult> GetPlaces(Double latitude, Double longitude, String searchText, Int32 maxDistance = Int32.MaxValue, Int32 tipology = 0)
+        public async Task<JsonResult> GetPlaces(Double latitude, Double longitude, String searchText,String[] tags = null, Int32 maxDistance = Int32.MaxValue, Int32 tipology = 0)
         {
             try
             {
@@ -73,6 +73,8 @@ namespace myVegAppDbAPI.Controllers.Api
                 if (tipology != 0)
                     postGeoFilter = postGeoFilter & builder.BitsAllSet("menu.tipology", tipology);
 
+                if (tags.Any()) 
+                    postGeoFilter = postGeoFilter & builder.In("tags", tags);
 
                 var docs = await places.Aggregate().AppendStage<BsonDocument>(new BsonDocument() {
                     { "$geoNear",new BsonDocument() {
