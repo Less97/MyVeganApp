@@ -33,12 +33,24 @@ namespace myVegAppDbAPI.Controllers.Api
 
 
         // GET: api/values
-        [HttpGet]
-        public IEnumerable<String> Get()
+        [HttpGet("getTags")]
+        public JsonResult Get()
         {
             var placesCollection = _database.GetCollection<BsonDocument>("places");
             var builder = Builders<BsonDocument>.Filter;
-            return new List<String>();
+
+            var tagList =  placesCollection.Aggregate().AppendStage<BsonDocument>(new BsonDocument() {
+                { "$unwind","$tags" }
+            })
+            .AppendStage<BsonDocument>(new BsonDocument() {
+                { "$group",new BsonDocument(){
+                    { "_id","$tags"}
+                } }
+            })
+            .ToList();
+
+            return Json(tagList.ToJson(jsonWriterSettings));
+
         }
     }
 }
