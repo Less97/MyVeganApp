@@ -293,9 +293,20 @@ angular.module('myApp.Service', [])
   })
 .factory('TagService', function ($http) {
     return {
-      getTags: function () {
-        return ["Vegan","Fully Vegan","Vegetarian","Italian","Falafel","Salads","Burgers","Lebanese"];
-      }
+      getTags: function (callback) {
+       var req = {
+        url:address+ "tags/gettags",
+        method: 'GET'
+       };
+
+       $http(req).success(function(data){
+          data = JSON.parse(data);
+        callback(data);
+       }).error(function(){
+        callback([])
+        });
+
+    }
     }
   })
 
