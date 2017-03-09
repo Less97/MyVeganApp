@@ -1,7 +1,7 @@
 angular.module('myApp.Controllers', ['ionic.rating'])
 
 /*Around you Controller */
-.controller('AroundYouCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, $compile,PlacesService, LoadingHelper, ImageHelper) {
+.controller('AroundYouCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, $compile,PlacesService, LoadingHelper, ImageHelper,UtilsService) {
   var options = {
     timeout: 10000,
     enableHighAccuracy: true
@@ -18,7 +18,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
     var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
+    $scope.searchSettings = UtilsService.getSearchSettings();
     var mapOptions = {
       center: latLng,
       zoom: 15,
@@ -32,7 +32,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           });
     google.maps.event.addListenerOnce($scope.map, 'idle', function () {
 
-      PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, 0, 300, function (items) {
+      PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance, 0, function (items) {
         LoadingHelper.hide();
         $scope.places = items;
 
@@ -79,8 +79,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
 /* ListCtrl*/
 .controller('ListCtrl', function ($scope, $state, $stateParams, $cordovaGeolocation, $ionicHistory, 
-$ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper) {
+$ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper,UtilsService) {
 
+  $scope.searchSettings = UtilsService.getSearchSettings();
   $scope.goToMap = function () {
     $state.go('tab.map');
   }
@@ -92,7 +93,7 @@ $ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper) {
   LoadingHelper.show();
   $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
-    PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, 0, 3000, function (response) {
+    PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter,$scope.searchSettings.maxDistance, 0,function (response) {
       LoadingHelper.hide();
       ResponseHelper.handleResponse(response,{errorText:"Sorry there was a problem loading data. Please check the connection and retry"},function(){
         $scope.places = response;
@@ -561,27 +562,35 @@ var options = {
 })
 
 /*Home Controller*/
-.controller('HomeCtrl', function ($scope,$state,UtilsService,TagService) {
+.controller('HomeCtrl', function ($scope,$ionicHistory,$state,UtilsService,TagService) {
     $scope.loginData = UtilsService.getLoginData();
     $scope.tags = [];
     
     $scope.searchSettings = {
       maxDistance:30,
-      tags:[]
     };
+    
     if(UtilsService.getSearchSettings()!=false){
-
-
-
+      $scope.searchSettings = UtilsService.getSearchSettings();
     }
+   
+   
    TagService.getTags(function(data){
       $scope.tags = data;
     });
     $scope.goNearby = function(){
+      UtilsService.saveSearchSettings($scope.searchSettings);
       $state.go("tab.map");
     }
     $scope.findAll = function(){
-      $state.go("tab.list");
-    }
+        UtilsService.saveSearchSettings($scope.searchSettings);
+       $ionicHistory.clearCache().then(function(){ 
+         $state.go("tab.list");
+        });
+   
+
+  };
+    
+      
 
 });

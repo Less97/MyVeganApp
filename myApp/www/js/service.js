@@ -16,7 +16,7 @@ angular.module('myApp.Service', [])
         }
         return data;
       },
-      setSearchSettings:function(data){
+      saveSearchSettings:function(data){
          window.localStorage.setItem( 'searchSettings', JSON.stringify(data));
       }
     }
@@ -139,10 +139,11 @@ angular.module('myApp.Service', [])
               latitude: lat,
               longitude: lng,
               searchText: txt,
-              maxDistance: 3000,
+              maxDistance: maxDist,
               tipology: 0
             },
             method: 'GET',
+            cache:false
           }
           $http(req).success(function (data) {
             data = JSON.parse(data);
