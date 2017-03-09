@@ -8,8 +8,17 @@ angular.module('myApp.Service', [])
       },
       getLoginData:function(){
         return JSON.parse( window.localStorage.getItem('loginData' ));
+      },
+      getSearchSettings:function(){
+        var data = JSON.parse( window.localStorage.getItem('searchSettings' ));
+        if(data == null){
+          return false;
+        }
+        return data;
+      },
+      setSearchSettings:function(data){
+         window.localStorage.setItem( 'searchSettings', JSON.stringify(data));
       }
-
     }
   })
   .factory('LoginService', function ($http) {

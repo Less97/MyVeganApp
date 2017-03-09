@@ -4,10 +4,10 @@
     <h4>Welcome {{loginData.user.FirstName}},</h3>
     <div class="margin-bottom-10px margin-top-20px">What are you looking for today?</div>
     <div class="spacer-10px"></div>
-    <div class="margin-bottom-10px"><b>Max distance:</b>&nbsp;{{maxDistance}} km</div>
+    <div class="margin-bottom-10px"><b>Max distance:</b>&nbsp;{{searchSettings.maxDistance}} km</div>
     <div class="item range margin-bottom-10px">
       <i class="icon ion-location"></i>
-      <input type="range" name="max_distance" min="0" max="300" ng-model="maxDistance">
+      <input type="range" name="max_distance" min="5" max="300" ng-model="maxDistance">
       <i class="icon ion-pinpoint"></i>
     </div>
     <div>

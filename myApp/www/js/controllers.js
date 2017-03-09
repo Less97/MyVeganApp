@@ -78,7 +78,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 })
 
 /* ListCtrl*/
-.controller('ListCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, 
+.controller('ListCtrl', function ($scope, $state, $stateParams, $cordovaGeolocation, $ionicHistory, 
 $ionicLoading, PlacesService, ResponseHelper,LoadingHelper, ImageHelper) {
 
   $scope.goToMap = function () {
@@ -562,9 +562,18 @@ var options = {
 
 /*Home Controller*/
 .controller('HomeCtrl', function ($scope,$state,UtilsService,TagService) {
-    $scope.maxDistance=30;
     $scope.loginData = UtilsService.getLoginData();
-    $scope.tags = []
+    $scope.tags = [];
+    
+    $scope.searchSettings = {
+      maxDistance:30,
+      tags:[]
+    };
+    if(UtilsService.getSearchSettings()!=false){
+
+
+
+    }
    TagService.getTags(function(data){
       $scope.tags = data;
     });
