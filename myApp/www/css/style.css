@@ -280,3 +280,7 @@ ul.rating li i {
 .clear{
     clear: both;
 }
+
+.orange{
+    background-color: #ef473a;
+}

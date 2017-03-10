@@ -132,7 +132,7 @@ angular.module('myApp.Service', [])
 .factory('PlacesService', function ($http) {
     {
       return {
-        getPlaces: function (lat, lng, txt, maxDist, type, callback) {
+        getPlaces: function (lat, lng, txt, maxDist,selTags, type, callback) {
           var req = {
             url: address + "places/getPlaces",
             params: {
@@ -140,6 +140,7 @@ angular.module('myApp.Service', [])
               longitude: lng,
               searchText: txt,
               maxDistance: maxDist,
+              tags:selTags,
               tipology: 0
             },
             method: 'GET',
