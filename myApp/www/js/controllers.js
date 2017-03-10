@@ -32,7 +32,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
       });
       google.maps.event.addListenerOnce($scope.map, 'idle', function () {
 
-        PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance, 0, function (items) {
+        PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance,[], 0, function (items) {
           LoadingHelper.hide();
           $scope.places = items;
 
@@ -93,7 +93,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     LoadingHelper.show();
     $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
-      PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance, 0, function (response) {
+      PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance,[], 0, function (response) {
         LoadingHelper.hide();
         ResponseHelper.handleResponse(response, {
           errorText: "Sorry there was a problem loading data. Please check the connection and retry"
@@ -575,6 +575,11 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
     $scope.searchSettings = {
       maxDistance: 30,
+      selectedTags:function(){
+        $scope.tags.filter(function(value){
+          return value.isSelected;
+        })
+      }
     };
 
     if (UtilsService.getSearchSettings() != false) {
@@ -597,8 +602,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
       });
 
       $scope.$on("$stateChangeStart", function (event, toState) {
-        event.preventDefault();
-        alert();
+        //event.preventDefault();
+        //alert();
       });
     };
 
