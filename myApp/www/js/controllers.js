@@ -14,6 +14,13 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         from: 0,
       })
     }
+
+ var myStringTags = [];
+    //calculating tag value
+    $scope.searchSettings.selectedTags.forEach(function (value){
+        myStringTags.push(value._id);
+    })
+
     LoadingHelper.show();
     $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
@@ -25,6 +32,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
 
+      
       $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
       //Wait until the map is loaded
       var myInfoWindow = new google.maps.InfoWindow({
@@ -32,7 +40,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
       });
       google.maps.event.addListenerOnce($scope.map, 'idle', function () {
 
-        PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance,[], 0, function (items) {
+        PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance, myStringTags, 0, function (items) {
           LoadingHelper.hide();
           $scope.places = items;
 
@@ -82,6 +90,13 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $ionicLoading, PlacesService, ResponseHelper, LoadingHelper, ImageHelper, UtilsService) {
 
     $scope.searchSettings = UtilsService.getSearchSettings();
+
+    var myStringTags = [];
+    //calculating tag value
+    $scope.searchSettings.selectedTags.forEach(function (value){
+        myStringTags.push(value._id);
+    })
+
     $scope.goToMap = function () {
       $state.go('tab.map');
     }
@@ -93,7 +108,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     LoadingHelper.show();
     $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
-      PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance,[], 0, function (response) {
+      PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance, myStringTags, 0, function (response) {
         LoadingHelper.hide();
         ResponseHelper.handleResponse(response, {
           errorText: "Sorry there was a problem loading data. Please check the connection and retry"
@@ -569,43 +584,64 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   })
 
   /*Home Controller*/
-  .controller('HomeCtrl', function ($scope, $ionicHistory, $state, UtilsService, TagService) {
+  .controller('HomeCtrl', function ($scope, $interval, $ionicHistory, $state, UtilsService, TagService) {
     $scope.loginData = UtilsService.getLoginData();
     $scope.tags = [];
-
+    $scope.viewFinalised = false;
     $scope.searchSettings = {
       maxDistance: 30,
-      selectedTags:function(){
-        $scope.tags.filter(function(value){
-          return value.isSelected;
-        })
-      }
+      selectedTags:[]
     };
 
     if (UtilsService.getSearchSettings() != false) {
       $scope.searchSettings = UtilsService.getSearchSettings();
+      
     }
-
-
+    
     TagService.getTags(function (data) {
+      $scope.tags = [];
+
+      angular.forEach(data, function (value, key) {
+          value.isSelected=$scope.searchSettings.selectedTags.some(function(selected){
+            return selected._id == value._id
+          })
+
+
+      })
       $scope.tags = data;
+
+      //prepopulating tags
+     
+      $scope.viewFinalised = true;
     });
     $scope.goNearby = function () {
-      UtilsService.saveSearchSettings($scope.searchSettings);
       $state.go("tab.map");
     }
 
     $scope.findAll = function () {
-      UtilsService.saveSearchSettings($scope.searchSettings);
+
       $ionicHistory.clearCache().then(function () {
         $state.go("tab.list");
       });
-
-      $scope.$on("$stateChangeStart", function (event, toState) {
-        //event.preventDefault();
-        //alert();
-      });
     };
+
+    $scope.$watch('tags', function() {
+      if($scope.viewFinalised == false) return;
+      $scope.searchSettings.selectedTags = $scope.tags.filter(function(value){
+        return value.isSelected == true;
+      })
+    }, true)
+
+    //there is a problem with tab leave event that don't work for some reason
+    var TIMER = $interval(function () {
+      if($scope.viewFinalised ==false) return;
+      // If we're no longer on the page, cancel the TIMER.
+      if ($ionicHistory.currentView().stateName != 'tab.home') {
+        $interval.cancel(TIMER);
+        return;
+      }
+      UtilsService.saveSearchSettings($scope.searchSettings);
+    }, 100)
 
 
 

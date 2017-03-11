@@ -139,7 +139,8 @@ angular.module('starter', ['ionic','ngCordova','myApp.Controllers', 'myApp.Servi
         templateUrl: 'views/home.html',
         controller: 'HomeCtrl'
       }
-    }
+    },
+    cache:false
   });
 
   // if none of the above states are matched, use this as the fallback

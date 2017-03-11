@@ -75,6 +75,7 @@ angular.module('myApp.Helpers', [])
         }
       },
       handleResponse:function(result,messages,callbackSuccess,callbackFailed){
+
          if (result == false) {
 
           var alertPopup = $ionicPopup.alert({
