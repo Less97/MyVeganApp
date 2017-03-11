@@ -108,7 +108,8 @@ angular.module('starter', ['ionic','ngCordova','myApp.Controllers', 'myApp.Servi
         templateUrl: 'views/map.html',
         controller: 'AroundYouCtrl'
       }
-    }
+    },
+    cache:false
   })
 
   .state('tab.list', {

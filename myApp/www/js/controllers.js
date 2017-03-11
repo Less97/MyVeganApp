@@ -2,6 +2,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
   /*Around you Controller */
   .controller('AroundYouCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, $compile, PlacesService, LoadingHelper, ImageHelper, UtilsService) {
+    $scope.searchSettings = UtilsService.getSearchSettings();
+    
     var options = {
       timeout: 10000,
       enableHighAccuracy: true
@@ -90,7 +92,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $ionicLoading, PlacesService, ResponseHelper, LoadingHelper, ImageHelper, UtilsService) {
 
     $scope.searchSettings = UtilsService.getSearchSettings();
-
+    $scope.isDataEmpty = false;
     var myStringTags = [];
     //calculating tag value
     $scope.searchSettings.selectedTags.forEach(function (value){
@@ -110,10 +112,14 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
       PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance, myStringTags, 0, function (response) {
         LoadingHelper.hide();
+       
         ResponseHelper.handleResponse(response, {
           errorText: "Sorry there was a problem loading data. Please check the connection and retry"
         }, function () {
           $scope.places = response;
+          if(response.length ==0){
+             $scope.isDataEmpty= true;
+          }
         }, function () {
           $ionicHistory.nextViewOptions({
             disableBack: true

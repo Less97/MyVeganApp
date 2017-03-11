@@ -76,7 +76,7 @@ angular.module('myApp.Helpers', [])
       },
       handleResponse:function(result,messages,callbackSuccess,callbackFailed){
 
-         if (result == false) {
+         if (result.hasOwnProperty("error")&&result.error == true) {
 
           var alertPopup = $ionicPopup.alert({
             title: 'Error',

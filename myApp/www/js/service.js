@@ -150,7 +150,7 @@ angular.module('myApp.Service', [])
             data = JSON.parse(data);
             callback(data)
           }).error(function () {
-            callback(false);
+            callback({error:true});
           })
         },
         getDetails: function (id, latitude, longitude, callback) {
