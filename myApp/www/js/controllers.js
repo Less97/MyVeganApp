@@ -36,6 +36,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
       
       $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+      $scope.bounds = new google.maps.LatLngBounds();
       //Wait until the map is loaded
       var myInfoWindow = new google.maps.InfoWindow({
         content: ''
@@ -49,7 +50,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           for (var i = 0; i < $scope.places.length; i++) {
 
             var pos = new google.maps.LatLng($scope.places[i].location.coordinates[1], $scope.places[i].location.coordinates[0]);
-
+            $scope.bounds.extend(pos);
+              $scope.map.fitBounds($scope.bounds);
             $scope.places[i].marker = new google.maps.Marker({
               map: $scope.map,
               animation: google.maps.Animation.DROP,
@@ -81,6 +83,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           myInfoWindow.setContent('your position')
           myInfoWindow.open($scope.map, this);
         });
+
+      
       });
     }, function (error) {
       console.log("Could not get location");
