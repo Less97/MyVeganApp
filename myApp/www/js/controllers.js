@@ -46,7 +46,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance, myStringTags, 0, function (items) {
           LoadingHelper.hide();
           $scope.places = items;
-
+          var markers = [];
+          var clusterOpt = {}
           for (var i = 0; i < $scope.places.length; i++) {
 
             var pos = new google.maps.LatLng($scope.places[i].location.coordinates[1], $scope.places[i].location.coordinates[0]);
@@ -61,6 +62,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
               idx: i,
               oid: $scope.places[i]._id.$oid
             });
+            markers.push($scope.places[i].marker);
 
             $scope.places[i].marker.addListener('click', function () {
               $scope.currentPlace = $scope.places[this.idx];
@@ -70,6 +72,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
               myInfoWindow.open($scope.map, this);
             });
           }
+          var markerCluster = new MarkerClusterer($scope.map,markers,custerOpt);
         });
 
 
