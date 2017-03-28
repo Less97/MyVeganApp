@@ -8,7 +8,12 @@
       Alessandro Orlandi
     </author>
   <content src="index.html"/>
-  <access origin="*"/>
+  <access origin="tel:*" launch-external="yes"/>
+  <access origin="mailto:*" launch-external="yes"/>
+  <access origin="geo:*" launch-external="yes"/>
+  <access origin="maps:*" launch-external="yes"/>
+  <access origin="http:*" launch-external="yes"/>
+  <access origin="https:*" launch-external="yes"/>
   <access origin="*"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
@@ -81,10 +86,10 @@
   </platform>
   <allow-navigation href="tel:*"/>
   <allow-navigation href="*"/>
+  <allow-navigation href="*"/>
   <allow-intent href="tel:*"/>
   <allow-intent href="*"/>
   <allow-intent href="mailto:*"/>
-  <access origin="tel:*" launch-external="yes"/> 
-  <access origin="geo:*" launch-external="yes" />
+  <allow-intent href="*"/>
   <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
 </widget>

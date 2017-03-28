@@ -167,7 +167,6 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $scope.isDetailVisible = false;
     LoadingHelper.show();
     $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
-
       PlacesService.getDetails($stateParams.id, position.coords.latitude, position.coords.longitude,
         function (details) {
           $scope.isDetailVisible = true;

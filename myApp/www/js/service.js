@@ -146,10 +146,13 @@ angular.module('myApp.Service', [])
             method: 'GET',
             cache:false
           }
+          console.log("get Places...")
           $http(req).success(function (data) {
+             console.log(data)
             data = JSON.parse(data);
             callback(data)
-          }).error(function () {
+          }).error(function (err) {
+            console.dir(err)
             callback({error:true});
           })
         },
@@ -163,10 +166,13 @@ angular.module('myApp.Service', [])
             },
             method: 'GET',
           }
+          console.log("get Details...")
           $http(req).success(function (data) {
+            console.log(data)
             data = JSON.parse(data);
             callback(data)
-          }).error(function () {
+          }).error(function (err) {
+           console.dir(err);
             callback(false);
           })
         },
