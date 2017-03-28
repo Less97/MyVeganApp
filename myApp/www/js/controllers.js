@@ -9,8 +9,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $scope.searchSettings = UtilsService.getSearchSettings();
     
     var options = {
-      timeout: 10000,
-      enableHighAccuracy: true
+      timeout: 50000,
+      enableHighAccuracy: false,
+      maximumAge:60000
     };
     $scope.currentPlace = null;
     $scope.goFromMap = function () {
@@ -28,6 +29,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     })
 
     LoadingHelper.show();
+    console.log("get position")
     $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
       var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -46,7 +48,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         content: ''
       });
       google.maps.event.addListenerOnce($scope.map, 'idle', function () {
-
+       console.log("got position... getting places..")
         PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance, myStringTags, 0, function (items) {
           LoadingHelper.hide();
           $scope.places = items;
@@ -117,12 +119,14 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     }
     $scope.currentTextFilter = "";
     var options = {
-      timeout: 10000,
-      enableHighAccuracy: true
+      timeout: 50000,
+      enableHighAccuracy: false,
+      maximumAge:60000
     };
     LoadingHelper.show();
+     console.log("getting position...")
     $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
-
+    console.log("got Position position... Getting places")
       PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance, myStringTags, 0, function (response) {
         LoadingHelper.hide();
        
@@ -167,12 +171,15 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   .controller('DetailsCtrl', function ($scope, $stateParams, $state, PlacesService,
     $cordovaGeolocation, $cordovaLaunchNavigator, LoadingHelper, PopupHelper) {
     var options = {
-      timeout: 10000,
-      enableHighAccuracy: true
+      timeout: 50000,
+      enableHighAccuracy: false,
+      maximumAge:60000
     };
     $scope.isDetailVisible = false;
     LoadingHelper.show();
+    console.log("getting position...")
     $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
+      console.log("got position...get Details")
       PlacesService.getDetails($stateParams.id, position.coords.latitude, position.coords.longitude,
         function (details) {
           $scope.isDetailVisible = true;
