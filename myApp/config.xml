@@ -84,5 +84,7 @@
   <allow-intent href="tel:*"/>
   <allow-intent href="*"/>
   <allow-intent href="mailto:*"/>
+  <access origin="tel:*" launch-external="yes"/> 
+  <access origin="geo:*" launch-external="yes" />
   <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
 </widget>
