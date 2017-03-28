@@ -1,3 +1,7 @@
+
+
+
+
 angular.module('myApp.Controllers', ['ionic.rating'])
 
   /*Around you Controller */
@@ -47,14 +51,16 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           LoadingHelper.hide();
           $scope.places = items;
           var markers = [];
-          var clusterOpt = {}
+          var clusterOpt = {
+             imagePath: 'img/cluster/m'
+          }
           for (var i = 0; i < $scope.places.length; i++) {
 
             var pos = new google.maps.LatLng($scope.places[i].location.coordinates[1], $scope.places[i].location.coordinates[0]);
             $scope.bounds.extend(pos);
               $scope.map.fitBounds($scope.bounds);
             $scope.places[i].marker = new google.maps.Marker({
-              map: $scope.map,
+              //map: $scope.map,
               animation: google.maps.Animation.DROP,
               position: pos,
               title: $scope.places[i].name,
@@ -72,7 +78,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
               myInfoWindow.open($scope.map, this);
             });
           }
-          var markerCluster = new MarkerClusterer($scope.map,markers,custerOpt);
+          var markerCluster = new MarkerClusterer($scope.map,markers,clusterOpt);
         });
 
 
