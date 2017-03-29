@@ -24,7 +24,9 @@
     "ionic-plugin-keyboard",
     "cordova-plugin-camera",
     "cordova-plugin-geolocation",
-    "uk.co.workingedge.phonegap.plugin.launchnavigator"
+    "uk.co.workingedge.phonegap.plugin.launchnavigator",
+    "https://github.com/Rohfosho/CordovaCallNumberPlugin.git",
+    "cordova-plugin-inappbrowser"
   ],
   "cordovaPlatforms": [
     "ios",

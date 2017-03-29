@@ -11,7 +11,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     var options = {
       timeout: 50000,
       enableHighAccuracy: false,
-      maximumAge:60000
+      maximumAge:120000
     };
     $scope.currentPlace = null;
     $scope.goFromMap = function () {
@@ -121,7 +121,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     var options = {
       timeout: 50000,
       enableHighAccuracy: false,
-      maximumAge:60000
+      maximumAge:120000
     };
     LoadingHelper.show();
      console.log("getting position...")
@@ -173,8 +173,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     var options = {
       timeout: 50000,
       enableHighAccuracy: false,
-      maximumAge:60000
+      maximumAge:120000
     };
+    
     $scope.isDetailVisible = false;
     LoadingHelper.show();
     console.log("getting position...")
@@ -187,7 +188,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           $scope.details.latitude = $scope.details.location.coordinates[1];
           $scope.details.longitude = $scope.details.location.coordinates[0];
           LoadingHelper.hide();
-
+          $scope.call = function(phone){
+            window.plugins.CallNumber.callNumber(function(){}, function(err){alert(err)}, phone, true);
+          }
           $scope.navigate = function () {
 
             $cordovaLaunchNavigator.navigate([$scope.details.latitude, $scope.details.longitude], {
