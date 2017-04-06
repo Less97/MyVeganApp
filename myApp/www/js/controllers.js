@@ -53,8 +53,18 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           LoadingHelper.hide();
           $scope.places = items;
           var markers = [];
+
+          var clusterStyles = [
+            {
+              textColor: '#FFFFFF',
+              url: 'img/cluster/m.png',
+              height: 100,
+              width: 100,
+              textSize:20
+            },
+          ]
           var clusterOpt = {
-             imagePath: 'img/cluster/m'
+             styles:clusterStyles
           }
           for (var i = 0; i < $scope.places.length; i++) {
 
@@ -80,6 +90,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
               myInfoWindow.open($scope.map, this);
             });
           }
+          
           var markerCluster = new MarkerClusterer($scope.map,markers,clusterOpt);
         });
 
