@@ -829,3 +829,8 @@ color:yellowgreen;
     width:100% !important;
     margin:5px;
 }
+
+.mc-field-group input {
+color:grey;
+}
+
