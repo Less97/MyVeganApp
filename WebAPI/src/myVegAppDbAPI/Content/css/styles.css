@@ -820,3 +820,12 @@ footer .copyright {
     padding-top: 10px;
     margin-bottom: 50px;
 }
+
+a,a:hover {
+color:yellowgreen;
+}
+
+.mailchimp-item {
+    width:100% !important;
+    margin:5px;
+}
