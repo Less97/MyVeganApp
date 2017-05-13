@@ -146,11 +146,13 @@ angular.module('myApp.Service', [])
             method: 'GET',
             cache:false
           }
+          console.log("get Places...")
           $http(req).success(function (data) {
             data = JSON.parse(data);
             callback(data)
-          }).error(function () {
-            callback(false);
+          }).error(function (err) {
+            console.dir(err)
+            callback({error:true});
           })
         },
         getDetails: function (id, latitude, longitude, callback) {
@@ -163,10 +165,13 @@ angular.module('myApp.Service', [])
             },
             method: 'GET',
           }
+          console.log("get Details...")
+          console.dir(req.params);
           $http(req).success(function (data) {
             data = JSON.parse(data);
             callback(data)
-          }).error(function () {
+          }).error(function (err) {
+           console.dir(err);
             callback(false);
           })
         },
@@ -196,25 +201,19 @@ angular.module('myApp.Service', [])
           })
         },
         addGalleryItem: function(galleryItm,callback){
-          console.log("adding gallery item;");
-          console.log("myItm:");
           console.dir(galleryItm)
           var req = {
             url: address + 'places/addGalleryItem',
             method:'POST',
             data:galleryItm
           }
-          console.log("request");
           console.dir(req);
           $http(req)
           .success(function(data){
             var result = JSON.parse(data);
-            console.log("success result:"+result);
             callback(result);
           })
           .error(function(result){
-            console.log("cannot connect error: "+result);
-            console.dir(result);
             callback(false)
           })
         }

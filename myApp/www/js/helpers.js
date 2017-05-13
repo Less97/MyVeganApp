@@ -27,6 +27,8 @@ angular.module('myApp.Helpers', [])
             return "img/pins/shop.png";
           case "food truck":
             return "img/pins/foodtruck.png";
+          case "takeaway":
+            return "img/pins/takeaway.png"
           case "market":
             return ""
         }
@@ -42,6 +44,8 @@ angular.module('myApp.Helpers', [])
              return "img/imgTypes/shop.png";
           case "food truck":
             return "img/imgTypes/foodtruck.png";
+          case "takeaway":
+             return "img/imgTypes/takeaway.png"
           case "market":
             return ""
         }
@@ -76,7 +80,7 @@ angular.module('myApp.Helpers', [])
       },
       handleResponse:function(result,messages,callbackSuccess,callbackFailed){
 
-         if (result == false) {
+         if (result.hasOwnProperty("error")&&result.error == true) {
 
           var alertPopup = $ionicPopup.alert({
             title: 'Error',

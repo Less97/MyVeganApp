@@ -1,10 +1,17 @@
+
+
+
+
 angular.module('myApp.Controllers', ['ionic.rating'])
 
   /*Around you Controller */
   .controller('AroundYouCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, $compile, PlacesService, LoadingHelper, ImageHelper, UtilsService) {
+    $scope.searchSettings = UtilsService.getSearchSettings();
+    
     var options = {
-      timeout: 10000,
-      enableHighAccuracy: true
+      timeout: 50000,
+      enableHighAccuracy: false,
+      maximumAge:120000
     };
     $scope.currentPlace = null;
     $scope.goFromMap = function () {
@@ -22,6 +29,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     })
 
     LoadingHelper.show();
+    console.log("get position")
     $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
 
       var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -34,22 +42,37 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
       
       $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+      $scope.bounds = new google.maps.LatLngBounds();
       //Wait until the map is loaded
       var myInfoWindow = new google.maps.InfoWindow({
         content: ''
       });
       google.maps.event.addListenerOnce($scope.map, 'idle', function () {
-
+       console.log("got position... getting places..")
         PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance, myStringTags, 0, function (items) {
           LoadingHelper.hide();
           $scope.places = items;
+          var markers = [];
 
+          var clusterStyles = [
+            {
+              textColor: '#FFFFFF',
+              url: 'img/cluster/m.png',
+              height: 100,
+              width: 100,
+              textSize:20
+            },
+          ]
+          var clusterOpt = {
+             styles:clusterStyles
+          }
           for (var i = 0; i < $scope.places.length; i++) {
 
             var pos = new google.maps.LatLng($scope.places[i].location.coordinates[1], $scope.places[i].location.coordinates[0]);
-
+            $scope.bounds.extend(pos);
+              $scope.map.fitBounds($scope.bounds);
             $scope.places[i].marker = new google.maps.Marker({
-              map: $scope.map,
+              //map: $scope.map,
               animation: google.maps.Animation.DROP,
               position: pos,
               title: $scope.places[i].name,
@@ -57,6 +80,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
               idx: i,
               oid: $scope.places[i]._id.$oid
             });
+            markers.push($scope.places[i].marker);
 
             $scope.places[i].marker.addListener('click', function () {
               $scope.currentPlace = $scope.places[this.idx];
@@ -66,6 +90,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
               myInfoWindow.open($scope.map, this);
             });
           }
+          
+          var markerCluster = new MarkerClusterer($scope.map,markers,clusterOpt);
         });
 
 
@@ -79,6 +105,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           myInfoWindow.setContent('your position')
           myInfoWindow.open($scope.map, this);
         });
+
+      
       });
     }, function (error) {
       console.log("Could not get location");
@@ -90,7 +118,7 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $ionicLoading, PlacesService, ResponseHelper, LoadingHelper, ImageHelper, UtilsService) {
 
     $scope.searchSettings = UtilsService.getSearchSettings();
-
+    $scope.isDataEmpty = false;
     var myStringTags = [];
     //calculating tag value
     $scope.searchSettings.selectedTags.forEach(function (value){
@@ -102,18 +130,24 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     }
     $scope.currentTextFilter = "";
     var options = {
-      timeout: 10000,
-      enableHighAccuracy: true
+      timeout: 50000,
+      enableHighAccuracy: false,
+      maximumAge:120000
     };
     LoadingHelper.show();
+     console.log("getting position...")
     $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
-
+    console.log("got Position position... Getting places")
       PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance, myStringTags, 0, function (response) {
         LoadingHelper.hide();
+       
         ResponseHelper.handleResponse(response, {
           errorText: "Sorry there was a problem loading data. Please check the connection and retry"
         }, function () {
           $scope.places = response;
+          if(response.length ==0){
+             $scope.isDataEmpty= true;
+          }
         }, function () {
           $ionicHistory.nextViewOptions({
             disableBack: true
@@ -148,13 +182,16 @@ angular.module('myApp.Controllers', ['ionic.rating'])
   .controller('DetailsCtrl', function ($scope, $stateParams, $state, PlacesService,
     $cordovaGeolocation, $cordovaLaunchNavigator, LoadingHelper, PopupHelper) {
     var options = {
-      timeout: 10000,
-      enableHighAccuracy: true
+      timeout: 50000,
+      enableHighAccuracy: false,
+      maximumAge:120000
     };
+    
     $scope.isDetailVisible = false;
     LoadingHelper.show();
+    console.log("getting position...")
     $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
-
+      console.log("got position...get Details")
       PlacesService.getDetails($stateParams.id, position.coords.latitude, position.coords.longitude,
         function (details) {
           $scope.isDetailVisible = true;
@@ -162,7 +199,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           $scope.details.latitude = $scope.details.location.coordinates[1];
           $scope.details.longitude = $scope.details.location.coordinates[0];
           LoadingHelper.hide();
-
+          $scope.call = function(phone){
+            window.plugins.CallNumber.callNumber(function(){}, function(err){alert(err)}, phone, true);
+          }
           $scope.navigate = function () {
 
             $cordovaLaunchNavigator.navigate([$scope.details.latitude, $scope.details.longitude], {
