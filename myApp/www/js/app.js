@@ -21,7 +21,7 @@ angular.module('starter', ['ionic','ngCordova','myApp.Controllers', 'myApp.Servi
       StatusBar.styleDefault();
     }
    if (typeof analytics !== 'undefined'){
-    analytics.startTrackerWithId('UA-52379059-1');
+    analytics.startTrackerWithId('UA-82832670-5');
   }
   });
 })

@@ -40,6 +40,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
 
+      if (typeof analytics !== 'undefined'){
+            analytics.trackEvent('Search', 'Places', 'Map', true)
+      }
       
       $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
       $scope.bounds = new google.maps.LatLngBounds();
@@ -111,6 +114,10 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     }, function (error) {
       console.log("Could not get location");
     });
+
+    $scope.$on('$ionicView.enter', function(){
+      google.maps.event.trigger($scope.map,'resize')
+    });
   })
 
   /* ListCtrl*/
@@ -154,6 +161,10 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           });
           $state.go("login");
         })
+      if (typeof analytics !== 'undefined'){
+              analytics.trackEvent('Search', 'Places', 'List', true)
+      }
+
       });
     });
     $scope.gotoDetails = function (myPlace) {
@@ -176,6 +187,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $scope.returnDistance = function (distance) {
       return distance / 1000;
     }
+
+
   })
 
   /*Details Controller*/
@@ -502,12 +515,19 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         }
         LoadingHelper.hide();
         if (result == true) {
+          if (typeof analytics !== 'undefined'){
+                analytics.trackEvent('User', 'Login', 'Completed', $scope.user.email, true)
+              }
           $state.go("tab.home")
         } else {
           $scope.user.loginError = true;
         }
       })
     }
+
+     if (typeof analytics !== 'undefined'){
+        analytics.trackView('Login');
+      }
   })
 
   /* Register Controller */
@@ -556,6 +576,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
             }
             if (result.Error === 0) {
               $scope.isUserCorrectlyCreated = true;
+               if (typeof analytics !== 'undefined'){
+                  analytics.trackEvent('User', 'Register', 'Completed', $scope.email, true)
+               }
             }
           })
         } else {
@@ -563,7 +586,14 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           LoadingHelper.hide();
         }
       }
+
+     
+
     }
+    if (typeof analytics !== 'undefined'){
+        analytics.trackView('RegisterCtrl');
+    }
+
   })
 
   /*Forget Password Controller*/
