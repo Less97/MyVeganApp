@@ -40,9 +40,12 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
 
-      if (typeof analytics !== 'undefined'){
-            analytics.trackEvent('Search', 'Places', 'Map', true)
-      }
+     try{
+          if (typeof analytics !== 'undefined'){
+              var userData = UtilsService.getLoginData();
+              analytics.trackEvent('Search', 'Map',userData.user.FirstName+' '+ userData.user.LastName, true)
+          }
+        }catch(evt){}
       
       $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
       $scope.bounds = new google.maps.LatLngBounds();
@@ -161,9 +164,12 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           });
           $state.go("login");
         })
-      if (typeof analytics !== 'undefined'){
-              analytics.trackEvent('Search', 'Places', 'List', true)
-      }
+        try{
+          if (typeof analytics !== 'undefined'){
+              var userData = UtilsService.getLoginData();
+              analytics.trackEvent('Search', 'List',userData.user.FirstName+' '+ userData.user.LastName, true)
+          }
+        }catch(evt){}
 
       });
     });
