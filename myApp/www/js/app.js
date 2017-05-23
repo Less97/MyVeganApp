@@ -20,6 +20,9 @@ angular.module('starter', ['ionic','ngCordova','myApp.Controllers', 'myApp.Servi
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+   if (typeof analytics !== 'undefined'){
+    analytics.startTrackerWithId('UA-52379059-1');
+  }
   });
 })
 

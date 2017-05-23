@@ -682,6 +682,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
       UtilsService.saveSearchSettings($scope.searchSettings);
     }, 100)
 
-
+    if (typeof analytics !== 'undefined'){
+      analytics.trackView('Home');
+    }
 
   });
