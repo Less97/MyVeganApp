@@ -5,28 +5,13 @@
 </ion-header>
 
 <ion-content padding>
-<div class="homeContent">
-    <h3>Welcome {{loginData.user.FirstName}},</h3>
-    <div class="margin-bottom-10px margin-top-20px">What are you looking for today?</div>
-    <div class="spacer-10px"></div>
-    <div class="margin-bottom-10px"><b>Max distance:</b>&nbsp;{{searchSettings.maxDistance}} km</div>
-    <div class="item range margin-bottom-10px">
-      <i class="icon ion-location"></i>
-      <input type="range" name="max_distance" min="5" max="300" ng-model="searchSettings.maxDistance">
-      <i class="icon ion-pinpoint"></i>
-    </div>
-    <div>
-      <h4>categories:</h4>
-      <div>
-          <li ng-repeat="t in tags" class="tag hometag" ng-class="{orange : t.isSelected}" ng-click="t.isSelected=!t.isSelected" >#{{t._id}}</li>
-      </div>
-    </div>
-    <div class="spacer-10px clear"></div>
-    <button class="button button-block button-positive" ng-click="goNearby()">
-  Find Nearby >
-</button>
-    <button class="button button-block button-positive" ng-click="findAll()">
-  See All >
-</button>
-    </div>
+  <h2>Welcome to Ionic!</h2>
+  <p>
+    This starter project comes with simple tabs-based layout for apps
+    that are going to primarily use a Tabbed UI.
+  </p>
+  <p>
+    Take a look at the <code>src/pages/</code> directory to add or change tabs,
+    update any existing page or create new pages.
+  </p>
 </ion-content>
