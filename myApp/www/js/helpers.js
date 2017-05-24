@@ -63,7 +63,7 @@ angular.module('myApp.Helpers', [])
           });
 
           alertPopup.then(function (res) {
-            callback()
+            callback(result.Error)
           });
 
 

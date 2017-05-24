@@ -1,17 +1,13 @@
-
-
-
-
 angular.module('myApp.Controllers', ['ionic.rating'])
 
   /*Around you Controller */
   .controller('AroundYouCtrl', function ($scope, $state, $cordovaGeolocation, $ionicHistory, $compile, PlacesService, LoadingHelper, ImageHelper, UtilsService) {
     $scope.searchSettings = UtilsService.getSearchSettings();
-    
+
     var options = {
       timeout: 50000,
       enableHighAccuracy: false,
-      maximumAge:120000
+      maximumAge: 120000
     };
     $scope.currentPlace = null;
     $scope.goFromMap = function () {
@@ -22,10 +18,10 @@ angular.module('myApp.Controllers', ['ionic.rating'])
       })
     }
 
- var myStringTags = [];
+    var myStringTags = [];
     //calculating tag value
-    $scope.searchSettings.selectedTags.forEach(function (value){
-        myStringTags.push(value._id);
+    $scope.searchSettings.selectedTags.forEach(function (value) {
+      myStringTags.push(value._id);
     })
 
     LoadingHelper.show();
@@ -40,7 +36,13 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
 
-      
+      try {
+        if (typeof analytics !== 'undefined') {
+          var userData = UtilsService.getLoginData();
+          analytics.trackEvent('Search', 'Map', userData.user.FirstName + ' ' + userData.user.LastName, true)
+        }
+      } catch (evt) {}
+
       $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
       $scope.bounds = new google.maps.LatLngBounds();
       //Wait until the map is loaded
@@ -48,29 +50,27 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         content: ''
       });
       google.maps.event.addListenerOnce($scope.map, 'idle', function () {
-       console.log("got position... getting places..")
+        console.log("got position... getting places..")
         PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance, myStringTags, 0, function (items) {
           LoadingHelper.hide();
           $scope.places = items;
           var markers = [];
 
-          var clusterStyles = [
-            {
-              textColor: '#FFFFFF',
-              url: 'img/cluster/m.png',
-              height: 100,
-              width: 100,
-              textSize:20
-            },
-          ]
+          var clusterStyles = [{
+            textColor: '#FFFFFF',
+            url: 'img/cluster/m.png',
+            height: 100,
+            width: 100,
+            textSize: 20
+          }, ]
           var clusterOpt = {
-             styles:clusterStyles
+            styles: clusterStyles
           }
           for (var i = 0; i < $scope.places.length; i++) {
 
             var pos = new google.maps.LatLng($scope.places[i].location.coordinates[1], $scope.places[i].location.coordinates[0]);
             $scope.bounds.extend(pos);
-              $scope.map.fitBounds($scope.bounds);
+            $scope.map.fitBounds($scope.bounds);
             $scope.places[i].marker = new google.maps.Marker({
               //map: $scope.map,
               animation: google.maps.Animation.DROP,
@@ -90,8 +90,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
               myInfoWindow.open($scope.map, this);
             });
           }
-          
-          var markerCluster = new MarkerClusterer($scope.map,markers,clusterOpt);
+
+          var markerCluster = new MarkerClusterer($scope.map, markers, clusterOpt);
         });
 
 
@@ -106,10 +106,14 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           myInfoWindow.open($scope.map, this);
         });
 
-      
+
       });
     }, function (error) {
       console.log("Could not get location");
+    });
+
+    $scope.$on('$ionicView.enter', function () {
+      google.maps.event.trigger($scope.map, 'resize')
     });
   })
 
@@ -121,8 +125,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $scope.isDataEmpty = false;
     var myStringTags = [];
     //calculating tag value
-    $scope.searchSettings.selectedTags.forEach(function (value){
-        myStringTags.push(value._id);
+    $scope.searchSettings.selectedTags.forEach(function (value) {
+      myStringTags.push(value._id);
     })
 
     $scope.goToMap = function () {
@@ -132,21 +136,21 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     var options = {
       timeout: 50000,
       enableHighAccuracy: false,
-      maximumAge:120000
+      maximumAge: 120000
     };
     LoadingHelper.show();
-     console.log("getting position...")
+    console.log("getting position...")
     $cordovaGeolocation.getCurrentPosition(options).then(function (position) {
-    console.log("got Position position... Getting places")
+      console.log("got Position position... Getting places")
       PlacesService.getPlaces(position.coords.latitude, position.coords.longitude, $scope.currentTextFilter, $scope.searchSettings.maxDistance, myStringTags, 0, function (response) {
         LoadingHelper.hide();
-       
+
         ResponseHelper.handleResponse(response, {
           errorText: "Sorry there was a problem loading data. Please check the connection and retry"
         }, function () {
           $scope.places = response;
-          if(response.length ==0){
-             $scope.isDataEmpty= true;
+          if (response.length == 0) {
+            $scope.isDataEmpty = true;
           }
         }, function () {
           $ionicHistory.nextViewOptions({
@@ -154,6 +158,13 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           });
           $state.go("login");
         })
+        try {
+          if (typeof analytics !== 'undefined') {
+            var userData = UtilsService.getLoginData();
+            analytics.trackEvent('Search', 'List', userData.user.FirstName + ' ' + userData.user.LastName, true)
+          }
+        } catch (evt) {}
+
       });
     });
     $scope.gotoDetails = function (myPlace) {
@@ -176,6 +187,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $scope.returnDistance = function (distance) {
       return distance / 1000;
     }
+
+
   })
 
   /*Details Controller*/
@@ -184,9 +197,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     var options = {
       timeout: 50000,
       enableHighAccuracy: false,
-      maximumAge:120000
+      maximumAge: 120000
     };
-    
+
     $scope.isDetailVisible = false;
     LoadingHelper.show();
     console.log("getting position...")
@@ -199,8 +212,10 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           $scope.details.latitude = $scope.details.location.coordinates[1];
           $scope.details.longitude = $scope.details.location.coordinates[0];
           LoadingHelper.hide();
-          $scope.call = function(phone){
-            window.plugins.CallNumber.callNumber(function(){}, function(err){alert(err)}, phone, true);
+          $scope.call = function (phone) {
+            window.plugins.CallNumber.callNumber(function () {}, function (err) {
+              alert(err)
+            }, phone, true);
           }
           $scope.navigate = function () {
 
@@ -375,10 +390,18 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           LoadingHelper.show();
           ReviewsService.addReview(review, function (result) {
             LoadingHelper.hide();
+
+            if (!result.hasOwnProperty("Error") || !result.Error) {
+              if (typeof analytics !== 'undefined') {
+                analytics.trackEvent('Review', 'Add', 'Completed','', true)
+              }
+            }
+
             ResponseHelper.handleSaveResponse(result, {
               successText: "Thank you. Your review has been saved correctly",
               errorText: "Sorry, there was a problem saving your review. Please retry."
             }, function () {
+
               $ionicHistory.goBack(-1);
             })
           })
@@ -386,6 +409,10 @@ angular.module('myApp.Controllers', ['ionic.rating'])
 
         }
       }; //register
+    }
+
+    if (typeof analytics !== 'undefined') {
+      analytics.trackView('AddReview');
     }
   })
 
@@ -456,6 +483,13 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         }
         LoadingHelper.show();
         PlacesService.addGalleryItem(myObj, function (result) {
+
+           if (!result.hasOwnProperty("Error") || !result.Error) {
+              if (typeof analytics !== 'undefined') {
+                analytics.trackEvent('Gallery', 'Add', 'Completed',pId, true)
+              }
+            }
+
           LoadingHelper.hide();
           ResponseHelper.handleSaveResponse(result, {
             errorText: "Sorry, an error occurred during saving.",
@@ -472,6 +506,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           $ionicHistory.goBack(-1);
         })
       });
+    }
+    if (typeof analytics !== 'undefined') {
+      analytics.trackView('AddImage');
     }
 
   })
@@ -502,11 +539,18 @@ angular.module('myApp.Controllers', ['ionic.rating'])
         }
         LoadingHelper.hide();
         if (result == true) {
+          if (typeof analytics !== 'undefined') {
+            analytics.trackEvent('User', 'Login', 'Completed', $scope.user.email, true)
+          }
           $state.go("tab.home")
         } else {
           $scope.user.loginError = true;
         }
       })
+    }
+
+    if (typeof analytics !== 'undefined') {
+      analytics.trackView('Login');
     }
   })
 
@@ -556,6 +600,9 @@ angular.module('myApp.Controllers', ['ionic.rating'])
             }
             if (result.Error === 0) {
               $scope.isUserCorrectlyCreated = true;
+              if (typeof analytics !== 'undefined') {
+                analytics.trackEvent('User', 'Register', 'Completed', $scope.email, true)
+              }
             }
           })
         } else {
@@ -563,7 +610,14 @@ angular.module('myApp.Controllers', ['ionic.rating'])
           LoadingHelper.hide();
         }
       }
+
+
+
     }
+    if (typeof analytics !== 'undefined') {
+      analytics.trackView('RegisterCtrl');
+    }
+
   })
 
   /*Forget Password Controller*/
@@ -629,28 +683,28 @@ angular.module('myApp.Controllers', ['ionic.rating'])
     $scope.viewFinalised = false;
     $scope.searchSettings = {
       maxDistance: 30,
-      selectedTags:[]
+      selectedTags: []
     };
 
     if (UtilsService.getSearchSettings() != false) {
       $scope.searchSettings = UtilsService.getSearchSettings();
-      
+
     }
-    
+
     TagService.getTags(function (data) {
       $scope.tags = [];
 
       angular.forEach(data, function (value, key) {
-          value.isSelected=$scope.searchSettings.selectedTags.some(function(selected){
-            return selected._id == value._id
-          })
+        value.isSelected = $scope.searchSettings.selectedTags.some(function (selected) {
+          return selected._id == value._id
+        })
 
 
       })
       $scope.tags = data;
 
       //prepopulating tags
-     
+
       $scope.viewFinalised = true;
     });
     $scope.goNearby = function () {
@@ -664,16 +718,16 @@ angular.module('myApp.Controllers', ['ionic.rating'])
       });
     };
 
-    $scope.$watch('tags', function() {
-      if($scope.viewFinalised == false) return;
-      $scope.searchSettings.selectedTags = $scope.tags.filter(function(value){
+    $scope.$watch('tags', function () {
+      if ($scope.viewFinalised == false) return;
+      $scope.searchSettings.selectedTags = $scope.tags.filter(function (value) {
         return value.isSelected == true;
       })
     }, true)
 
     //there is a problem with tab leave event that don't work for some reason
     var TIMER = $interval(function () {
-      if($scope.viewFinalised ==false) return;
+      if ($scope.viewFinalised == false) return;
       // If we're no longer on the page, cancel the TIMER.
       if ($ionicHistory.currentView().stateName != 'tab.home') {
         $interval.cancel(TIMER);
@@ -682,6 +736,8 @@ angular.module('myApp.Controllers', ['ionic.rating'])
       UtilsService.saveSearchSettings($scope.searchSettings);
     }, 100)
 
-
+    if (typeof analytics !== 'undefined') {
+      analytics.trackView('Home');
+    }
 
   });
