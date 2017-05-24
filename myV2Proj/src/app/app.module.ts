@@ -10,7 +10,7 @@ import { MapPage } from '../pages/map/map';
 import { ListPage } from '../pages/list/list';
 import { TabsPage } from '../pages/tabs/tabs';
 
-import { LoginService } from '../services/login.service'
+import { LoginService } from '../services/login'
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -21,12 +21,11 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     MapPage,
     ListPage,
     TabsPage,
-    LoginPage
+    HttpModule,
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
-    HttpModule,
+    IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
