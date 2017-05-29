@@ -7,8 +7,15 @@
 <ion-content padding>
   <h2>Welcome Alessandro</h2>
   <h4>What are you looking for today?</h4>
-  <ion-slide style="background-color: green">
-    <h2>Slide 1</h2>
-  </ion-slide>
-  
+  <div class="spacer-10px"></div>
+   <ion-range min="-200" max="200" [(ngModel)]="maxDistance" color="primary">
+      <ion-label range-left>5 km</ion-label>
+      <ion-label range-right>150 km</ion-label>
+    </ion-range>
+   <div>
+      <h4>categories:</h4>
+       <div>
+          <button *ngFor="let t in tags">{{t._id}} </button>
+      </div>
+    </div>
 </ion-content>
