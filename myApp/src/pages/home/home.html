@@ -6,7 +6,7 @@
 
 <ion-content padding>
   <h2>Welcome Alessandro</h2>
-  <h4>What are you looking for today?</h4>
+  <h5>What are you looking for today?</h5>
   <div class="spacer-10px"></div>
    <ion-range min="-200" max="200" [(ngModel)]="maxDistance" color="primary">
       <ion-label range-left>5 km</ion-label>
@@ -15,7 +15,7 @@
    <div>
       <h4>categories:</h4>
        <div>
-          <button *ngFor="let t in tags">{{t._id}} </button>
+          <button *ngFor="let t of tags" class="tag hometag" (ngClass)="{orange : t.isSelected}" (click)="t.isSelected=!t.isSelected">{{t._id}} </button>
       </div>
     </div>
 </ion-content>
