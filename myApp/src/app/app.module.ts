@@ -8,7 +8,8 @@ import { ListPage } from '../pages/list/list';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
-import { DetailsPage } from '../pages/details/details'
+import { DetailsPage } from '../pages/details/details';
+import { RegisterPage } from '../pages/register/register';
 
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -23,11 +24,12 @@ import { LoginProvider } from '../providers/loginProvider';
     HomePage,
     TabsPage,
     LoginPage,
-    DetailsPage
+    DetailsPage,
+    RegisterPage
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -37,7 +39,8 @@ import { LoginProvider } from '../providers/loginProvider';
     HomePage,
     TabsPage,
     LoginPage,
-    DetailsPage
+    DetailsPage,
+    RegisterPage
   ],
   providers: [
     StatusBar,

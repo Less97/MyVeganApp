@@ -5,7 +5,7 @@ import { NavController } from 'ionic-angular';
 
 @Component({
   selector: 'page-detailsPage',
-  templateUrl: 'detailsPage.html'
+  templateUrl: 'details.html'
 })
 
 export class DetailsPage {

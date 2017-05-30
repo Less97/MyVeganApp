@@ -11,19 +11,22 @@
     <div>
       <img src="assets/images/CuriousCarrotLogo.png" class="logoImg" />
     </div>
-    <form #f="ngForm" (ngSubmit)="login(f)" novalidate>
+    <form (ngSubmit)="login(f)" novalidate>
       <ion-item>
-        <ion-input type="text" ngModel name="email" placeholder="email" required></ion-input>
+        <ion-input type="text" [(ngModel)]="user.email" name="email" id="email" placeholder="email" required></ion-input>
+      </ion-item>
+      <ion-item [hidden]="!user.email.valid || user.email.pristine">
         <ion-label class="red-warning">You need to insert the email</ion-label>
       </ion-item>
-     
       <ion-item>
-        <ion-input type="password" name="password" ngModel placeholder="password" required></ion-input>
-        <ion-label class="red-warning">Please insert your password</ion-label>
+        <ion-input id="password" [(ngModel)]="user.password" type="password" name="password" placeholder="password" required></ion-input>
       </ion-item>
-       <button ion-button full>Login</button>
+      <ion-item [hidden]="!user.password.valid || user.password.pristine">
+        <ion-label class="red-warning">You need to insert the email</ion-label>
+      </ion-item>
+      <button ion-button full>Login</button>
     </form>
-   
+
     <button ion-button full (click)="register()">Register</button>
   </ion-list>
 </ion-content>

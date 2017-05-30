@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-// import { NgForm } from '@angular/forms';
 import { TabsPage } from '../tabs/tabs';
 import { RegisterPage } from '../register/register';
 
-class User{
-  email: string;
-  password: string;
+export class User{
+  constructor(
+    public email: string,
+    public password: string,
+  ) {  }
 }
 
 
@@ -17,13 +18,10 @@ class User{
 
 export class LoginPage {
 
-  user:User = {
-    email:'',
-    password:''
-  }
-
+  user: User = {email:'',password:''}
+  
   constructor(public navCtrl: NavController) {
-
+     
   }
 
   login(){

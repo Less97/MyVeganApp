@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginProvider } from '../providers/loginProvider';
 import { LoginPage} from '../pages/login/login';
 
+
 import { TabsPage } from '../pages/tabs/tabs';
 
 @Component({
