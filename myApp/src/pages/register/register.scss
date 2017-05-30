@@ -1,0 +1,24 @@
+page-register {
+        
+    .register-slideContainer{
+        position:relative;
+    }
+
+    .register-slide{
+        width: 100%;
+        margin:20px auto;
+    }
+
+    .register-img{
+        margin:10px;
+    }
+
+    .register-text{
+        text-align: center;
+        font-size:1.2em;
+    }
+    .register-slide>h3{
+        text-align: center;
+    }
+  
+}
