@@ -7,11 +7,21 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-list-header>Follow us on Twitter</ion-list-header>
-    <ion-item>
-      <ion-icon name="ionic" item-left></ion-icon>
-      @ionicframework
-    </ion-item>
-  </ion-list>
+  <ion-card (click)="GoToAddPlace()">
+    <ion-card-header>
+      Header
+    </ion-card-header>
+    <ion-card-content>
+      Do you know a place we didn't review yet? Please add it clicking here
+    </ion-card-content>
+</ion-card>
+<ion-list>
+  <ion-item *ngFor='let p of places'>
+    <ion-avatar item-left>
+      <img src="img/avatar-cher.png">
+    </ion-avatar>
+    <h2>{{p.name}}</h2>
+    <p>{{p.review}}</p>
+  </ion-item>
+</ion-list>
 </ion-content>
