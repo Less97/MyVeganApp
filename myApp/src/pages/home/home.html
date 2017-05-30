@@ -12,7 +12,7 @@
     <ion-label range-left>5 km</ion-label>
     <ion-label range-right>150 km</ion-label>
   </ion-range>
-  <div>
+  <div class="margin-bottom-10px">
     <h4>categories:</h4>
     <div>
       <button *ngFor="let t of tags" class="tag hometag" (ngClass)="{orange : t.isSelected}" (click)="t.isSelected=!t.isSelected">{{t._id}} </button>
