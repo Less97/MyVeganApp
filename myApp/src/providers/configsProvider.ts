@@ -6,13 +6,19 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class ConfigsProvider {
   
-  public serviceURL:String = 'http://thecuriouscarrot.com/api/'
-  //var address = "http://localhost:51067/api/";
+  public serviceURL:string = 'http://thecuriouscarrot.com/api/'
+  //public serviceURL = "http://localhost:51067/api/";
   
   constructor() {
 
   }
 
-  
+  isLoggedIn():boolean{
+    return false;
+  }
+
+  getServiceUrl():string{
+    return this.serviceURL;
+  }
 
 }

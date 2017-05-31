@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { TabsPage } from '../tabs/tabs';
 import { RegisterPage } from '../register/register';
+import { LoginService } from '../../services/loginService';
 
 export class User{
   constructor(
@@ -20,12 +21,12 @@ export class LoginPage {
 
   user: User = {email:'',password:''}
   
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,loginService:LoginService) {
      
   }
 
   login(){
-     this.navCtrl.setRoot(TabsPage)
+     loginService.login(this.user.email,this.user.password)
   }
 
   register(){

@@ -1,6 +1,8 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { HttpModule } from '@angular/http';
+
 import { MyApp } from './app.component';
 
 import { MapPage } from '../pages/map/map';
@@ -11,10 +13,12 @@ import { LoginPage } from '../pages/login/login';
 import { DetailsPage } from '../pages/details/details';
 import { RegisterPage } from '../pages/register/register';
 
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { LoginProvider } from '../providers/loginProvider';
+import { ConfigsProvider } from '../providers/configsProvider';
+
+
+import { LoginService } from '../services/loginService';
 
 @NgModule({
   declarations: [
@@ -29,6 +33,7 @@ import { LoginProvider } from '../providers/loginProvider';
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
@@ -45,7 +50,8 @@ import { LoginProvider } from '../providers/loginProvider';
   providers: [
     StatusBar,
     SplashScreen,
-    LoginProvider,
+    ConfigsProvider,
+    LoginService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

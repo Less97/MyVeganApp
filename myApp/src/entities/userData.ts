@@ -1,6 +1,6 @@
 
 
-export class User{
+export class UserData{
   _id: string;
   firstName:string;
   lastName:string;
