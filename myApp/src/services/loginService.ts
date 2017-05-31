@@ -1,18 +1,16 @@
  import {Injectable} from  '@angular/core';
+ import { ConfigsProvider } from '../providers/configsProvider'
  //import {Http} from '@angular/http'
 
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class LoginProvider {
+export class LoginService {
 
   constructor() {
 
   }
-
-  isLoggedIn(){
-    return false;
-  }
+  
 
   login(){
      return new Promise((r)=>{
