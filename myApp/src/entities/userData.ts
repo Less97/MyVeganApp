@@ -1,9 +1,13 @@
 
 
 export class UserData{
-  _id: string;
-  firstName:string;
-  lastName:string;
-  email:string;
-  isSelected: boolean
+  isLoggedIn:boolean;
+  user: {
+    firstName:string;
+    lastName:string;
+    email:string;
+  };
+  _id:{
+    oid:string;
+  }
 }

@@ -3,13 +3,8 @@ import { NavController } from 'ionic-angular';
 import { TabsPage } from '../tabs/tabs';
 import { RegisterPage } from '../register/register';
 import { LoginService } from '../../services/loginService';
+import { UserData } from '../../entities/userData'
 
-export class User{
-  constructor(
-    public email: string,
-    public password: string,
-  ) {  }
-}
 
 
 @Component({
@@ -19,14 +14,18 @@ export class User{
 
 export class LoginPage {
 
-  user: User = {email:'',password:''}
-  
+  user = {email:'',password:''}
+  myUserData:UserData; 
   constructor(public navCtrl: NavController,public loginService:LoginService) {
      
   }
 
   login(){
-     this.loginService.login(this.user.email,this.user.password)
+    this.loginService.login(this.user.email,this.user.password).subscribe(data=>
+    {
+      this.myUserData = data
+    })
+
   }
 
   register(){
