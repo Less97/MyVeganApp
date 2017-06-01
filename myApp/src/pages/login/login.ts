@@ -21,12 +21,12 @@ export class LoginPage {
 
   user: User = {email:'',password:''}
   
-  constructor(public navCtrl: NavController,loginService:LoginService) {
+  constructor(public navCtrl: NavController,public loginService:LoginService) {
      
   }
 
   login(){
-     loginService.login(this.user.email,this.user.password)
+     this.loginService.login(this.user.email,this.user.password)
   }
 
   register(){
