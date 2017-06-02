@@ -1,4 +1,3 @@
-import { iResponseLoader } from '../entities/interfaces/iResponseLoader'
 
 export class Tag {
   _id: string;

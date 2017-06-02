@@ -1,4 +1,4 @@
-import { PlaceBase } from "./placebase";
+import { PlaceBase } from "./placeBase";
 
 export class PlaceDetailed extends PlaceBase{
     description:string;
