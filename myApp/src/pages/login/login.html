@@ -8,11 +8,11 @@
 
 <ion-content>
   <ion-list>
-    <!--<div>
+    <div>
       <img src="assets/images/CuriousCarrotLogo.png" class="logoImg" />
-    </div>-->
-    <form (ngSubmit)="login(f)" novalidate>
-      <!--<ion-item>
+    </div>
+    <form (ngSubmit)="login(f)" #loginForm="ngForm" novalidate>
+      <ion-item>
         <ion-input type="text" [(ngModel)]="user.email" name="email" id="email" placeholder="email" required></ion-input>
       </ion-item>
       <ion-item [hidden]="!user.email.valid || user.email.pristine">
@@ -23,8 +23,8 @@
       </ion-item>
       <ion-item [hidden]="!user.password.valid || user.password.pristine">
         <ion-label class="red-warning">You need to insert the email</ion-label>
-      </ion-item>-->
-      <button ion-button full>Login</button>
+      </ion-item>
+      <button ion-button full [disabled]="!loginForm.form.valid">Login</button>
     </form>
 
     <button ion-button full (click)="register()">Register</button>

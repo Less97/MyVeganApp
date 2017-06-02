@@ -1,7 +1,7 @@
  import { Injectable } from  '@angular/core';
  import { ConfigsProvider } from '../providers/configsProvider'
  import { Http } from '@angular/http'
- import { UserData } from '../entities/userData'
+ import { PlaceBase } from '../entities/placeBase'
  import { Observable } from 'rxjs/Rx';
 
 import 'rxjs/add/operator/toPromise'
@@ -17,9 +17,8 @@ export class LoginService {
   }
   
 
-  public login(eml:string,pwd:string):Observable<UserData>{
-     return this.http.post(this.serviceUrl,{email:eml,password:pwd})
-     .map(res=> new UserData().fromResponse(res.json()))
+  public getPlacesBases(lat:number,lng:number):Observable<Array<PlaceBase>>{
+     return new Observable<Array<PlaceBase>>();
   }
 
   // private handleError(error: any): Promise<any> {

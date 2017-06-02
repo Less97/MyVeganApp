@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { ListPage } from '../list/list'
 import { MapPage } from '../map/map'
+import { Tag } from '../../entities/tag'
+import { TagsService } from '../../services/tagsService'
 
 
 
@@ -11,18 +13,13 @@ import { MapPage } from '../map/map'
 })
 export class HomePage {
 
-  tags = [
-      {_id:'Tag1',isSelected:false},{_id:'Tag2',isSelected:false},{_id:'Tag3',isSelected:false},
-      {_id:'Tag4',isSelected:false},{_id:'Tag5',isSelected:false},{_id:'Tag6',isSelected:false},
-      {_id:'Tag7',isSelected:false},{_id:'Tag8',isSelected:false},{_id:'Tag9',isSelected:false}
-  ];
-
-
-
+  tags:Tag[];
   maxDistance = 5 ;
 
-  constructor(public navCtrl: NavController) {
-  
+  constructor(public navCtrl: NavController,public tagsService:TagsService) {
+    tagsService.getTags().subscribe(tags=>{
+      this.tags = tags;
+    })
   }
 
   goNearby(){

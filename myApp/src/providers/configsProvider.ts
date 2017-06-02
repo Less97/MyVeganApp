@@ -41,6 +41,8 @@
    }
 
    getUserData():UserData{
+     var obj = window.localStorage.getItem('userData');
+     if(obj==null||obj==undefined) return new UserData();
      return  JSON.parse(window.localStorage.getItem('userData')) as UserData;
    }
 

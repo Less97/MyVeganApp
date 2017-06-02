@@ -1,6 +1,11 @@
+import { iResponseLoader } from '../entities/interfaces/iResponseLoader'
 
-export class Tag{
+export class Tag {
   _id: string;
-  name:string;
-  isSelected: boolean
+  selected:boolean;
+
+  constructor(id:string,isSelected:boolean = null){
+    this._id = id;
+    this.selected = isSelected;
+  }
 }

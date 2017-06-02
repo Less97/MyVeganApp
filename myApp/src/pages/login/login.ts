@@ -15,8 +15,7 @@ import { ConfigsProvider } from '../../providers/configsProvider';
 
 export class LoginPage {
 
-  user = {email:'alessandro83lignano@gmail.com',password:'password'}
-  
+  user = {email:'',password:''}
   constructor(public navCtrl: NavController,public loginService:LoginService,public configsProvider:ConfigsProvider) {
     
   }

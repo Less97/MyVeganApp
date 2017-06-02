@@ -13,10 +13,11 @@ import { LoginPage } from '../pages/login/login';
 import { DetailsPage } from '../pages/details/details';
 import { RegisterPage } from '../pages/register/register';
 
+
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ConfigsProvider } from '../providers/configsProvider';
-
+import { TagsService } from '../services/tagsService'
 
 import { LoginService } from '../services/loginService';
 
@@ -52,6 +53,7 @@ import { LoginService } from '../services/loginService';
     SplashScreen,
     ConfigsProvider,
     LoginService,
+    TagsService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
