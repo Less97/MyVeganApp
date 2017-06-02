@@ -1,7 +1,6 @@
  import { Injectable } from '@angular/core';
  import { SearchSettings } from '../entities/searchSettings'
  import { Tag  } from '../entities/tag'
- import { Http } from '@angular/http'
  import { UserData } from '../entities/userData' ;
 
  import 'rxjs/add/operator/map';
@@ -12,12 +11,13 @@
    public serviceURL: string = 'http://thecuriouscarrot.com/api/'
    //public serviceURL = "http://localhost:51067/api/";
 
+
    constructor() {
 
    }
 
    isLoggedIn(): boolean {
-     return false;
+      return this.getUserData().isLoggedIn;
    }
 
    getServiceUrl(): string {
@@ -37,7 +37,11 @@
    }
 
    saveUserData(userData:UserData):void{
-    window.localStorage.setItem('userData', userData.toString());
+    window.localStorage.setItem('userData', JSON.stringify(userData));
+   }
+
+   getUserData():UserData{
+     return  JSON.parse(window.localStorage.getItem('userData')) as UserData;
    }
 
  }

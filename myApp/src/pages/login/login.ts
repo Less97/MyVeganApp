@@ -3,7 +3,8 @@ import { NavController } from 'ionic-angular';
 import { TabsPage } from '../tabs/tabs';
 import { RegisterPage } from '../register/register';
 import { LoginService } from '../../services/loginService';
-import { UserData } from '../../entities/userData'
+//import { UserData } from '../../entities/userData';
+import { ConfigsProvider } from '../../providers/configsProvider';
 
 
 
@@ -15,15 +16,18 @@ import { UserData } from '../../entities/userData'
 export class LoginPage {
 
   user = {email:'alessandro83lignano@gmail.com',password:'password'}
-  myUserData:UserData; 
-  constructor(public navCtrl: NavController,public loginService:LoginService) {
+  
+  constructor(public navCtrl: NavController,public loginService:LoginService,public configsProvider:ConfigsProvider) {
     
   }
 
   login(){
      this.loginService.login(this.user.email,this.user.password).subscribe(data=>
     {
-      this.myUserData = data
+      if(data.isLoggedIn){
+        this.configsProvider.saveUserData(data);
+        this.navCtrl.setRoot(TabsPage);
+      }
     })
   }
 

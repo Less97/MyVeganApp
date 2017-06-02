@@ -1,7 +1,7 @@
  import { Injectable } from  '@angular/core';
  import { ConfigsProvider } from '../providers/configsProvider'
  import { Http } from '@angular/http'
- import { UserData } from '../entities/UserData'
+  import { UserData } from '../entities/userData'
  import { Observable } from 'rxjs/Rx';
 
 import 'rxjs/add/operator/toPromise'
@@ -19,11 +19,11 @@ export class LoginService {
 
   public login(eml:string,pwd:string):Observable<UserData>{
      return this.http.post(this.serviceUrl,{email:eml,password:pwd})
-     .map(res=> new UserData())
+     .map(res=> new UserData().fromResponse(res.json()))
   }
 
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
-    return Promise.reject(error.message || error);
-  }
+  // private handleError(error: any): Promise<any> {
+  //   console.error('An error occurred', error); // for demo purposes only
+  //   return Promise.reject(error.message || error);
+  // }
 }

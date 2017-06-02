@@ -1,4 +1,7 @@
-export class UserData implements iResponseLoader<UserData> {
+
+
+
+export class UserData {
  
   isLoggedIn: boolean = false;
   firstName: string = '';
@@ -6,6 +9,9 @@ export class UserData implements iResponseLoader<UserData> {
   email: string = '';
   id: string = '';
 
+  constructor(){
+
+  }
 
   fromResponse(json: string): UserData {
     var obj = Object.create(UserData);
@@ -18,7 +24,7 @@ export class UserData implements iResponseLoader<UserData> {
     obj.firstName = data.user.FirstName;
     obj.lastName = data.user.LastName;
     obj.email = data.user.Email;
-    obj.id = data._id.oid;
+    obj.id = data.user._id.$oid;
     return obj;
   }
 }
