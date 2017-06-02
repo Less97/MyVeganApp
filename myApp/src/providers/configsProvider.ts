@@ -1,13 +1,8 @@
- import {
-   Injectable
- } from '@angular/core';
- import {
-   SearchSettings
- } from '../entities/searchSettings'
- import {
-   Tag
- } from '../entities/tag'
- //import {Http} from '@angular/http'
+ import { Injectable } from '@angular/core';
+ import { SearchSettings } from '../entities/searchSettings'
+ import { Tag  } from '../entities/tag'
+ import { Http } from '@angular/http'
+ import { UserData } from '../entities/userData' ;
 
  import 'rxjs/add/operator/map';
 
@@ -41,8 +36,8 @@
      return data as SearchSettings;
    }
 
-   saveUserData(userData):void{
-    window.localStorage.setItem('userData', userData.json());
+   saveUserData(userData:UserData):void{
+    window.localStorage.setItem('userData', userData.toString());
    }
 
  }

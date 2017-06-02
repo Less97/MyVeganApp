@@ -14,18 +14,17 @@ import { UserData } from '../../entities/userData'
 
 export class LoginPage {
 
-  user = {email:'',password:''}
+  user = {email:'alessandro83lignano@gmail.com',password:'password'}
   myUserData:UserData; 
   constructor(public navCtrl: NavController,public loginService:LoginService) {
-     
+    
   }
 
   login(){
-    this.loginService.login(this.user.email,this.user.password).subscribe(data=>
+     this.loginService.login(this.user.email,this.user.password).subscribe(data=>
     {
       this.myUserData = data
     })
-
   }
 
   register(){

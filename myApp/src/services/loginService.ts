@@ -19,8 +19,7 @@ export class LoginService {
 
   public login(eml:string,pwd:string):Observable<UserData>{
      return this.http.post(this.serviceUrl,{email:eml,password:pwd})
-     .map(res=>res.json() as UserData)
-    
+     .map(res=> new UserData())
   }
 
   private handleError(error: any): Promise<any> {
