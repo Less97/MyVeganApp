@@ -1,7 +1,7 @@
+import {iResponseLoader} from './interfaces/iResponseLoader'
 
 
-
-export class UserData {
+export class UserData implements iResponseLoader<UserData>{
  
   isLoggedIn: boolean = false;
   firstName: string = '';

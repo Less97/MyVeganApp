@@ -1,6 +1,5 @@
 
-
-export class Place{
+export class PlaceBase{
   _id: string;
   name:string;
   type:string;

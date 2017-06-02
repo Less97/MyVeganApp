@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { Place } from '../../entities/place';
+import { PlaceBase } from '../../entities/placebase';
 import { AddPlacePage } from '../../pages/addplace/addplace'
 import { DetailsPage } from '../../pages/details/details';
+import { ImageHelper } from '../../helpers/imageHelper'
 
 @Component({
   selector: 'page-list',
   templateUrl: 'list.html'
 })
 export class ListPage {
-
-  places:Place[] = [
+  places:PlaceBase[] = [
     {_id:'1',name:'Restaurant 1',type:'restaurant',review:4.5,position:{latitude:0,longitude:0}},
     {_id:'2',name:'Restaurant 2',type:'restaurant',review:4.0,position:{latitude:0,longitude:0}},
     {_id:'3',name:'Restaurant 3',type:'restaurant',review:2.5,position:{latitude:0,longitude:0}},
@@ -24,7 +24,10 @@ export class ListPage {
   ]
 
   constructor(public navCtrl: NavController) {
+  }
 
+  getImageSource(type:string):string{
+    return ImageHelper.GetImageListSrc(type);
   }
 
   goToAddPlace(){
