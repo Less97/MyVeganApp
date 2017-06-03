@@ -6,6 +6,7 @@ import { LoginPage } from '../pages/login/login';
 import { ConfigsProvider } from '../providers/configsProvider' 
 
 
+
 import { TabsPage } from '../pages/tabs/tabs';
 
 @Component({
