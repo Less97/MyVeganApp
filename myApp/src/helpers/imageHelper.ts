@@ -26,15 +26,15 @@ export class ImageHelper{
     public static GetImageMapSrc(type:string):string{
          switch(type){
           case "restaurant":
-            return "assets/placeTypes/map/restaurant.png";
+            return "assets/placeTypes/pins/restaurant.png";
           case "cafe":
-            return "assets/placeTypes/map/cafe.png";
+            return "assets/placeTypes/pins/cafe.png";
           case "shop":
-            return "assets/placeTypes/map/shop.png";
+            return "assets/placeTypes/pins/shop.png";
           case "food truck":
-            return "assets/placeTypes/map/foodtruck.png";
+            return "assets/placeTypes/pins/foodtruck.png";
           case "takeaway":
-            return "assets/placeTypes/map/takeaway.png"
+            return "assets/placeTypes/pins/takeaway.png"
           case "market":
             return ""
         }

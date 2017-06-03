@@ -24,7 +24,9 @@ export class PlaceService {
       params.set('searchText', '');
       params.set('tags', '');
      return this.http.get(this.serviceUrl,params)
-      .map(res=>{return JSON.parse(res.json()).map(t=>  Place.build(t._id.oid,t.name,t.type,t.nReviews,t.rating,t.location.coordinates[1],t.location.coordinates[0]))
+      .map(res=>{
+        return JSON.parse(res.json()).map(t=>  
+        Place.build(t._id.$oid,t.name,t.type,t.nReviews,t.rating,t.location.coordinates[1],t.location.coordinates[0]))
       })
     }
  

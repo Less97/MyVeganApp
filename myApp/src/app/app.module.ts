@@ -21,6 +21,8 @@ import { ConfigsProvider } from '../providers/configsProvider';
 import { TagsService } from '../services/tagsService'
 import { PlaceService } from '../services/placeService'
 
+import { ImageHelper } from '../helpers/imageHelper'
+
 import { LoginService } from '../services/loginService';
 
 @NgModule({
@@ -58,6 +60,7 @@ import { LoginService } from '../services/loginService';
     TagsService,
     PlaceService,
     Geolocation,
+    ImageHelper,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

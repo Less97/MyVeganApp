@@ -3,6 +3,8 @@ import { NavController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { PlaceService } from '../../services/placeService';
 import { Place } from '../../entities/place'
+import { ImageHelper } from '../../helpers/imageHelper'
+import { LoadingController,Loading } from 'ionic-angular';
 
 declare var google;
 
@@ -17,12 +19,18 @@ export class MapPage {
   places:Place[];
   infoWindow:any;
   uMarker:any;
-  constructor(public navCtrl: NavController,private geolocation: Geolocation,private placeService:PlaceService) {
+  loader:Loading;
+  constructor(public navCtrl: NavController,private geolocation: Geolocation,private placeService:PlaceService,
+  private imageHelper:ImageHelper,public loadingCtrl: LoadingController
+  ) {
     
   }
 
   ionViewDidLoad(){
-    
+     this.loader = this.loadingCtrl.create({
+      content: "Please wait...",
+    });
+    this.loader.present();
     this.geolocation.getCurrentPosition().then((resp) => {
 
       this.placeService.getPlaces(resp.coords.latitude,resp.coords.longitude).subscribe(places=>{
@@ -60,10 +68,10 @@ export class MapPage {
         map: this.map,
         animation: google.maps.Animation.DROP,
         position: new google.maps.LatLng(p.position.latitude, p.position.longitude),
-        icon: 'assets/placeTypes/pins/home.png'
+        icon: ImageHelper.GetImageMapSrc(p.type)
       });
       })
-      
+      this.loader.dismiss()
 
   }
 
