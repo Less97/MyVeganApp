@@ -46,7 +46,9 @@ export class MapPage {
 
   }
  
-  test:number = 2;
+  public goToDetails(){
+    alert()
+  }
 
   loadMap(lat:number,lng:number){
  
@@ -86,7 +88,7 @@ export class MapPage {
         google.maps.event.addListener(m, "click", function() {
 	      //create a new InfoWindow instance
         var infowindow = new google.maps.InfoWindow({  
-          content: '<h3>'+p.name+'</h3><p>'+p.description+'</p><button style="float:right" (click)="goToDetails()" class="button button-md button-default button-default-md">Details ></button> '  
+          content: '' 
         }); 
  
         infowindow.open(this.map, m);
