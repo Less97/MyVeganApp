@@ -30,7 +30,9 @@ export class MapPage {
      this.loader = this.loadingCtrl.create({
       content: "Please wait...",
     });
+    
     this.loader.present();
+
     this.geolocation.getCurrentPosition().then((resp) => {
 
       this.placeService.getPlaces(resp.coords.latitude,resp.coords.longitude).subscribe(places=>{
