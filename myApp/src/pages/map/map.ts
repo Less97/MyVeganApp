@@ -13,7 +13,7 @@ declare var google;
   templateUrl: 'map.html'
 })
 export class MapPage {
-
+  self = this;
   @ViewChild('map') mapElement: ElementRef;
   map: any;
   places:Place[];
@@ -46,9 +46,9 @@ export class MapPage {
 
   }
  
-  public goToDetails(){
-    alert()
-  }
+ goToDetails():any{
+   alert()
+ }
 
   loadMap(lat:number,lng:number){
  
@@ -88,9 +88,20 @@ export class MapPage {
         google.maps.event.addListener(m, "click", function() {
 	      //create a new InfoWindow instance
         var infowindow = new google.maps.InfoWindow({  
-          content: '' 
+          content: '<div>'
+          +'<h3>'+p.name+'</h3>'
+          +'<p>'+p.description+'</p>'
+          +'<button id="goToDetails"  class="button button-md button-default button-default-md float-right">></button>'+
+          '</div>' 
         }); 
- 
+        google.maps.event.addListener(infowindow, 'domready', () => {
+        //now my elements are ready for dom manipulation
+        var clickableItem = document.getElementById('goToDetails');
+        clickableItem.addEventListener('click', () => {
+          this.goToDetails();
+        });
+      });
+
         infowindow.open(this.map, m);
       });
 
