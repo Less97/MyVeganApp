@@ -6,6 +6,8 @@ import { Place } from '../../entities/place'
 import { ImageHelper } from '../../helpers/imageHelper'
 import { LoadingController,Loading } from 'ionic-angular';
 
+import { DetailsPage } from '../details/details'
+
 declare var google;
 
 @Component({
@@ -46,10 +48,6 @@ export class MapPage {
 
   }
  
- goToDetails():any{
-   alert()
- }
-
   loadMap(lat:number,lng:number){
  
     let latLng = new google.maps.LatLng(lat, lng);
@@ -68,7 +66,7 @@ export class MapPage {
         position: latLng,
         icon: 'assets/placeTypes/pins/home.png'
       });
-    
+    var self = this;
       google.maps.event.addListener(this.uMarker, "click", function() {
 	      //create a new InfoWindow instance
         var infowindow = new google.maps.InfoWindow({  
@@ -77,7 +75,7 @@ export class MapPage {
  
         infowindow.open(this.map, this.uMarker);
       });
-
+      
       this.places.forEach(p=>{
          var m= new google.maps.Marker({
           map: this.map,
@@ -91,21 +89,27 @@ export class MapPage {
           content: '<div>'
           +'<h3>'+p.name+'</h3>'
           +'<p>'+p.description+'</p>'
-          +'<button id="goToDetails"  class="button button-md button-default button-default-md float-right">></button>'+
+          +'<button id="goToDetails" pId="'+p._id+'" class="button button-md button-default button-default-md float-right">></button>'+
           '</div>' 
         }); 
+
+                //Creates the event listener for clicking the marker and places the marker on the map 
+        google.maps.event.addListener(m, 'click', ((marker, markerCount) => {       
+          return () => {        
+            infowindow.open(this.map, m); 
+          } 
+        })(m, this.markerCount)); 
+
         google.maps.event.addListener(infowindow, 'domready', () => {
-        //now my elements are ready for dom manipulation
-        var clickableItem = document.getElementById('goToDetails');
-        clickableItem.addEventListener('click', () => {
-          this.goToDetails();
-        });
-      });
+      document.getElementById('goToDetails').addEventListener('click', () => {
+        var pId = document.getElementById('goToDetails').getAttribute("pId");
+        alert(pId);
+        self.navCtrl.push(DetailsPage);
+      }, false);
+    }); 
 
-        infowindow.open(this.map, m);
       });
-
-      })
+      });
       this.loader.dismiss()
 
   }
