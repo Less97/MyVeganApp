@@ -9,6 +9,7 @@ import { LoadingController,Loading } from 'ionic-angular';
 import { DetailsPage } from '../details/details'
 
 declare var google;
+declare var MarkerClusterer:any;
 
 @Component({
   selector: 'page-map',
@@ -19,13 +20,17 @@ export class MapPage {
   @ViewChild('map') mapElement: ElementRef;
   map: any;
   places:Place[];
+  markers:Object[];
   infoWindow:any;
   uMarker:any;
   loader:Loading;
+  bounds:Object;
+  
+
   constructor(public navCtrl: NavController,private geolocation: Geolocation,private placeService:PlaceService,
   private imageHelper:ImageHelper,public loadingCtrl: LoadingController
   ) {
-    
+    this.markers = [];
   }
 
   ionViewDidLoad(){
@@ -58,8 +63,19 @@ export class MapPage {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     }
     
-    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+     var clusterStyles = [{
+            textColor: '#FFFFFF',
+            url: '/assets/placeTypes/pins/cluster/m.png',
+            height: 100,
+            width: 100,
+            textSize: 20
+          }, ]
+      var clusterOpt = {
+        styles: clusterStyles
+      }
 
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    this.bounds =  new google.maps.LatLngBounds();
     this.uMarker = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
@@ -83,6 +99,8 @@ export class MapPage {
           position: new google.maps.LatLng(p.position.latitude, p.position.longitude),
           icon: ImageHelper.GetImageMapSrc(p.type)
         });
+        this.markers.push(m)
+        
         google.maps.event.addListener(m, "click", function() {
 	      //create a new InfoWindow instance
         var infowindow = new google.maps.InfoWindow({  
@@ -107,9 +125,11 @@ export class MapPage {
         self.navCtrl.push(DetailsPage);
       }, false);
     }); 
+    
 
       });
-      });
+    });
+     var markerCluster = new MarkerClusterer(this.map, this.markers, clusterOpt);
       this.loader.dismiss()
 
   }
