@@ -127,8 +127,8 @@ export class MapPage {
 
       });
     });
-      new MarkerClusterer(this.map, this.markers, clusterOpt);
-      this.loader.dismiss()
+     var cluster = new MarkerClusterer(this.map, this.markers, clusterOpt);
+     this.loader.dismiss()
 
   }
 
