@@ -43,5 +43,8 @@ export class ListPage {
     this.navCtrl.push(DetailsPage,{place:p})
   }
 
+  getDistance(distance):number {
+      return distance / 1000;
+  }
 
 }

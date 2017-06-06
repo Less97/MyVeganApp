@@ -17,8 +17,15 @@ export class DetailsPage {
     this.place = navParams.get("place") as Place;
   }
 
- getImageCover(type:string):string{
+  getImageCover(type:string):string{
     return ImageHelper.GetImageCoverSrc(type);
   }
 
+   getDistance(distance):number {
+      return distance / 1000;
+  }
+
+  getDirection(){
+    
+  }
 }
