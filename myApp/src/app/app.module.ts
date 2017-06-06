@@ -25,6 +25,8 @@ import { ImageHelper } from '../helpers/imageHelper'
 
 import { LoginService } from '../services/loginService';
 
+import { Ionic2RatingModule } from 'ionic2-rating';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -40,6 +42,7 @@ import { LoginService } from '../services/loginService';
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
+    Ionic2RatingModule // Put ionic2-rating module here
   ],
   bootstrap: [IonicApp],
   entryComponents: [

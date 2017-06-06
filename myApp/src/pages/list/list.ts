@@ -5,6 +5,7 @@ import { AddPlacePage } from '../../pages/addplace/addplace'
 import { DetailsPage } from '../../pages/details/details';
 import { ImageHelper } from '../../helpers/imageHelper'
 import { PlaceService } from '../../services/placeService'
+import { Geolocation } from '@ionic-native/geolocation';
 
 @Component({
   selector: 'page-list',
@@ -13,10 +14,23 @@ import { PlaceService } from '../../services/placeService'
 export class ListPage {
    places:Place[]
 
-  constructor(public navCtrl: NavController,public placeService:PlaceService) {
-    placeService.getPlaces(53.3421156,-9.2592088).subscribe(places=>{
-      this.places = places;
-    })
+  constructor(public navCtrl: NavController,public placeService:PlaceService,private geolocation: Geolocation) {
+   
+  }
+
+  ionViewDidLoad(){
+
+   this.geolocation.getCurrentPosition().then((resp) => {
+
+      this.placeService.getPlaces(resp.coords.latitude,resp.coords.longitude).subscribe(places=>{
+          this.places = places;
+      })
+
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    } );
+
+      
   }
 
   getImageSource(type:string):string{
