@@ -111,7 +111,7 @@ export class MapPage {
           '</div>' 
         }); 
 
-                //Creates the event listener for clicking the marker and places the marker on the map 
+        //Creates the event listener for clicking the marker and places the marker on the map 
         google.maps.event.addListener(m, 'click', ((marker, markerCount) => {       
           return () => {        
             infowindow.open(this.map, m); 
@@ -120,16 +120,14 @@ export class MapPage {
 
         google.maps.event.addListener(infowindow, 'domready', () => {
       document.getElementById('goToDetails').addEventListener('click', () => {
-        var pId = document.getElementById('goToDetails').getAttribute("pId");
-        alert(pId);
-        self.navCtrl.push(DetailsPage);
+        self.navCtrl.push(DetailsPage,{place:p});
       }, false);
     }); 
     
 
       });
     });
-     var markerCluster = new MarkerClusterer(this.map, this.markers, clusterOpt);
+      new MarkerClusterer(this.map, this.markers, clusterOpt);
       this.loader.dismiss()
 
   }

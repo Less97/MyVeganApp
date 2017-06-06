@@ -21,11 +21,9 @@ export class ListPage {
   ionViewDidLoad(){
 
    this.geolocation.getCurrentPosition().then((resp) => {
-
       this.placeService.getPlaces(resp.coords.latitude,resp.coords.longitude).subscribe(places=>{
           this.places = places;
       })
-
     }).catch((error) => {
       console.log('Error getting location', error);
     } );
@@ -41,8 +39,8 @@ export class ListPage {
     this.navCtrl.push(AddPlacePage)
   }
 
-  goToDetails(){
-    this.navCtrl.push(DetailsPage)
+  goToDetails(p:Place){
+    this.navCtrl.push(DetailsPage,{place:p})
   }
 
 

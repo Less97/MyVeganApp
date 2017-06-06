@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController ,NavParams, ViewController  } from 'ionic-angular';
+import { Place } from '../../entities/place'
 
 
 
@@ -9,9 +10,9 @@ import { NavController } from 'ionic-angular';
 })
 
 export class DetailsPage {
-
-  constructor(public navCtrl: NavController) {
-  
+  place:Place;
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.place = navParams.get("place") as Place;
   }
 
 
