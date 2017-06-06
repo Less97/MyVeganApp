@@ -39,4 +39,21 @@ export class ImageHelper{
             return ""
         }
     }
+
+     public static GetImageCoverSrc(type:string):string{
+         switch(type){
+          case "restaurant":
+             return "assets/images/placeTypes/covers/restaurant.png";
+          case "cafe":
+             return "assets/images/placeTypes/covers/cafe.png";
+          case "shop":
+             return "assets/images/placeTypes/covers/shop.png";
+          case "food truck":
+            return "assets/images/placeTypes/covers/foodtruck.png";
+          case "takeaway":
+             return "assets/images/placeTypes/covers/takeaway.png"
+          case "market":
+            return ""
+        }
+    }
 }
