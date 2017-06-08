@@ -43,15 +43,15 @@ export class ImageHelper{
      public static GetImageCoverSrc(type:string):string{
          switch(type){
           case "restaurant":
-             return "assets/images/placeTypes/covers/restaurant.png";
+             return "assets/images/placeTypes/covers/restaurant.jpg";
           case "cafe":
-             return "assets/images/placeTypes/covers/cafe.png";
+             return "assets/images/placeTypes/covers/coffee.jpg";
           case "shop":
-             return "assets/images/placeTypes/covers/shop.png";
+             return "assets/images/placeTypes/covers/shop.jpg";
           case "food truck":
-            return "assets/images/placeTypes/covers/foodtruck.png";
+            return "assets/images/placeTypes/covers/foodtruck.jpg";
           case "takeaway":
-             return "assets/images/placeTypes/covers/takeaway.png"
+             return "assets/images/placeTypes/covers/takeaway.jpg"
           case "market":
             return ""
         }

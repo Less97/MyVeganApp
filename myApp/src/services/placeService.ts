@@ -26,7 +26,7 @@ export class PlaceService {
      return this.http.get(this.serviceUrl,params)
       .map(res=>{
         return JSON.parse(res.json()).map(t=>  
-        Place.build(t._id.$oid,t.name,t.description,t.type,t.nReviews,t.rating,t.location.coordinates[1],t.location.coordinates[0]))
+        Place.build(t._id.$oid,t.name,t.description,t.type,t.nReviews,t.rating,t.location.coordinates[1],t.location.coordinates[0],t.distance))
       })
     }
  

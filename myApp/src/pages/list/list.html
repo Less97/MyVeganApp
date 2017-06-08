@@ -12,21 +12,22 @@
       Add new place
     </ion-card-header>
     <ion-card-content>
-      Do you know a place we didn't review yet? Please add it clicking here
+      Do you know a place we didn't review yet? send us an email on alessandro@thecuriouscarrot.com
     </ion-card-content>
   </ion-card>
   <ion-list>
-    <ion-item  *ngFor='let p of places' (click)='goToDetails(p)'>
+    <ion-item  *ngFor='let p of places' (click)='goToDetails(p)' class="relative">
       <ion-avatar item-left>
         <img [src]="getImageSource(p.type)">
       </ion-avatar>
       <h2>{{p.name}}</h2>
+      <p>{{p.type}}</p>
       <div>
         <rating [(ngModel)]="p.rating" readOnly="false" max="5" emptyStarIconName="star-outline"
-        halfStarIconName="star-half" starIconName="star" nullable="false" (ngModelChange)="alert('model change')"></rating>
+        halfStarIconName="star-half" starIconName="star" nullable="false" ></rating>
       </div>
-      <p>~ {{p.distance}} Km</p>
-      <button ion-button clear item-end>Details ></button>
+      <div class="position">~ {{p.distanceLabel}}</div>
+      <button ion-button clear item-end>></button>
     </ion-item>
   </ion-list>
 </ion-content>

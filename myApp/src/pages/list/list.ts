@@ -7,22 +7,27 @@ import { ImageHelper } from '../../helpers/imageHelper'
 import { PlaceService } from '../../services/placeService'
 import { Geolocation } from '@ionic-native/geolocation';
 
+import { LoadingController,Loading } from 'ionic-angular';
+
 @Component({
   selector: 'page-list',
   templateUrl: 'list.html'
 })
 export class ListPage {
    places:Place[]
-
-  constructor(public navCtrl: NavController,public placeService:PlaceService,private geolocation: Geolocation) {
-   
+   loader:Loading;
+  constructor(public navCtrl: NavController,public placeService:PlaceService,private geolocation: Geolocation,private loadingCtrl:LoadingController) {
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait...",
+    });
   }
 
   ionViewDidLoad(){
-
+   this.loader.present();
    this.geolocation.getCurrentPosition().then((resp) => {
       this.placeService.getPlaces(resp.coords.latitude,resp.coords.longitude).subscribe(places=>{
           this.places = places;
+          this.loader.dismiss();
       })
     }).catch((error) => {
       console.log('Error getting location', error);
@@ -43,8 +48,8 @@ export class ListPage {
     this.navCtrl.push(DetailsPage,{place:p})
   }
 
-  getDistance(distance):number {
-      return distance / 1000;
+  calculateDistance(p:Place):number {
+      return p.distance / 1000;
   }
 
 }

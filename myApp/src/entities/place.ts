@@ -10,8 +10,10 @@ export class Place{
     latitude:number,
     longitude:number
   }
+  distance:number;
+  distanceLabel:string;
 
-  static build(_id:string, name:string,description:string, type:string, reviews:number,rating:number, latitude:number, longitude:number):Place{
+  static build(_id:string, name:string,description:string, type:string, reviews:number,rating:number, latitude:number, longitude:number,distance:number):Place{
     var pb = new Place();
     pb._id =_id;
     pb.name = name;
@@ -23,7 +25,13 @@ export class Place{
       latitude : latitude,
       longitude : longitude
     };
-    
+    pb.distance = distance;
+    pb.distanceLabel = Place.calculateLabel(distance);
+
     return pb;
+  }
+
+  static calculateLabel(distance:number):string{
+    return (distance/1000).toFixed(2);
   }
 }
