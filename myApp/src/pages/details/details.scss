@@ -5,23 +5,24 @@ ion-card {
     text-align: center;
   }
 
-  .card-title {
-    position: absolute;
-    top: 36%;
-    font-size: 2.0em;
-    width: 100%;
-    font-weight: bold;
-    color: #fff;
-  }
-
-  .card-subtitle {
-    font-size: 1.0em;
-    position: absolute;
-    top: 52%;
-    width: 100%;
-    color: #fff;
+  .headerImg{
+      width: 10%;
+      float: left;
   }
 
 
-    
+   .headerTitle{
+      width: 70%;
+      display: block;
+      float: left;
+      font-size: 2.1em;
+      margin-top: 22px;
+   }
+
+  .float-l{
+    float:left;
+  }
+  .clearf{
+    clear: both;
+  }
 }

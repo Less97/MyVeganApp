@@ -4,10 +4,11 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="card-background-page">
-   <ion-card>
-    <img [src]="getImageCover(place.type)"/>
-    <div class="card-title">{{place.name}}</div>
-    <div class="card-subtitle">{{place.type}}</div>
-  </ion-card>
+<ion-content padding >
+  <div style="position:relative">
+    <img class="headerImg" [src]="getImageIcon(place.type)">
+    <h1 class="headerTitle" >{{place.name}}</h1>
+  </div>
+  <div class="clearf"></div>
+
 </ion-content>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController ,NavParams, ViewController  } from 'ionic-angular';
+import { NavController ,NavParams } from 'ionic-angular';
 import { Place } from '../../entities/place';
 
 import { ImageHelper } from '../../helpers/imageHelper'
@@ -17,8 +17,8 @@ export class DetailsPage {
     this.place = navParams.get("place") as Place;
   }
 
-  getImageCover(type:string):string{
-    return ImageHelper.GetImageCoverSrc(type);
+  getImageIcon(type:string):string{
+    return ImageHelper.GetImageListSrc(type);
   }
 
    getDistance(distance):number {

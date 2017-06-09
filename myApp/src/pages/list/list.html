@@ -26,7 +26,7 @@
         <rating [(ngModel)]="p.rating" readOnly="false" max="5" emptyStarIconName="star-outline"
         halfStarIconName="star-half" starIconName="star" nullable="false" ></rating>
       </div>
-      <div class="position">~ {{p.distanceLabel}}</div>
+      <div class="position">~ {{p.distance/1000}} Km</div>
       <button ion-button clear item-end>></button>
     </ion-item>
   </ion-list>

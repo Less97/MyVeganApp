@@ -11,7 +11,6 @@ export class Place{
     longitude:number
   }
   distance:number;
-  distanceLabel:string;
 
   static build(_id:string, name:string,description:string, type:string, reviews:number,rating:number, latitude:number, longitude:number,distance:number):Place{
     var pb = new Place();
@@ -26,8 +25,6 @@ export class Place{
       longitude : longitude
     };
     pb.distance = distance;
-    pb.distanceLabel = Place.calculateLabel(distance);
-
     return pb;
   }
 

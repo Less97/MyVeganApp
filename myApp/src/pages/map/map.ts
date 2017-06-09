@@ -128,6 +128,7 @@ export class MapPage {
       });
     });
      var cluster = new MarkerClusterer(this.map, this.markers, clusterOpt);
+     cluster = cluster;
      this.loader.dismiss()
 
   }
