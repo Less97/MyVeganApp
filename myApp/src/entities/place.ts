@@ -14,8 +14,9 @@ export class Place{
   distance:number;
   address:string;
   phoneNumber:string;
+  email:string;
 
-  static build(_id:string, name:string,description:string,address:string,phoneNumber:string, type:string, reviews:number,rating:number, latitude:number, longitude:number,distance:number,imageIds:string[]):Place{
+  static build(_id:string, name:string,description:string,address:string,phoneNumber:string,email:string, type:string, reviews:number,rating:number, latitude:number, longitude:number,distance:number,imageIds:string[]):Place{
     var pb = new Place();
     pb._id =_id;
     pb.name = name;
@@ -31,6 +32,7 @@ export class Place{
     pb.imageIds = imageIds;
     pb.address = address
     pb.phoneNumber = phoneNumber;
+    pb.email = email;
     return pb;
   }
 
