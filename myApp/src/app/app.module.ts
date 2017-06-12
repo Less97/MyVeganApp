@@ -28,6 +28,7 @@ import { LoginService } from '../services/loginService';
 import { Ionic2RatingModule } from 'ionic2-rating';
 import { CallNumber } from '@ionic-native/call-number';
 import { EmailComposer } from '@ionic-native/email-composer';
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { EmailComposer } from '@ionic-native/email-composer';
     ImageHelper,
     CallNumber,
     EmailComposer,
+    LaunchNavigator,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

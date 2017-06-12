@@ -6,6 +6,9 @@ import { ImageHelper } from '../../helpers/imageHelper'
 import { CallNumber } from '@ionic-native/call-number';
 import { EmailComposer } from '@ionic-native/email-composer';
 
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
+import { Geolocation } from '@ionic-native/geolocation';
+
 
 
 @Component({
@@ -15,9 +18,25 @@ import { EmailComposer } from '@ionic-native/email-composer';
 
 export class DetailsPage {
   place:Place;
+  position:{
+    latitude:number,
+    longitude:number
+  }
   constructor(public navCtrl: NavController, public navParams: NavParams,
-  private imageHelper:ImageHelper,private callNumber: CallNumber, private emailComposer: EmailComposer) {
+  private imageHelper:ImageHelper,private callNumber: CallNumber, 
+  private emailComposer: EmailComposer,private geolocation: Geolocation,
+  private launchNavigator: LaunchNavigator) {
     this.place = navParams.get("place") as Place;
+  }
+
+  ionViewDidLoad(){
+    this.geolocation.getCurrentPosition().then((resp) => {
+    this.position.latitude = resp.coords.latitude;
+    this.position.longitude = resp.coords.longitude;
+    // resp.coords.longitude
+  }).catch((error) => {
+    console.log('Error getting location', error);
+  });
   }
 
   getImageIcon(type:string):string{
@@ -29,7 +48,10 @@ export class DetailsPage {
   }
 
   getDirection():void{
-    alert("getDirection")
+    let options: LaunchNavigatorOptions = {
+      start: this.position.latitude+','+this.position.longitude,
+    };
+    this.launchNavigator.navigate([this.position.latitude,this.position.longitude],options)
   }
 
   toGallery(){
