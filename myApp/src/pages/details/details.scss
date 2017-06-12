@@ -1,54 +1,32 @@
-page-details{
-
-ion-card {
-    position: relative;
-    text-align: center;
-  }
-
-  .card-background-page {
-
+page-details {
   ion-card {
     position: relative;
     text-align: center;
   }
 
-  .card-title {
-    position: absolute;
-    top: 36%;
-    font-size: 2.0em;
-    width: 100%;
-    font-weight: bold;
-    color: #fff;
+
+  .headerImg {
+    max-width: 10%;
+    max-height: 100px;
+    float: left;
+  }
+  
+  .headerTitle {
+    width: 70%;
+    display: block;
+    float: left;
+    font-size: 2.1em;
+    margin-top: 22px;
   }
 
-  .card-subtitle {
-    font-size: 1.0em;
-    position: absolute;
-    top: 52%;
-    width: 100%;
-    color: #fff;
+  .relative{
+    position:relative;
   }
 
-}
-
-  .headerImg{
-      width: 10%;
-      float: left;
+  .float-l {
+    float: left;
   }
-
-
-   .headerTitle{
-      width: 70%;
-      display: block;
-      float: left;
-      font-size: 2.1em;
-      margin-top: 22px;
-   }
-
-  .float-l{
-    float:left;
-  }
-  .clearf{
+  .clearf {
     clear: both;
   }
 }

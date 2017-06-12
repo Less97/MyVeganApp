@@ -5,5 +5,16 @@
 </ion-header>
 
 <ion-content padding>
-
+  <div [hidden]="isGalleryEmpty">
+      <a (click)="addImage()">
+         <ion-card-header color="primary">
+            Sorry, there are not images yet. Do you want to add it? Please do it clicking here
+         </ion-card-header>
+      </a>
+    </div>
+    <ion-slides [options]="mySlideOptions">
+      <ion-slide *ngFor="let img of images">
+        <img [src]="getFullUrl(img)">
+      </ion-slide>
+  </ion-slides>
 </ion-content>

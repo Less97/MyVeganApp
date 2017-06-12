@@ -9,10 +9,11 @@ export class Place{
   position:{
     latitude:number,
     longitude:number
-  }
+  };
+  imageIds:string[];
   distance:number;
 
-  static build(_id:string, name:string,description:string, type:string, reviews:number,rating:number, latitude:number, longitude:number,distance:number):Place{
+  static build(_id:string, name:string,description:string, type:string, reviews:number,rating:number, latitude:number, longitude:number,distance:number,imageIds:string[]):Place{
     var pb = new Place();
     pb._id =_id;
     pb.name = name;
@@ -25,6 +26,7 @@ export class Place{
       longitude : longitude
     };
     pb.distance = distance;
+    pb.imageIds = imageIds;
     return pb;
   }
 

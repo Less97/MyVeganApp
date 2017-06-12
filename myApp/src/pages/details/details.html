@@ -4,10 +4,13 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="page-details">
-  <ion-card>
-      <img src="assets/images/coners/coffee.jpg"/>
-      <div class="card-title">São Paulo</div>
-      <div class="card-subtitle">41 Listings</div>
-  </ion-card>
+<ion-content padding >
+  <div class="relative">
+    <img class="headerImg" [src]="getImageIcon(place.type)">
+    <div class="headerTitle">
+      <h1>{{place.name}}</h1>
+      <h6>{{place.type}}</h6>
+    </div>
+  </div>
+  <div class="clearf"></div>
 </ion-content>

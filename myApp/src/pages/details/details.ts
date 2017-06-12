@@ -7,7 +7,7 @@ import { ImageHelper } from '../../helpers/imageHelper'
 
 
 @Component({
-  selector: 'page-detailsPage',
+  selector: 'page-details',
   templateUrl: 'details.html'
 })
 
@@ -27,5 +27,9 @@ export class DetailsPage {
 
   getDirection(){
     
+  }
+
+  toGallery(){
+      this.navCtrl.push(DetailsPage,{placeId:this.place._id,imageIds:this.place.imageIds})
   }
 }
