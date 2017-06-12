@@ -25,8 +25,8 @@ export class DetailsPage {
       return distance / 1000;
   }
 
-  getDirection(){
-    
+  getDirection():void{
+    alert("getDirection")
   }
 
   toGallery(){

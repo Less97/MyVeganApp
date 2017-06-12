@@ -4,13 +4,25 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding >
-  <div class="relative">
-    <img class="headerImg" [src]="getImageIcon(place.type)">
-    <div class="headerTitle">
+<ion-content padding>
+  <ion-row>
+    <ion-col col-1>
+      <img [src]="getImageIcon(place.type)">
+    </ion-col>
+    <ion-col col-11>
       <h1>{{place.name}}</h1>
       <h6>{{place.type}}</h6>
-    </div>
-  </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-12>
+      <ion-icon name="ios-home-outline" ></ion-icon><a (click)="getDirection()" class="cursor-hand">&nbsp;{{place.address}}</a>
+    </ion-col>
+  </ion-row>
+ <ion-row>
+    <ion-col col-12>
+      <ion-icon name="ios-call-outline" ></ion-icon><a (click)="call()" class="cursor-hand">&nbsp;{{place.phoneNumber}}</a>
+    </ion-col>
+  </ion-row>
   <div class="clearf"></div>
 </ion-content>

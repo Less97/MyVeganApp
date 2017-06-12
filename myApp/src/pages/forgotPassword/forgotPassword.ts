@@ -8,11 +8,13 @@ import { NavController } from 'ionic-angular';
   templateUrl: 'forgotPassword.html'
 })
 
-export class ForgotPasswordPage {
+export class ForgotPassword {
 
   constructor(public navCtrl: NavController) {
-  
+    
   }
+
+  
 
 
 }

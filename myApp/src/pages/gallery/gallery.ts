@@ -14,7 +14,7 @@ export class GalleryPage {
   images:string[];
   serviceUrl:string; 
 
-  constructor(public navCtrl: NavController,public navParams: NavParams,public configsProvider:ConfigsProvider) {
+  constructor(public navCtrl: NavController,public navParams: NavParams, public configsProvider:ConfigsProvider) {
     this.placeId = navParams.get("placeId") as string;
     this.images = navParams.get("imageIds") as string[];
     this.serviceUrl = configsProvider.getServiceUrl();
