@@ -29,6 +29,6 @@ export class Place{
   }
 
   static calculateLabel(distance:number):string{
-    return (distance/1000).toFixed(2);
+    return distance.toString();
   }
 }

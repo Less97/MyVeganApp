@@ -1,6 +1,6 @@
  import { Injectable } from  '@angular/core';
  import { ConfigsProvider } from '../providers/configsProvider'
- import { Http } from '@angular/http'
+ import { Http, RequestOptions, URLSearchParams  } from '@angular/http'
  import { Place } from '../entities/place'
  import { Observable } from 'rxjs/Rx';
 
@@ -17,13 +17,15 @@ export class PlaceService {
   }
   
   public getPlaces(lat:number,lng:number):Observable<Place[]>{
-    let params: URLSearchParams = new URLSearchParams();
-      params.set('latitude', '53.3421156');
-      params.set('longitude', '-9.2592088');
-      params.set('maxDistance', '53.3421156');
+      let params: URLSearchParams = new URLSearchParams();
+      let requestOptions = new RequestOptions();
+      params.set('latitude', lat.toString());
+      params.set('longitude', lng.toString());
+      params.set('maxDistance', '300');
       params.set('searchText', '');
       params.set('tags', '');
-     return this.http.get(this.serviceUrl,params)
+      requestOptions.search = params;
+     return this.http.get(this.serviceUrl,requestOptions)
       .map(res=>{
         return JSON.parse(res.json()).map(t=>  
         Place.build(t._id.$oid,t.name,t.description,t.type,t.nReviews,t.rating,t.location.coordinates[1],t.location.coordinates[0],t.distance))

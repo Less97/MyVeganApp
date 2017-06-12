@@ -48,8 +48,8 @@ export class ListPage {
     this.navCtrl.push(DetailsPage,{place:p})
   }
 
-  calculateDistance(d:number):number {
-      return d / 1000;
+  calculateDistance(d:number):string {
+      return (d/1000).toFixed(1);
   }
 
 }
