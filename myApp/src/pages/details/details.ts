@@ -39,13 +39,11 @@ export class DetailsPage {
   sendEmail(){
     let email = {
     to: this.place.email,
-    bcc: ['john@doe.com', 'jane@doe.com'],
-  
     subject: '',
     body: 'Hi '+ this.place.name+',<br/><p>I wanted to book a table for ...</p>',
     isHtml: true
     };
-  this.emailComposer.open(email);
+    this.emailComposer.open(email);
   }
 
 

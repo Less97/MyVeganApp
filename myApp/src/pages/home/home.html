@@ -8,10 +8,11 @@
   <ion-list>
     <h2>Welcome Alessandro</h2>
     <h5>What are you looking for today?</h5>
+    <div class="margin-20px"><b>Max distance:</b>{{maxDistance}} Km</div>
     <div class="spacer-10px"></div>
-    <ion-range min="-200" max="200" [(ngModel)]="maxDistance" color="primary">
+    <ion-range min="1" max="500" [(ngModel)]="maxDistance" color="primary">
       <ion-label range-left>5 km</ion-label>
-      <ion-label range-right>150 km</ion-label>
+      <ion-label range-right>500 km</ion-label>
     </ion-range>
     <div class="margin-bottom-10px">
       <h4>categories:</h4>

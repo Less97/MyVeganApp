@@ -38,5 +38,17 @@ page-details {
      cursor: pointer; 
      cursor: hand; 
   }
+  
+  ul.rating > li{
+      padding:0 !important;
+  }
+
+  ul.rating{
+      padding:0 !important;
+  }
+
+  .margin-15{
+    margin-top: 15px;
+  }
 
 }

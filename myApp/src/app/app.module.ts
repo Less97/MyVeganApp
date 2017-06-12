@@ -26,6 +26,8 @@ import { ImageHelper } from '../helpers/imageHelper'
 import { LoginService } from '../services/loginService';
 
 import { Ionic2RatingModule } from 'ionic2-rating';
+import { CallNumber } from '@ionic-native/call-number';
+import { EmailComposer } from '@ionic-native/email-composer';
 
 @NgModule({
   declarations: [
@@ -64,6 +66,8 @@ import { Ionic2RatingModule } from 'ionic2-rating';
     PlaceService,
     Geolocation,
     ImageHelper,
+    CallNumber,
+    EmailComposer,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
