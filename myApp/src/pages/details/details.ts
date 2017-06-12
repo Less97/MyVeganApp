@@ -32,4 +32,8 @@ export class DetailsPage {
   toGallery(){
       this.navCtrl.push(DetailsPage,{placeId:this.place._id,imageIds:this.place.imageIds})
   }
+
+  call(number:string){
+    alert("call number "+ number )
+  }
 }
