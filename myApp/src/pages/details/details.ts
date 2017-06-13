@@ -19,22 +19,23 @@ export class DetailsPage {
   placeId:string;
   place:Place;
    loader:Loading;
-  position:{latitude:number,longitude:number}
+  position:{latitude:number,longitude:number} = {latitude:0,longitude:0};
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private imageHelper:ImageHelper,private geolocation: Geolocation, 
     private callNumber: CallNumber,private launchNavigator: LaunchNavigator,private emailComposer: EmailComposer,private placeService:PlaceService,private loadingCtrl:LoadingController) {
     this.placeId = navParams.get("placeId");
     this.place = new Place();
-    this.loader = this.loadingCtrl.create({
-      content: "Please wait...",
-    });
+    
   }
 
   ionViewDidLoad(){
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait...",
+    });
     this.geolocation.getCurrentPosition().then((resp) => {
-       this.position.latitude = resp.coords.latitude
-       this.position.longitude = resp.coords.longitude
+       this.position.latitude = resp.coords.latitude;
+       this.position.longitude = resp.coords.longitude;
        this.placeService.getDetails(this.placeId,this.position.latitude,this.position.longitude).subscribe(placeDetails=>{
          this.place = placeDetails;
          this.loader.dismiss();
