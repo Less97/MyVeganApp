@@ -8,12 +8,14 @@ import { ConfigsProvider } from '../providers/configsProvider'
 
 
 import { TabsPage } from '../pages/tabs/tabs';
+import { RegisterPage } from '../pages/register/register';
+
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any;
+  rootPage:any = RegisterPage;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,configsProvider: ConfigsProvider) {
     platform.ready().then(() => {
@@ -22,11 +24,11 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
 
-       if(configsProvider.isLoggedIn()){
-         this.rootPage = TabsPage
-       } else{
-         this.rootPage = LoginPage
-       }
+      //  if(configsProvider.isLoggedIn()){
+      //    this.rootPage = TabsPage
+      //  } else{
+      //    this.rootPage = LoginPage
+      //  }
 
     });
   }

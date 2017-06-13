@@ -23,7 +23,7 @@ import { PlaceService } from '../services/placeService'
 
 import { ImageHelper } from '../helpers/imageHelper'
 
-import { LoginService } from '../services/loginService';
+import { UserService } from '../services/userService';
 
 import { Ionic2RatingModule } from 'ionic2-rating';
 import { CallNumber } from '@ionic-native/call-number';
@@ -62,7 +62,7 @@ import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-na
     StatusBar,
     SplashScreen,
     ConfigsProvider,
-    LoginService,
+    UserService,
     TagsService,
     PlaceService,
     Geolocation,

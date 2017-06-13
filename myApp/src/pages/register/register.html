@@ -7,47 +7,44 @@
 </ion-header>
 
 <ion-content>
-  <ion-slides pager>
-
-    <ion-slide  class="register-slideContainer">
-       <div class="register-slide">
-          <h3>Join now a friendly Community</h3>
-          <div>
-            <img class="registerItemLogo" src="http://thecuriouscarrot.com/Content/images/ccLogo.png">
-          </div>
-          <div class="register-text">
-            Find easily the place you're looking for. Near you!
-          </div>
-          <div class="register-spacer"></div>
-        </div>
-      </ion-slide>
-      <ion-slide class="register-slideContainer">
-        <div class="register-slide">
-          <h3>Share your favourite place</h3>
-          <div>
-            <img class="registerItemLogo" src="http://thecuriouscarrot.com/Content/images/ccLogo.png">
-          </div>
-          <div class="register-text">
-            Share with us your favourite place, and what is your favourite dish there!
-          </div>
-        </div>
-    </ion-slide>
-
-    <ion-slide>
-       <div class="register-slide">
-          <h3>Share your favourite place</h3>
-          <div>
-            <img class="registerItemLogo" src="http://thecuriouscarrot.com/Content/images/ccLogo.png">
-          </div>
-          <div class="register-text">
-            Share with us your favourite place, and what is your favourite dish there!
-          </div>
-        </div>
-    </ion-slide>
-
-    <ion-slide>
-     <!-- Register Form -->
-    </ion-slide>
-
-  </ion-slides>
+  <ion-list>
+    <div>
+      <!--<img src="assets/images/CuriousCarrotLogo.png" class="logoImg" />-->
+    </div>
+    <form (ngSubmit)="register(f)" #registerForm="ngForm" novalidate>
+      <ion-item>
+        <ion-input type="text" [(ngModel)]="user.firstName" name="firstName" id="firstName" placeholder="first name" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="firstName.errors && (firstName.dirty || firstName.touched)">
+        <ion-label [hidden]="!firstName.errors.required" class="red-warning">You need to insert your first name</ion-label>
+      </ion-item>
+      <!--<ion-item>
+        <ion-input type="text" [(ngModel)]="user.lastName" name="lastName" id="lastName" placeholder="last name" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="lastName.errors && (lastName.dirty || lastName.touched)">
+        <ion-label [hidden]="!lastName.errors.required" class="red-warning">You need to insert your last name</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-input type="text" [(ngModel)]="user.email" name="email" id="email" placeholder="your email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="email.errors && (email.dirty || email.touched)">
+        <ion-label [hidden]="!email.errors.required" class="red-warning">You need to insert a valid email</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-input type="password" [(ngModel)]="user.password" name="password" id="password" placeholder="choose password" minlength="8"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="password.errors && (password.dirty || password.touched)">
+        <ion-label [hidden]="!password.errors.required" class="red-warning">You need to insert a password</ion-label>
+        <ion-label [hidden]="!password.errors.minlength" class="red-warning">You need to choose a password of at least 8 characters</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-input id="confirmPassword" [(ngModel)]="user.confirmPassword" type="password" name="confirmPassword" placeholder="confirm password"
+          required></ion-input>
+      </ion-item>-->
+      <!--<ion-item [hidden]="!user.password.valid || user.password.pristine">
+        <ion-label class="red-warning">You need to confirm your password</ion-label>
+      </ion-item>-->
+      <!--<button ion-button full [disabled]="!registerForm.form.valid" (click)="register()">Register</button>-->
+    </form>
+  </ion-list>
 </ion-content>

@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Confirm Email
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <div>
+      <!--<img src="assets/images/CuriousCarrotLogo.png" class="logoImg" />-->
+    </div>
+    <p>Please confirm the code you received by email</p>
+     <form (ngSubmit)="submitCode(f)" #confirmCodeForm="ngForm" novalidate>
+       <ion-item>
+        <ion-input type="text" [(ngModel)]="confirmation.code" name="code" id="code" placeholder="code" required></ion-input>
+      </ion-item>
+      <ion-item [hidden]="!user.email.valid || user.email.pristine">
+        <ion-label class="red-warning">You need to insert the code you received by email</ion-label>
+      </ion-item>
+    </form>
+  </ion-list>
+</ion-content>
