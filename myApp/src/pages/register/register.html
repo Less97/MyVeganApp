@@ -13,38 +13,39 @@
     </div>
     <form (ngSubmit)="register(f)" #registerForm="ngForm" novalidate>
       <ion-item>
-        <ion-input type="text" [(ngModel)]="user.firstName" name="firstName" id="firstName" placeholder="first name" required></ion-input>
+        <ion-input type="text" [(ngModel)]="user.firstName"  #firstName="ngModel" name="firstName" id="firstName" placeholder="first name" required></ion-input>
       </ion-item>
       <ion-item *ngIf="user.firstName.errors && (firstName.dirty || firstName.touched)">
         <ion-label [hidden]="!firstName.errors.required" class="red-warning">You need to insert your first name</ion-label>
       </ion-item>
-      <!--<ion-item>
-        <ion-input type="text" [(ngModel)]="user.lastName" name="lastName" id="lastName" placeholder="last name" required></ion-input>
+      <ion-item>
+        <ion-input type="text" [(ngModel)]="user.lastName" #lastName="ngModel" name="lastName" id="lastName" placeholder="last name" required></ion-input>
       </ion-item>
-      <ion-item *ngIf="lastName.errors && (lastName.dirty || lastName.touched)">
+      <ion-item *ngIf="user.lastName.errors && (lastName.dirty || lastName.touched)">
         <ion-label [hidden]="!lastName.errors.required" class="red-warning">You need to insert your last name</ion-label>
       </ion-item>
       <ion-item>
-        <ion-input type="text" [(ngModel)]="user.email" name="email" id="email" placeholder="your email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"></ion-input>
+        <ion-input type="text" [(ngModel)]="user.email" name="email" ngControl="email" #email="ngModel" id="email" placeholder="your email" pattern="[a-zA-Z0-9._-]+@[a-zA-Z]+.[a-zA-Z]{2,3}" required></ion-input>
       </ion-item>
-      <ion-item *ngIf="email.errors && (email.dirty || email.touched)">
-        <ion-label [hidden]="!email.errors.required" class="red-warning">You need to insert a valid email</ion-label>
+      <ion-item *ngIf="user.email.errors && (email.dirty || email.touched)">
+        <ion-label [hidden]="!email.errors.required" class="red-warning">You need to insert an email</ion-label>
+        <ion-label [hidden]="!email.errors.pattern" class="red-warning">You need to insert a valid email</ion-label>
       </ion-item>
-      <ion-item>
+      <!--<ion-item>
         <ion-input type="password" [(ngModel)]="user.password" name="password" id="password" placeholder="choose password" minlength="8"></ion-input>
       </ion-item>
       <ion-item *ngIf="password.errors && (password.dirty || password.touched)">
         <ion-label [hidden]="!password.errors.required" class="red-warning">You need to insert a password</ion-label>
         <ion-label [hidden]="!password.errors.minlength" class="red-warning">You need to choose a password of at least 8 characters</ion-label>
-      </ion-item>
-      <ion-item>
+      </ion-item>-->
+      <!--<ion-item>
         <ion-input id="confirmPassword" [(ngModel)]="user.confirmPassword" type="password" name="confirmPassword" placeholder="confirm password"
           required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="confirmPassword.errors && (confirmPassword.dirty || confirmPassword.touched)">
+        <ion-label class="red-warning"  [hidden]="!confirmPassword.errors.required">You need to confirm your password</ion-label>
       </ion-item>-->
-      <!--<ion-item [hidden]="!user.password.valid || user.password.pristine">
-        <ion-label class="red-warning">You need to confirm your password</ion-label>
-      </ion-item>-->
-      <!--<button ion-button full [disabled]="!registerForm.form.valid" (click)="register()">Register</button>-->
+      <button ion-button full  (click)="register()">Register</button>
     </form>
   </ion-list>
 </ion-content>
