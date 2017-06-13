@@ -6,6 +6,8 @@ import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-na
 import { ImageHelper } from '../../helpers/imageHelper'
 import { Geolocation } from '@ionic-native/geolocation';
 import { EmailComposer } from '@ionic-native/email-composer';
+import { PlaceService } from '../../services/placeService'
+import { LoadingController,Loading } from 'ionic-angular';
 
 
 @Component({
@@ -14,19 +16,29 @@ import { EmailComposer } from '@ionic-native/email-composer';
 })
 
 export class DetailsPage {
+  placeId:string;
   place:Place;
+   loader:Loading;
   position:{latitude:number,longitude:number}
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private imageHelper:ImageHelper,private geolocation: Geolocation, 
-    private callNumber: CallNumber,private launchNavigator: LaunchNavigator,private emailComposer: EmailComposer) {
-    this.place = navParams.get("place") as Place;
+    private callNumber: CallNumber,private launchNavigator: LaunchNavigator,private emailComposer: EmailComposer,private placeService:PlaceService,private loadingCtrl:LoadingController) {
+    this.placeId = navParams.get("placeId");
+    this.place = new Place();
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait...",
+    });
   }
 
   ionViewDidLoad(){
     this.geolocation.getCurrentPosition().then((resp) => {
        this.position.latitude = resp.coords.latitude
        this.position.longitude = resp.coords.longitude
+       this.placeService.getDetails(this.placeId,this.position.latitude,this.position.longitude).subscribe(placeDetails=>{
+         this.place = placeDetails;
+         this.loader.dismiss();
+       })
     }).catch((error) => {
       console.log('Error getting location', error);
     });
@@ -66,7 +78,8 @@ export class DetailsPage {
         subject: this.place.name + ' booking',
         body: 'Hi '+this.place.name+',<br/>I wanted to book a table for ...',
         isHtml: true
-        };
+      };
+      this.emailComposer.open(email);
       }
     });
   }

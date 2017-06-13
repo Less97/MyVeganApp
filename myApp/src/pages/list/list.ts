@@ -45,7 +45,7 @@ export class ListPage {
   }
 
   goToDetails(p:Place){
-    this.navCtrl.push(DetailsPage,{place:p})
+    this.navCtrl.push(DetailsPage,{placeId:p._id})
   }
 
   calculateDistance(d:number):string {
