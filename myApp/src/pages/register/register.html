@@ -9,7 +9,7 @@
 <ion-content>
   <ion-list>
     <div>
-      <!--<img src="assets/images/CuriousCarrotLogo.png" class="logoImg" />-->
+      <img src="assets/images/CuriousCarrotLogo.png" class="logoImg" />
     </div>
     <form (ngSubmit)="register(f)" #registerForm="ngForm" novalidate>
       <ion-item>
@@ -25,26 +25,26 @@
         <ion-label [hidden]="!lastName.errors.required" class="red-warning">You need to insert your last name</ion-label>
       </ion-item>
       <ion-item>
-        <ion-input type="text" [(ngModel)]="user.email" name="email" ngControl="email" #email="ngModel" id="email" placeholder="your email" pattern="[a-zA-Z0-9._-]+@[a-zA-Z]+.[a-zA-Z]{2,3}" required></ion-input>
+        <ion-input type="text" [(ngModel)]="user.email" name="email" ngControl="email" #email="ngModel" id="email" placeholder="email" pattern="[a-zA-Z0-9._-]+@[a-zA-Z]+.[a-zA-Z]{2,3}" required></ion-input>
       </ion-item>
       <ion-item *ngIf="user.email.errors && (email.dirty || email.touched)">
         <ion-label [hidden]="!email.errors.required" class="red-warning">You need to insert an email</ion-label>
         <ion-label [hidden]="!email.errors.pattern" class="red-warning">You need to insert a valid email</ion-label>
       </ion-item>
-      <!--<ion-item>
-        <ion-input type="password" [(ngModel)]="user.password" name="password" id="password" placeholder="choose password" minlength="8"></ion-input>
+      <ion-item>
+        <ion-input type="password" [(ngModel)]="user.password" name="password" id="password"  placeholder="choose password" ></ion-input>
       </ion-item>
-      <ion-item *ngIf="password.errors && (password.dirty || password.touched)">
+      <ion-item *ngIf="user.password.errors && (password.dirty || password.touched)">
         <ion-label [hidden]="!password.errors.required" class="red-warning">You need to insert a password</ion-label>
         <ion-label [hidden]="!password.errors.minlength" class="red-warning">You need to choose a password of at least 8 characters</ion-label>
-      </ion-item>-->
-      <!--<ion-item>
-        <ion-input id="confirmPassword" [(ngModel)]="user.confirmPassword" type="password" name="confirmPassword" placeholder="confirm password"
-          required></ion-input>
       </ion-item>
-      <ion-item *ngIf="confirmPassword.errors && (confirmPassword.dirty || confirmPassword.touched)">
+      <ion-item>
+        <ion-input id="confirmPassword" [(ngModel)]="user.confirmPassword" type="password" name="confirmPassword" placeholder="confirm password"
+          required validateEqual="password"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="user.confirmPassword.errors && (confirmPassword.dirty || confirmPassword.touched)">
         <ion-label class="red-warning"  [hidden]="!confirmPassword.errors.required">You need to confirm your password</ion-label>
-      </ion-item>-->
+      </ion-item>
       <button ion-button full  (click)="register()">Register</button>
     </form>
   </ion-list>

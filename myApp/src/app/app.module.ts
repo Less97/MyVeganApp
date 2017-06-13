@@ -30,6 +30,9 @@ import { CallNumber } from '@ionic-native/call-number';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 
+//directives:
+import { EqualValidator } from '../directives/validators/validateEqual';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -39,7 +42,8 @@ import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-na
     TabsPage,
     LoginPage,
     DetailsPage,
-    RegisterPage
+    RegisterPage,
+    EqualValidator
   ],
   imports: [
     BrowserModule,
