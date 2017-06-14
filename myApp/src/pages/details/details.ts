@@ -18,7 +18,7 @@ import { LoadingController,Loading } from 'ionic-angular';
 export class DetailsPage {
   placeId:string;
   place:Place;
-   loader:Loading;
+  loader:Loading;
   position:{latitude:number,longitude:number} = {latitude:0,longitude:0};
 
   constructor(public navCtrl: NavController, public navParams: NavParams,

@@ -7,7 +7,7 @@ import { ConfigsProvider } from '../providers/configsProvider'
 
 
 
-import { TabsPage } from '../pages/tabs/tabs';
+//import { TabsPage } from '../pages/tabs/tabs';
 import { RegisterPage } from '../pages/register/register';
 
 

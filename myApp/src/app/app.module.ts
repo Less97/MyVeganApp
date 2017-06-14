@@ -13,6 +13,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { DetailsPage } from '../pages/details/details';
 import { RegisterPage } from '../pages/register/register';
+import { ConfirmEmailPage } from '../pages/confirmEmail/confirmEmail'
 
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -43,6 +44,7 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     LoginPage,
     DetailsPage,
     RegisterPage,
+    ConfirmEmailPage,
     EqualValidator
   ],
   imports: [
@@ -60,7 +62,8 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     TabsPage,
     LoginPage,
     DetailsPage,
-    RegisterPage
+    RegisterPage,
+    ConfirmEmailPage
   ],
   providers: [
     StatusBar,

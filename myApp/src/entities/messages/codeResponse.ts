@@ -13,8 +13,8 @@ export class CodeResponse implements iResponseLoader<CodeResponse>{
   fromResponse(json: string): CodeResponse {
      var obj = Object.create(CodeResponse);
      var data = JSON.parse(json);
-     this.error = data.error;
-     this.code = data.code;
+     obj.error = data.error;
+     obj.code = data.GeneratedCode;
      return obj;
   }
 

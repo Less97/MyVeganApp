@@ -24,13 +24,13 @@ export class UserService {
   }
 
   public register(name:string,surname:string,eml:string,password:string):Observable<CodeResponse>{
-    return this.http.post(this.serviceUrl+'users/createUser',{
+    return this.http.post(this.serviceUrl+'users/register',{
       firstName: name,
       lastName: surname,
       email: eml,
       password: password,
       type:0
-    }).map(res=>new CodeResponse().fromResponse(res.json()))
+    }).map(res=> new CodeResponse().fromResponse(res.json()))
   }
 
   // private handleError(error: any): Promise<any> {

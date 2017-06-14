@@ -9,23 +9,23 @@
 <ion-content>
   <ion-list>
     <div>
-      <img src="assets/images/CuriousCarrotLogo.png" class="logoImg" />
+      <!--<img src="assets/images/CuriousCarrotLogo.png" class="logoImg" />-->
     </div>
-    <form (ngSubmit)="register(f)" #registerForm="ngForm" novalidate>
+    <form #registerForm="ngForm" novalidate>
       <ion-item>
-        <ion-input type="text" [(ngModel)]="user.firstName"  #firstName="ngModel" name="firstName" id="firstName" placeholder="first name" required></ion-input>
+        <ion-input type="text" [(ngModel)]="user.firstName"  name="firstName" id="firstName" placeholder="first name" required></ion-input>
       </ion-item>
       <ion-item *ngIf="user.firstName.errors && (firstName.dirty || firstName.touched)">
         <ion-label [hidden]="!firstName.errors.required" class="red-warning">You need to insert your first name</ion-label>
       </ion-item>
       <ion-item>
-        <ion-input type="text" [(ngModel)]="user.lastName" #lastName="ngModel" name="lastName" id="lastName" placeholder="last name" required></ion-input>
+        <ion-input type="text" [(ngModel)]="user.lastName"  name="lastName" id="lastName" placeholder="last name" required></ion-input>
       </ion-item>
       <ion-item *ngIf="user.lastName.errors && (lastName.dirty || lastName.touched)">
         <ion-label [hidden]="!lastName.errors.required" class="red-warning">You need to insert your last name</ion-label>
       </ion-item>
       <ion-item>
-        <ion-input type="text" [(ngModel)]="user.email" name="email" ngControl="email" #email="ngModel" id="email" placeholder="email" pattern="[a-zA-Z0-9._-]+@[a-zA-Z]+.[a-zA-Z]{2,3}" required></ion-input>
+        <ion-input type="text" [(ngModel)]="user.email" name="email" ngControl="email" id="email" placeholder="email" pattern="[a-zA-Z0-9._-]+@[a-zA-Z]+.[a-zA-Z]{2,3}" required></ion-input>
       </ion-item>
       <ion-item *ngIf="user.email.errors && (email.dirty || email.touched)">
         <ion-label [hidden]="!email.errors.required" class="red-warning">You need to insert an email</ion-label>

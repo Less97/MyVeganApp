@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController ,NavParams } from 'ionic-angular';
 import { UserService } from '../../services/userService';
 //import { UserData } from '../../entities/userData';
 import { ConfigsProvider } from '../../providers/configsProvider';
-
+import { HomePage } from '../home/home'
 
 
 @Component({
@@ -11,17 +11,30 @@ import { ConfigsProvider } from '../../providers/configsProvider';
   templateUrl: 'confirmEmail.html'
 })
 
-export class ConfirmEmail {
+export class ConfirmEmailPage {
 
   confirmation = {code:''}
-  
-  constructor(public navCtrl: NavController, public userService:UserService, public configsProvider:ConfigsProvider) {
-    
+  receivedCode:string = '';
+  isProcessCompleted:boolean = false;
+  isCodeFailed:boolean = false;
+
+  constructor(public navCtrl: NavController, public configsProvider:ConfigsProvider,public navParams: NavParams) {
+    this.receivedCode = navParams.get("code");
   }
 
-  checkCode(){
-
+  submitCode(){
+    if(this.receivedCode == this.confirmation.code){
+      this.isProcessCompleted = true;
+      this.isCodeFailed = false;
+    }else{
+      this.isCodeFailed = true;
+    }
   }
+
+  goToApp(){
+    this.navCtrl.setRoot(HomePage)
+  }
+
 
 }
 
