@@ -24,8 +24,8 @@
      return this.serviceURL;
    }
 
-   saveSearchSettings(data): void {
-     window.localStorage.setItem('searchSettings', data.json());
+   saveSearchSettings(searchData:SearchSettings): void {
+     window.localStorage.setItem('searchSettings', JSON.stringify(searchData));
    }
 
    getSearchSettings(): SearchSettings {

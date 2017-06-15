@@ -25,7 +25,8 @@ export class MapPage {
   infoWindow:any;
   uMarker:any;
   loader:Loading;
-  bounds:Object;
+  bounds:any;
+  
   
 
   constructor(public navCtrl: NavController,private geolocation: Geolocation,private placeService:PlaceService,
@@ -111,6 +112,8 @@ export class MapPage {
         });
         this.markers.push(m)
         
+        this.bounds.extend(m.position)
+        this.map.fitBounds(this.bounds);
         google.maps.event.addListener(m, "click", function() {
 	      //create a new InfoWindow instance
         var infowindow = new google.maps.InfoWindow({  
