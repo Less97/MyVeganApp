@@ -20,12 +20,10 @@
         <button *ngFor="let t of searchSettings.tags" class="tag hometag" [ngClass]="{orange : t.isSelected}" (click)="t.isSelected=!t.isSelected">#{{t._id}} </button>
       </div>
     </div>
+    <div class="clearbth"></div>
+    <div class="margin-20px">
+        <button ion-button full (click)="goNearby()"> Find Nearby ></button>
+        <button ion-button full (click)="findAll()"> Find All ></button>
+    </div>
   </ion-list>
-  <ion-footer>
-    <ion-toolbar>
-      <button ion-button full (click)="goNearby()"> Find Nearby ></button>
-      <button ion-button full (click)="findAll()"> Find All ></button>
-    </ion-toolbar>
-  </ion-footer>
-
 </ion-content>

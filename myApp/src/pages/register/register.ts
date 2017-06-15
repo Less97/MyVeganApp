@@ -9,7 +9,7 @@ import { LoadingController,Loading } from 'ionic-angular';
 })
 
 export class RegisterPage {
-  user = {firstName:'sad', lastName:'sad', email:'sad@sda.it', password:'Password_123',confirmPassword:'Password_123'}
+  user = {firstName:'', lastName:'', email:'', password:'',confirmPassword:''}
   loader:Loading;
   constructor(public navCtrl: NavController,public userService: UserService,private loadingCtrl:LoadingController) {
     

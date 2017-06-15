@@ -21,6 +21,7 @@ export class DetailsPage {
   place:Place;
   loader:Loading;
   position:{latitude:number,longitude:number} = {latitude:0,longitude:0};
+  isContentReady:boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private imageHelper:ImageHelper,private geolocation: Geolocation, 
@@ -30,25 +31,28 @@ export class DetailsPage {
     this.placeId = navParams.get("placeId");
     this.place = new Place();
     
+    this.loader = this.loadingCtrl.create({
+      content: "Loading details...",
+    });
+    this.isContentReady = false;
   }
 
   ionViewDidLoad(){
-
+   this.loader.present();
      this.ga.startTrackerWithId('UA-82832670-5')
     .then(() => {
         this.ga.trackView('details');
-        this.ga.trackEvent('Place','Details',this.place.name);
-    })
+     })
+   .catch(e => console.log('Error starting GoogleAnalytics', e));
 
-    this.loader = this.loadingCtrl.create({
-      content: "Please wait...",
-    });
     this.geolocation.getCurrentPosition().then((resp) => {
        this.position.latitude = resp.coords.latitude;
        this.position.longitude = resp.coords.longitude;
        this.placeService.getDetails(this.placeId,this.position.latitude,this.position.longitude).subscribe(placeDetails=>{
-         this.place = placeDetails;
-         this.loader.dismiss();
+        this.loader.dismiss();
+        this.place = placeDetails;
+        this.isContentReady = true;
+       
        })
     }).catch((error) => {
       console.log('Error getting location', error);

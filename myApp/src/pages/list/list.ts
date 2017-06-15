@@ -33,8 +33,8 @@ export class ListPage {
    this.loader.present();
    this.geolocation.getCurrentPosition().then((resp) => {
       this.placeService.getPlaces(resp.coords.latitude,resp.coords.longitude).subscribe(places=>{
-          this.places = places;
           this.loader.dismiss();
+          this.places = places;
       })
     }).catch((error) => {
       console.log('Error getting location', error);

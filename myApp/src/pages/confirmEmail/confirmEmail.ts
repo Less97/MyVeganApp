@@ -3,7 +3,7 @@ import { NavController ,NavParams, ToastController } from 'ionic-angular';
 import { UserService } from '../../services/userService';
 //import { UserData } from '../../entities/userData';
 import { ConfigsProvider } from '../../providers/configsProvider';
-import { HomePage } from '../home/home';
+import { TabsPage } from '../tabs/tabs';
 import { LoadingController,Loading } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
@@ -48,11 +48,6 @@ export class ConfirmEmailPage {
     }
   }
 
-  goToApp(){
-    this.navCtrl.setRoot(HomePage)
-  }
-
-
   registrationCompleted():void{
      this.isProcessCompleted = true;
           this.isCodeFailed = false;
@@ -62,16 +57,16 @@ export class ConfirmEmailPage {
             this.ga.trackEvent('User','Register',this.email);
             // Tracker is ready
             // You can now track pages or set additional information such as AppVersion or UserId
-          })
+          }).catch(e => console.log('Error starting GoogleAnalytics', e));
     
       let toast = this.toastCtrl.create({
             message: 'Thanks a lot. Let\'s try to find you interesting places...',
             duration: 3000,
-            position: 'top'
+            position: 'center'
           });
 
       toast.onDidDismiss(() => {
-        this.navCtrl.setRoot(HomePage);
+        this.navCtrl.setRoot(TabsPage);
       });
 
       toast.present();

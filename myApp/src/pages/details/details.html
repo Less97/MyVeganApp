@@ -5,6 +5,7 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-grid [hidden]="!isContentReady">
   <ion-row>
     <ion-col col-2>
       <img [src]="getImageIcon(place.type)">
@@ -36,4 +37,5 @@
     </ion-col>
   </ion-row>
   <div class="clearf"></div>
+  </ion-grid>
 </ion-content>
