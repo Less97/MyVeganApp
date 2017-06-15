@@ -5,6 +5,7 @@ import { PlaceService } from '../../services/placeService';
 import { Place } from '../../entities/place'
 import { ImageHelper } from '../../helpers/imageHelper'
 import { LoadingController,Loading } from 'ionic-angular';
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { DetailsPage } from '../details/details'
 
@@ -28,12 +29,21 @@ export class MapPage {
   
 
   constructor(public navCtrl: NavController,private geolocation: Geolocation,private placeService:PlaceService,
-  private imageHelper:ImageHelper,public loadingCtrl: LoadingController
+  private imageHelper:ImageHelper,public loadingCtrl: LoadingController,private ga: GoogleAnalytics
   ) {
     this.markers = [];
   }
 
   ionViewDidLoad(){
+
+    this.ga.startTrackerWithId('UA-82832670-5')
+    .then(() => {
+     this.ga.trackView('map');
+      // Tracker is ready
+      // You can now track pages or set additional information such as AppVersion or UserId
+    })
+
+
      this.loader = this.loadingCtrl.create({
       content: "Please wait...",
     });

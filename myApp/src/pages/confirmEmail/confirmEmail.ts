@@ -5,6 +5,7 @@ import { UserService } from '../../services/userService';
 import { ConfigsProvider } from '../../providers/configsProvider';
 import { HomePage } from '../home/home';
 import { LoadingController,Loading } from 'ionic-angular';
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 
 @Component({
@@ -20,10 +21,15 @@ export class ConfirmEmailPage {
   isCodeFailed:boolean = false;
   email:string = '';
    loader:Loading;
-  constructor(public navCtrl: NavController, public configsProvider:ConfigsProvider,public navParams: NavParams,private userService:UserService,private loadingCtrl:LoadingController) {
+  constructor(public navCtrl: NavController, public configsProvider:ConfigsProvider,
+  public navParams: NavParams,private userService:UserService,private loadingCtrl:LoadingController,private ga: GoogleAnalytics) {
     this.receivedCode = navParams.get("code");
     this.email = navParams.get("email");
     this.isProcessCompleted = false;
+  }
+
+  ionViewDidLoad(){
+    
   }
 
   submitCode(){
@@ -37,6 +43,15 @@ export class ConfirmEmailPage {
           this.isProcessCompleted = true;
           this.isCodeFailed = false;
           this.loader.dismiss();
+
+           this.ga.startTrackerWithId('UA-82832670-5')
+           .then(() => {
+      
+           this.ga.trackEvent('User','Register',this.email);
+          // Tracker is ready
+          // You can now track pages or set additional information such as AppVersion or UserId
+          })
+
         }
       })
     }else{

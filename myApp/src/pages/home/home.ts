@@ -4,7 +4,7 @@ import { ListPage } from '../list/list'
 import { MapPage } from '../map/map'
 import { Tag } from '../../entities/tag'
 import { TagsService } from '../../services/tagsService'
-
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 
 @Component({
@@ -16,10 +16,21 @@ export class HomePage {
   tags:Tag[];
   maxDistance = 5 ;
 
-  constructor(public navCtrl: NavController,public tagsService:TagsService) {
+  constructor(public navCtrl: NavController,public tagsService:TagsService,private ga: GoogleAnalytics) {
     tagsService.getTags().subscribe(tags=>{
       this.tags = tags;
     })
+  }
+
+  ionViewDidLoad(){
+    this.ga.startTrackerWithId('UA-82832670-5')
+   .then(() => {
+     
+        this.ga.trackView('home');
+     // Tracker is ready
+     // You can now track pages or set additional information such as AppVersion or UserId
+   })
+   .catch(e => console.log('Error starting GoogleAnalytics', e));
   }
 
   goNearby(){

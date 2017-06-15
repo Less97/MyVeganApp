@@ -8,6 +8,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { PlaceService } from '../../services/placeService'
 import { LoadingController,Loading } from 'ionic-angular';
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 
 @Component({
@@ -23,13 +24,22 @@ export class DetailsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private imageHelper:ImageHelper,private geolocation: Geolocation, 
-    private callNumber: CallNumber,private launchNavigator: LaunchNavigator,private emailComposer: EmailComposer,private placeService:PlaceService,private loadingCtrl:LoadingController) {
+    private callNumber: CallNumber,private launchNavigator: LaunchNavigator,private emailComposer: EmailComposer,
+    private placeService:PlaceService,private loadingCtrl:LoadingController,private ga: GoogleAnalytics) {
+
     this.placeId = navParams.get("placeId");
     this.place = new Place();
     
   }
 
   ionViewDidLoad(){
+
+     this.ga.startTrackerWithId('UA-82832670-5')
+    .then(() => {
+        this.ga.trackView('details');
+        this.ga.trackEvent('Place','Details',this.place.name);
+    })
+
     this.loader = this.loadingCtrl.create({
       content: "Please wait...",
     });

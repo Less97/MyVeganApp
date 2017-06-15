@@ -88,4 +88,5 @@
     <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
     <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="^3.2.2" />
     <plugin name="cordova-plugin-email" spec="^1.2.6" />
+    <plugin name="cordova-plugin-google-analytics" spec="^1.8.2" />
 </widget>

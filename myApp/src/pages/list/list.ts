@@ -6,6 +6,7 @@ import { DetailsPage } from '../../pages/details/details';
 import { ImageHelper } from '../../helpers/imageHelper'
 import { PlaceService } from '../../services/placeService'
 import { Geolocation } from '@ionic-native/geolocation';
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 import { LoadingController,Loading } from 'ionic-angular';
 
@@ -16,13 +17,19 @@ import { LoadingController,Loading } from 'ionic-angular';
 export class ListPage {
    places:Place[]
    loader:Loading;
-  constructor(public navCtrl: NavController,public placeService:PlaceService,private geolocation: Geolocation,private loadingCtrl:LoadingController) {
+  constructor(public navCtrl: NavController,public placeService:PlaceService,private geolocation: Geolocation,
+   private loadingCtrl:LoadingController,private ga: GoogleAnalytics) {
     this.loader = this.loadingCtrl.create({
       content: "Please wait...",
     });
   }
 
   ionViewDidLoad(){
+    this.ga.startTrackerWithId('UA-82832670-5')
+    .then(() => {
+        this.ga.trackView('list');
+     })
+   .catch(e => console.log('Error starting GoogleAnalytics', e));
    this.loader.present();
    this.geolocation.getCurrentPosition().then((resp) => {
       this.placeService.getPlaces(resp.coords.latitude,resp.coords.longitude).subscribe(places=>{
