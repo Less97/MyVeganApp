@@ -30,6 +30,7 @@ import { Ionic2RatingModule } from 'ionic2-rating';
 import { CallNumber } from '@ionic-native/call-number';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 //directives:
 import { EqualValidator } from '../directives/validators/validateEqual';
@@ -77,6 +78,7 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     CallNumber,
     EmailComposer,
     LaunchNavigator,
+    GoogleAnalytics,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

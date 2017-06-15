@@ -23,15 +23,5 @@
        <button ion-button full [disabled]="!confirmCodeForm.form.valid" >Confirm Email</button>
     </form>
     </div>
-    <ion-card [hidden]="!isCodeFailed">
-      <ion-card-content >
-        Sorry, the code you inserted is not valid, please check your mail and insert the code in the email or contact us for any help.
-      </ion-card-content>
-    </ion-card>
-    <ion-card  [hidden]="!isProcessCompleted">
-      <ion-card-content color="secondary">
-        Thanks. You completed the registration successfully. Please click <a (click)="goToApp()">here</a> to start finding amazing vegan places!
-      </ion-card-content>
-    </ion-card>
   </ion-list>
 </ion-content>

@@ -43,13 +43,11 @@ export class ConfirmEmailPage {
           this.isProcessCompleted = true;
           this.isCodeFailed = false;
           this.loader.dismiss();
-
            this.ga.startTrackerWithId('UA-82832670-5')
            .then(() => {
-      
-           this.ga.trackEvent('User','Register',this.email);
-          // Tracker is ready
-          // You can now track pages or set additional information such as AppVersion or UserId
+            this.ga.trackEvent('User','Register',this.email);
+            // Tracker is ready
+            // You can now track pages or set additional information such as AppVersion or UserId
           })
 
         }
