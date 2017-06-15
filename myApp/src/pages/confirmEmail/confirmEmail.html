@@ -6,12 +6,12 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
   <ion-list>
     <div>
       <!--<img src="assets/images/CuriousCarrotLogo.png" class="logoImg" />-->
     </div>
-    <div [hidden]="!isProcessCompleted">
+    <div [hidden]="isProcessCompleted">
     <p>Please confirm the code you received by email</p>
      <form (ngSubmit)="submitCode(f)" #confirmCodeForm="ngForm" novalidate>
        <ion-item>
@@ -20,6 +20,7 @@
       <ion-item [hidden]="!confirmation.code.valid || confirmation.code.pristine">
         <ion-label class="red-warning">You need to insert the code you received by email</ion-label>
       </ion-item>
+       <button ion-button full (click)="submitCode()">Confirm Email</button>
     </form>
     </div>
     <ion-card>

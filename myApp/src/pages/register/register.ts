@@ -19,6 +19,7 @@ export class RegisterPage {
      this.loader = this.loadingCtrl.create({
       content: "Creating User...",
     });
+    this.loader.present();
     this.userService.register(this.user.firstName, this.user.lastName, this.user.email, this.user.password).subscribe(c=>{
       this.navCtrl.push(ConfirmEmailPage,{code:c.code})
       this.loader.dismiss();

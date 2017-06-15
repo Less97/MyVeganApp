@@ -45,7 +45,7 @@
       <ion-item *ngIf="user.confirmPassword.errors && (confirmPassword.dirty || confirmPassword.touched)">
         <ion-label class="red-warning"  [hidden]="!confirmPassword.errors.required">You need to confirm your password</ion-label>
       </ion-item>
-      <button ion-button full  (click)="register()">Register</button>
+      <button ion-button full (click)="register()">Register</button>
     </form>
   </ion-list>
 </ion-content>

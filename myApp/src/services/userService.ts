@@ -33,6 +33,15 @@ export class UserService {
     }).map(res=> new CodeResponse().fromResponse(res.json()))
   }
 
+  public confirmCode(eml:string):Observable<{error:boolean}>{
+    return this.http.post(this.serviceUrl+'users/register',{
+      email:eml
+    }).map(res=>{
+      var body = JSON.parse(res.json());
+      return new Object({error:body.error});
+    });
+  }
+
   // private handleError(error: any): Promise<any> {
   //   console.error('An error occurred', error); // for demo purposes only
   //   return Promise.reject(error.message || error);

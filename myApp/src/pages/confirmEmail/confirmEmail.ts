@@ -20,6 +20,7 @@ export class ConfirmEmailPage {
 
   constructor(public navCtrl: NavController, public configsProvider:ConfigsProvider,public navParams: NavParams) {
     this.receivedCode = navParams.get("code");
+    this.isProcessCompleted = false;
   }
 
   submitCode(){
