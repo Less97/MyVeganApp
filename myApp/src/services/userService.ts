@@ -1,9 +1,9 @@
- import { Injectable } from  '@angular/core';
- import { ConfigsProvider } from '../providers/configsProvider'
- import { Http } from '@angular/http'
- import { UserData } from '../entities/userData'
- import { CodeResponse } from '../entities/messages/codeResponse';
- import { Observable } from 'rxjs/Rx';
+import { Injectable } from  '@angular/core';
+import { ConfigsProvider } from '../providers/configsProvider'
+import { Http } from '@angular/http'
+import { UserData } from '../entities/userData'
+import { CodeResponse } from '../entities/messages/codeResponse';
+import { Observable } from 'rxjs/Rx';
 
 import 'rxjs/add/operator/toPromise'
 import 'rxjs/add/operator/map';
@@ -34,16 +34,12 @@ export class UserService {
   }
 
   public confirmCode(eml:string):Observable<{error:boolean}>{
-    return this.http.post(this.serviceUrl+'users/register',{
+    return this.http.post(this.serviceUrl+'users/confirmEmail',{
       email:eml
     }).map(res=>{
       var body = JSON.parse(res.json());
-      return new Object({error:body.error});
+      return new Object({error:body.Error});
     });
   }
 
-  // private handleError(error: any): Promise<any> {
-  //   console.error('An error occurred', error); // for demo purposes only
-  //   return Promise.reject(error.message || error);
-  // }
 }

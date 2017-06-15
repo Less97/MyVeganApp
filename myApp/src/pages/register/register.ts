@@ -21,7 +21,7 @@ export class RegisterPage {
     });
     this.loader.present();
     this.userService.register(this.user.firstName, this.user.lastName, this.user.email, this.user.password).subscribe(c=>{
-      this.navCtrl.push(ConfirmEmailPage,{code:c.code})
+      this.navCtrl.push(ConfirmEmailPage,{code:c.code,email:this.user.email})
       this.loader.dismiss();
     })
   }
