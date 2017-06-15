@@ -5,6 +5,7 @@ import { RegisterPage } from '../register/register';
 import { UserService } from '../../services/userService';
 //import { UserData } from '../../entities/userData';
 import { ConfigsProvider } from '../../providers/configsProvider';
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 
 
@@ -17,9 +18,19 @@ export class LoginPage {
 
   user = {email:'',password:''}
   
-  constructor(public navCtrl: NavController, public userService:UserService, public configsProvider:ConfigsProvider) {
+  constructor(public navCtrl: NavController, public userService:UserService, public configsProvider:ConfigsProvider,private ga: GoogleAnalytics) {
     
   }
+
+ ionViewDidLoad(){
+    this.ga.startTrackerWithId('UA-82832670-5')
+   .then(() => {
+      this.ga.trackView('home');
+   })
+   .catch(e => console.log('Error starting GoogleAnalytics', e));
+  }
+
+
 
   login(){
     this.userService.login(this.user.email,this.user.password).subscribe(data=>
@@ -32,7 +43,7 @@ export class LoginPage {
   }
 
   register(){
-    this.navCtrl.setRoot(RegisterPage)
+    this.navCtrl.push(RegisterPage)
   }
 
 }

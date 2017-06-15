@@ -36,12 +36,12 @@ export class MapPage {
 
   ionViewDidLoad(){
 
-    this.ga.startTrackerWithId('UA-82832670-5')
-    .then(() => {
-     this.ga.trackView('map');
-      // Tracker is ready
-      // You can now track pages or set additional information such as AppVersion or UserId
-    })
+    // this.ga.startTrackerWithId('UA-82832670-5')
+    // .then(() => {
+    //  this.ga.trackView('map');
+    //   // Tracker is ready
+    //   // You can now track pages or set additional information such as AppVersion or UserId
+    // })
 
 
      this.loader = this.loadingCtrl.create({

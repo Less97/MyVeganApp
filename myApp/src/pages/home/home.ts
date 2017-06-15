@@ -13,12 +13,13 @@ import { GoogleAnalytics } from '@ionic-native/google-analytics';
 })
 export class HomePage {
 
-  tags:Tag[];
-  maxDistance = 5 ;
+  searchSettings:{maxDistance:number,tags:Tag[]}
 
   constructor(public navCtrl: NavController,public tagsService:TagsService,private ga: GoogleAnalytics) {
+    this.searchSettings = {maxDistance:5,tags:[]}
+
     tagsService.getTags().subscribe(tags=>{
-      this.tags = tags;
+      this.searchSettings.tags = tags;
     })
   }
 
