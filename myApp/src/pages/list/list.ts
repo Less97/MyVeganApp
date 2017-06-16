@@ -22,8 +22,6 @@ export class ListPage {
     
   }
 
-
-
   ionViewDidEnter(){
     this.loadPage();
   }
