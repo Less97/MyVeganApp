@@ -17,13 +17,14 @@ export class PlaceService {
   }
   
   public getPlaces(lat:number,lng:number):Observable<Place[]>{
+      let searchSettings = this.configs.getSearchSettings();
       let params: URLSearchParams = new URLSearchParams();
       let requestOptions = new RequestOptions();
       params.set('latitude', lat.toString());
       params.set('longitude', lng.toString());
-      params.set('maxDistance', '300');
+      params.set('maxDistance',searchSettings.maxDistance.toString() );
       params.set('searchText', '');
-      params.set('tags', '');
+      params.set('tags', searchSettings.tags.join(','));
       requestOptions.search = params;
      return this.http.get(this.configs.serviceURL+'places/getplaces',requestOptions)
       .map(res=>{

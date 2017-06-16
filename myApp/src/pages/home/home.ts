@@ -18,14 +18,21 @@ export class HomePage {
   searchSettings:SearchSettings;  
   constructor(public navCtrl: NavController,public tagsService:TagsService,private ga: GoogleAnalytics,private configsProvider:ConfigsProvider) {
   this.searchSettings = new SearchSettings(30,[]);
-   this.tagsService.getTags().subscribe(ts=>{
+  let selected = configsProvider.getSearchSettings().tags.filter(x=>x.selected ==true);
+  this.searchSettings.maxDistance = configsProvider.getSearchSettings().maxDistance;
+  this.tagsService.getTags().subscribe(ts=>{
         this.searchSettings.tags = ts;
-        alert('got tags')
+        this.searchSettings.tags.forEach(t=>{
+          if(selected.filter(x=>x._id==t._id).length>0)
+            t.selected =true;
+        });
       })
+  
   }
 
   notifyChange(){
     this.configsProvider.saveSearchSettings(this.searchSettings);
+    debugger;
   }
 
   ionViewDidLoad(){

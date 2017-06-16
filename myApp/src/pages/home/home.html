@@ -17,7 +17,7 @@
     <div class="margin-bottom-10px">
       <h4>categories:</h4>
       <div >
-        <button *ngFor="let t of searchSettings.tags;trackBy:t?._id" class="tag hometag" [ngClass]="{orange : t.isSelected}" (click)="t.isSelected=!t.isSelected;notifyChange()">#{{t._id}} </button>
+        <button *ngFor="let t of searchSettings.tags;trackBy:t?._id" class="tag hometag" [ngClass]="{orange : t.selected}" (click)="t.selected=!t.selected;notifyChange()">#{{t._id}} </button>
       </div>
     </div>
     <div class="clearbth"></div>
