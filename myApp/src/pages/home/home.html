@@ -10,14 +10,14 @@
     <h5>What are you looking for today?</h5>
     <div class="margin-20px"><b>Max distance:</b>&nbsp;{{searchSettings.maxDistance}} Km</div>
     <div class="spacer-10px"></div>
-    <ion-range min="1" max="500" [(ngModel)]="searchSettings.maxDistance" color="primary">
+    <ion-range min="1" max="500" [(ngModel)]="searchSettings.maxDistance" (ionChange)="notifyChange()" color="primary">
       <ion-label range-left>5 km</ion-label>
       <ion-label range-right>500 km</ion-label>
     </ion-range>
     <div class="margin-bottom-10px">
       <h4>categories:</h4>
-      <div>
-        <button *ngFor="let t of searchSettings.tags" class="tag hometag" [ngClass]="{orange : t.isSelected}" (click)="t.isSelected=!t.isSelected">#{{t._id}} </button>
+      <div >
+        <button *ngFor="let t of searchSettings.tags;trackBy:t?._id" class="tag hometag" [ngClass]="{orange : t.isSelected}" (click)="t.isSelected=!t.isSelected;notifyChange()">#{{t._id}} </button>
       </div>
     </div>
     <div class="clearbth"></div>
