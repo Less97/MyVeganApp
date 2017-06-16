@@ -32,8 +32,8 @@ export class HomePage {
 
   notifyChange(){
     this.configsProvider.saveSearchSettings(this.searchSettings);
-    debugger;
   }
+  
 
   ionViewDidLoad(){
       

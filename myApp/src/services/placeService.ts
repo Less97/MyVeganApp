@@ -24,7 +24,8 @@ export class PlaceService {
       params.set('longitude', lng.toString());
       params.set('maxDistance',searchSettings.maxDistance.toString() );
       params.set('searchText', '');
-      params.set('tags', searchSettings.tags.join(','));
+      var selectedTags = searchSettings.tags.filter(x=>x.selected==true).map(t=>t._id).join(',')
+      params.set('tags', selectedTags);
       requestOptions.search = params;
      return this.http.get(this.configs.serviceURL+'places/getplaces',requestOptions)
       .map(res=>{

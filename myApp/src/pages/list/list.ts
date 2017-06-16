@@ -19,30 +19,34 @@ export class ListPage {
    loader:Loading;
   constructor(public navCtrl: NavController,public placeService:PlaceService,private geolocation: Geolocation,
    private loadingCtrl:LoadingController,private ga: GoogleAnalytics) {
-    this.loader = this.loadingCtrl.create({
+    
+  }
+
+
+
+  ionViewDidEnter(){
+    this.loadPage();
+  }
+  
+loadPage(){
+  this.loader = this.loadingCtrl.create({
       content: "Please wait...",
     });
-  }
-
-  ionViewDidLoad(){
-    this.ga.startTrackerWithId('UA-82832670-5')
-    .then(() => {
-        this.ga.trackView('list');
-     })
-   .catch(e => console.log('Error starting GoogleAnalytics', e));
-   this.loader.present();
-   this.geolocation.getCurrentPosition().then((resp) => {
-      this.placeService.getPlaces(resp.coords.latitude,resp.coords.longitude).subscribe(places=>{
-          this.loader.dismiss();
-          this.places = places;
+  this.ga.startTrackerWithId('UA-82832670-5')
+      .then(() => {
+          this.ga.trackView('list');
       })
-    }).catch((error) => {
-      console.log('Error getting location', error);
-    } );
-
-      
-  }
-
+    .catch(e => console.log('Error starting GoogleAnalytics', e));
+    this.loader.present();
+    this.geolocation.getCurrentPosition().then((resp) => {
+        this.placeService.getPlaces(resp.coords.latitude,resp.coords.longitude).subscribe(places=>{
+            this.loader.dismiss();
+            this.places = places;
+        })
+      }).catch((error) => {
+        console.log('Error getting location', error);
+      } );
+}
   getImageSource(type:string):string{
     return ImageHelper.GetImageListSrc(type);
   }

@@ -35,9 +35,9 @@ export class MapPage {
     this.markers = [];
   }
 
-  ionViewDidLoad(){
-
-    this.ga.startTrackerWithId('UA-82832670-5')
+ 
+ionViewDidEnter(){
+this.ga.startTrackerWithId('UA-82832670-5')
     .then(() => {
      this.ga.trackView('map');
       // Tracker is ready
@@ -62,8 +62,9 @@ export class MapPage {
       console.log('Error getting location', error);
     });
 
-  }
- 
+
+}
+
   loadMap(lat:number,lng:number){
  
     let latLng = new google.maps.LatLng(lat, lng);
