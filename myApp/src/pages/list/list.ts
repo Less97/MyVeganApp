@@ -7,7 +7,7 @@ import { ImageHelper } from '../../helpers/imageHelper'
 import { PlaceService } from '../../services/placeService'
 import { Geolocation } from '@ionic-native/geolocation';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
-
+import { EmailComposer } from '@ionic-native/email-composer';
 import { LoadingController,Loading } from 'ionic-angular';
 
 @Component({
@@ -18,7 +18,7 @@ export class ListPage {
    places:Place[]
    loader:Loading;
   constructor(public navCtrl: NavController,public placeService:PlaceService,private geolocation: Geolocation,
-   private loadingCtrl:LoadingController,private ga: GoogleAnalytics) {
+   private loadingCtrl:LoadingController,private ga: GoogleAnalytics,private emailComposer: EmailComposer) {
     
   }
 
@@ -61,4 +61,14 @@ loadPage(){
       return (d/1000).toFixed(1);
   }
 
+  addPlace(){
+      //Now we know we can send
+      let email = {
+        to: 'alessandro@thecuriouscarrot.com',
+        subject: 'new place',
+        body: 'Hi TheCuriousCarrot,<br/><br/> I saw that a place that I know is not enlisted in the app. Can you please add it? You can find the details below...<br/><br/>',
+        isHtml: true
+      };
+      this.emailComposer.open(email);
+  }
 }

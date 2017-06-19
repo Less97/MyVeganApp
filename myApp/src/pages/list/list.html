@@ -8,11 +8,9 @@
 
 <ion-content>
   <ion-card (click)="GoToAddPlace()" color="primary">
-    <ion-card-header>
-      Add new place
-    </ion-card-header>
+   
     <ion-card-content>
-      Do you know a place we didn't review yet? send me an email on alessandro@thecuriouscarrot.com
+      Do you know a place we didn't review yet? <a (click)="addPlace()">click here</a>
     </ion-card-content>
   </ion-card>
   <ion-list>

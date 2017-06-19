@@ -30,7 +30,7 @@ export class PlaceService {
      return this.http.get(this.configs.serviceURL+'places/getplaces',requestOptions)
       .map(res=>{
         return JSON.parse(res.json()).map(t=>  
-        Place.build(t._id.$oid,t.name,t.description,t.address,t.phoneNumber,t.email,t.type,t.nReviews,t.rating,t.location.coordinates[1],t.location.coordinates[0],t.distance,t.gallery))
+        Place.build(t._id.$oid,t.name,t.description,t.address,t.phoneNumber,t.email,t.type,t.nReviews,t.rating,t.openingHours,t.location.coordinates[1],t.location.coordinates[0],t.distance,t.gallery))
       })
     }
 
@@ -43,7 +43,7 @@ export class PlaceService {
     requestOptions.search = params;
     return this.http.get(this.configs.serviceURL + 'places/getPlaceDetails',requestOptions).map(res=>{
       var t = JSON.parse(res.json());
-      return Place.build(t._id.$oid,t.name,t.description,t.address,t.phoneNumber,t.email,t.type,t.nReviews,t.rating,t.location.coordinates[1],t.location.coordinates[0],t.distance,t.gallery);
+      return Place.build(t._id.$oid,t.name,t.description,t.address,t.phoneNumber,t.email,t.type,t.nReviews,t.rating,t.openingHours,t.location.coordinates[1],t.location.coordinates[0],t.distance,t.gallery);
     })
   }
  
