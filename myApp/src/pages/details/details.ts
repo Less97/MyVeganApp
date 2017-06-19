@@ -84,8 +84,6 @@ export class DetailsPage {
   }
 
   sendEmail(){
-    this.emailComposer.isAvailable().then((available: boolean) =>{
-    if(available) {
        //Now we know we can send
         let email = {
         to: this.place.email,
@@ -93,10 +91,8 @@ export class DetailsPage {
         subject: this.place.name + ' booking',
         body: 'Hi '+this.place.name+',<br/>I wanted to book a table for ...',
         isHtml: true
-      };
+        };
       this.emailComposer.open(email);
-      }
-    });
   }
 
   call(number:string){
