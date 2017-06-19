@@ -18,14 +18,8 @@
   <ion-row>
     <ion-col col-12>
       <ion-slides>
-        <ion-slide class="gallery-slide">
-          <h1>Slide 1</h1>
-        </ion-slide>
-        <ion-slide class="gallery-slide">
-          <h1>Slide 2</h1>
-        </ion-slide>
-        <ion-slide class="gallery-slide">
-          <h1>Slide 3</h1>
+        <ion-slide *ngFor="let imgId of place.gallery" class="gallery-slide">
+         <img [src]="getImgUrl(imgId)"/>
         </ion-slide>
       </ion-slides>
     </ion-col>
@@ -53,12 +47,10 @@
   </ion-row>
    <ion-row>
     <ion-col col-1>
-        <ion-icon name="ios-mail-outline" ></ion-icon><a (click)="sendEmail()" class="cursor-hand">&nbsp;{{place.email}}</a>
+        <ion-icon name="ios-clock-outline" ></ion-icon>
     </ion-col>
-     <ion-col col-11>
-        <ul>
-          <li *ngFor="let hour in place.openingHours">{{hour}}</li>
-        </ul>
+    <ion-col col-11>
+        <div *ngFor="let hour of place.openingHours">{{hour}}</div>
     </ion-col>
   </ion-row>
   <ion-row>

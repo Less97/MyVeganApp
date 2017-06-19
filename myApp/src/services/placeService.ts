@@ -13,7 +13,6 @@ export class PlaceService {
   private serviceUrl:string;
 
   constructor(private http: Http, private configs:ConfigsProvider) {
-    this.serviceUrl = configs.serviceURL+'places/getplaces';
   }
   
   public getPlaces(lat:number,lng:number):Observable<Place[]>{
@@ -45,6 +44,10 @@ export class PlaceService {
       var t = JSON.parse(res.json());
       return Place.build(t._id.$oid,t.name,t.description,t.address,t.phoneNumber,t.email,t.type,t.nReviews,t.rating,t.openingHours,t.location.coordinates[1],t.location.coordinates[0],t.distance,t.gallery);
     })
+  }
+
+  public getImgSource(imgId:string){
+    return this.configs.serviceURL+'images/get?imgId='+imgId;
   }
  
 }

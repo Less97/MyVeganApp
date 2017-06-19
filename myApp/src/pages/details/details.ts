@@ -10,13 +10,13 @@ import { PlaceService } from '../../services/placeService'
 import { LoadingController,Loading } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
+declare var google;
+
 
 @Component({
   selector: 'page-details',
   templateUrl: 'details.html'
 })
-
-declare var google;
 
 export class DetailsPage {
   placeId:string;
@@ -109,21 +109,7 @@ export class DetailsPage {
     );
   }
 
-  toGallery(){
-      this.navCtrl.push(DetailsPage,{placeId:this.place._id,imageIds:this.place.imageIds})
-  }
-
   sendEmail(){
-<<<<<<< HEAD
-       //Now we know we can send
-        let email = {
-        to: this.place.email,
-
-        subject: this.place.name + ' booking',
-        body: 'Hi '+this.place.name+',<br/>I wanted to book a table for ...',
-        isHtml: true
-        };
-=======
       //Now we know we can send
       let email = {
       to: this.place.email,
@@ -132,8 +118,12 @@ export class DetailsPage {
       body: 'Hi '+this.place.name+',<br/>I wanted to book a table for ...',
       isHtml: true
       };
->>>>>>> 2f6524d4e3bcdfe6c145c39b4f7c590da17a90d7
+
       this.emailComposer.open(email);
+  }
+
+  getImgUrl(imgId:string){
+    return this.placeService.getImgSource(imgId);
   }
 
   call(number:string){

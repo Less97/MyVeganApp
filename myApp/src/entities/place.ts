@@ -10,13 +10,14 @@ export class Place{
     latitude:number,
     longitude:number
   };
-  imageIds:string[];
   distance:number;
   address:string;
   phoneNumber:string;
+  openingHours:string[];
   email:string;
+  gallery:string[]
 
-  static build(_id:string, name:string,description:string,address:string,phoneNumber:string,email:string, type:string, reviews:number,rating:number,openingHour:string[], latitude:number, longitude:number,distance:number,imageIds:string[]):Place{
+  static build(_id:string, name:string,description:string,address:string,phoneNumber:string,email:string, type:string, reviews:number,rating:number,openingHours:string[], latitude:number, longitude:number,distance:number,gallery:string[]):Place{
     var pb = new Place();
     pb._id =_id;
     pb.name = name;
@@ -29,10 +30,11 @@ export class Place{
       longitude : longitude
     };
     pb.distance = distance;
-    pb.imageIds = imageIds;
+    pb.gallery = gallery.map(x=>(x as any).$oid as string);
     pb.address = address
     pb.phoneNumber = phoneNumber;
     pb.email = email;
+    pb.openingHours = openingHours;
     return pb;
   }
 
