@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef  } from '@angular/core';
 import { NavController ,NavParams } from 'ionic-angular';
 import { Place } from '../../entities/place';
 import { CallNumber } from '@ionic-native/call-number';
@@ -16,12 +16,17 @@ import { GoogleAnalytics } from '@ionic-native/google-analytics';
   templateUrl: 'details.html'
 })
 
+declare var google;
+
 export class DetailsPage {
   placeId:string;
   place:Place;
   loader:Loading;
   position:{latitude:number,longitude:number} = {latitude:0,longitude:0};
   isContentReady:boolean;
+  @ViewChild('map') mapElement: ElementRef;
+  map: any;
+  placeMarker:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private imageHelper:ImageHelper,private geolocation: Geolocation, 
@@ -57,7 +62,32 @@ export class DetailsPage {
     }).catch((error) => {
       console.log('Error getting location', error);
     });
+
+
   }
+
+  loadMap(){
+     let latLng = new google.maps.LatLng(this.place.position.latitude, this.place.position.longitude);
+     let mapOptions = {
+      center: latLng,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      gestureHandling: 'cooperative'
+    }
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    this.placeMarker = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: latLng,
+      });
+    google.maps.event.addListener(this.placeMarker, "click", function() {
+    //create a new InfoWindow instance
+    var infowindow = new google.maps.InfoWindow({  
+      content: this.place.name  
+    }); 
+    });
+  }
+
 
   getImageIcon(type:string):string{
     return ImageHelper.GetImageListSrc(type);
@@ -84,6 +114,7 @@ export class DetailsPage {
   }
 
   sendEmail(){
+<<<<<<< HEAD
        //Now we know we can send
         let email = {
         to: this.place.email,
@@ -92,6 +123,16 @@ export class DetailsPage {
         body: 'Hi '+this.place.name+',<br/>I wanted to book a table for ...',
         isHtml: true
         };
+=======
+      //Now we know we can send
+      let email = {
+      to: this.place.email,
+
+      subject: this.place.name + ' booking',
+      body: 'Hi '+this.place.name+',<br/>I wanted to book a table for ...',
+      isHtml: true
+      };
+>>>>>>> 2f6524d4e3bcdfe6c145c39b4f7c590da17a90d7
       this.emailComposer.open(email);
   }
 

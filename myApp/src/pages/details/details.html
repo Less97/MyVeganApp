@@ -17,6 +17,21 @@
   </ion-row>
   <ion-row>
     <ion-col col-12>
+      <ion-slides>
+        <ion-slide class="gallery-slide">
+          <h1>Slide 1</h1>
+        </ion-slide>
+        <ion-slide class="gallery-slide">
+          <h1>Slide 2</h1>
+        </ion-slide>
+        <ion-slide class="gallery-slide">
+          <h1>Slide 3</h1>
+        </ion-slide>
+      </ion-slides>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-12>
       <ion-icon name="ios-home-outline" ></ion-icon><a (click)="getDirection()" class="cursor-hand">&nbsp;{{place.address}}</a>
     </ion-col>
   </ion-row>
@@ -34,6 +49,21 @@
   <ion-row>
     <ion-col col-12>
        <ion-icon name="ios-mail-outline" ></ion-icon><a (click)="sendEmail()" class="cursor-hand">&nbsp;{{place.email}}</a>
+    </ion-col>
+  </ion-row>
+   <ion-row>
+    <ion-col col-1>
+        <ion-icon name="ios-mail-outline" ></ion-icon><a (click)="sendEmail()" class="cursor-hand">&nbsp;{{place.email}}</a>
+    </ion-col>
+     <ion-col col-11>
+        <ul>
+          <li *ngFor="let hour in place.openingHours">{{hour}}</li>
+        </ul>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-12>
+      <div #map id="map"></div>  
     </ion-col>
   </ion-row>
   <div class="clearf"></div>
