@@ -57,13 +57,13 @@ export class DetailsPage {
         this.loader.dismiss();
         this.place = placeDetails;
         this.isContentReady = true;
-       
+       this.loadMap();
        })
     }).catch((error) => {
       console.log('Error getting location', error);
     });
-
-
+    
+  
   }
 
   loadMap(){
