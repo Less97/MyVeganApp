@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { UserService } from '../../services/userService'
 import { LoadingController,Loading,ToastController } from 'ionic-angular';
+import { ChangePasswordPage } from '../changePassword/changePassword'
 
 
 
@@ -72,7 +73,7 @@ export class ForgotPasswordPage {
           });
           toast.present();
           toast.onDidDismiss(()=>{
-            this.navCtrl.setRoot()
+            this.navCtrl.setRoot(ChangePasswordPage)
           })
       }
     });
