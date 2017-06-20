@@ -5,10 +5,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
 import { ConfigsProvider } from '../providers/configsProvider' 
 
-
-
 import { TabsPage } from '../pages/tabs/tabs';
 import { DetailsPage } from '../pages/details/details'
+import { ForgotPasswordPage } from '../pages/forgotPassword/forgotPassword';
 
 
 @Component({
@@ -23,13 +22,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-
-       if(configsProvider.isLoggedIn()){
-         this.rootPage = TabsPage
-       } else{
-         this.rootPage = LoginPage
-       }
-
+      this.rootPage = ForgotPasswordPage
     });
   }
 }

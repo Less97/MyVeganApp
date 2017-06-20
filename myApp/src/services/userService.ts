@@ -42,4 +42,23 @@ export class UserService {
     });
   }
 
+  public restorePassword(eml:string):Observable<{error:boolean,code:string}>{
+    return this.http.post(this.serviceUrl+'users/restorePassword',{
+      email:eml
+    }).map(res=>{
+      var body = JSON.parse(res.json());
+      return new Object({error:body.Error,code:body.GeneratedCode});
+    })
+  }
+
+  public changePassword(eml:string,pwd:string):Observable<{error:boolean}>{
+      return this.http.post(this.serviceUrl+'users/changePassword',{
+        email:eml,
+        password:pwd
+      }).map(res=>{
+        var body = JSON.parse(res.json())
+        return new Object({error:body.Error});
+      })
+  }
+
 }

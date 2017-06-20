@@ -14,6 +14,7 @@ import { LoginPage } from '../pages/login/login';
 import { DetailsPage } from '../pages/details/details';
 import { RegisterPage } from '../pages/register/register';
 import { ConfirmEmailPage } from '../pages/confirmEmail/confirmEmail'
+import { ForgotPasswordPage } from '../pages/forgotPassword/forgotPassword'
 
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -46,6 +47,7 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     DetailsPage,
     RegisterPage,
     ConfirmEmailPage,
+    ForgotPasswordPage,
     EqualValidator
   ],
   imports: [
@@ -64,7 +66,8 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     LoginPage,
     DetailsPage,
     RegisterPage,
-    ConfirmEmailPage
+    ConfirmEmailPage,
+    ForgotPasswordPage
   ],
   providers: [
     StatusBar,

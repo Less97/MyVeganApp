@@ -20,9 +20,11 @@ export class ConfirmEmailPage {
   isProcessCompleted:boolean = false;
   isCodeFailed:boolean = false;
   email:string = '';
-   loader:Loading;
+  loader:Loading;
+
   constructor(public navCtrl: NavController, public configsProvider:ConfigsProvider,
-  public navParams: NavParams,private userService:UserService,private loadingCtrl:LoadingController,private ga: GoogleAnalytics,private toastCtrl: ToastController) {
+  public navParams: NavParams,private userService:UserService,private loadingCtrl:LoadingController,private ga: GoogleAnalytics,
+    private toastCtrl: ToastController) {
     this.receivedCode = navParams.get("code");
     this.email = navParams.get("email");
     this.isProcessCompleted = false;
@@ -54,9 +56,9 @@ export class ConfirmEmailPage {
           this.loader.dismiss();
            this.ga.startTrackerWithId('UA-82832670-5')
            .then(() => {
-            this.ga.trackEvent('User','Register',this.email);
-            // Tracker is ready
-            // You can now track pages or set additional information such as AppVersion or UserId
+              this.ga.trackEvent('User','Register',this.email);
+              // Tracker is ready
+              // You can now track pages or set additional information such as AppVersion or UserId
           }).catch(e => console.log('Error starting GoogleAnalytics', e));
     
       let toast = this.toastCtrl.create({

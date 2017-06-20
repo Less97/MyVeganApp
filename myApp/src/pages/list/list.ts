@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Place } from '../../entities/place';
-import { AddPlacePage } from '../../pages/addplace/addplace'
 import { DetailsPage } from '../../pages/details/details';
 import { ImageHelper } from '../../helpers/imageHelper'
 import { PlaceService } from '../../services/placeService'
@@ -47,10 +46,6 @@ loadPage(){
 }
   getImageSource(type:string):string{
     return ImageHelper.GetImageListSrc(type);
-  }
-
-  goToAddPlace(){
-    this.navCtrl.push(AddPlacePage)
   }
 
   goToDetails(p:Place){
