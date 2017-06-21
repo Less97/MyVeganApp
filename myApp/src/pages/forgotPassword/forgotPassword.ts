@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { UserService } from '../../services/userService'
 import { LoadingController,Loading,ToastController } from 'ionic-angular';
+import { ListPage } from '../list/list'
 
 
 enum ForgotPasswordPageState{
@@ -75,19 +76,47 @@ export class ForgotPasswordPage {
           });
           toast.present()
           toast.onDidDismiss(()=>{
-              this.currentState = ForgotPasswordPageState.ConfirmEmail;
+              this.currentState = ForgotPasswordPageState.ChangePassword;
           });
      }else{
        let toast = this.toastCtrl.create({
-            message: 'Sorry, the code you selected is not valid',
+            message: 'Sorry, the code you selected is not valid, Please check your email and try again',
             duration: 3000,
             position: 'center'
           });
+
+        toast.present();
+        
      }
   }
 
   changePassword(){
+    this.loader = this.loadingCtrl.create({
+      content: "Changing your password",
+    });
+    this.loader.present();
+    if(this.passwordModel.password==this.passwordModel.confirmPassword){
+        this.userService.changePassword(this.forgotPasswordModel.email,this.passwordModel.password).subscribe(()=>{
+            this.loader.dismiss();
+            let toast = this.toastCtrl.create({
+            message: 'Thanks, your password has changed.',
+            duration: 3000,
+            position: 'center'
+          });
+          toast.present();
+          toast.onDidDismiss(()=>{
+            this.navCtrl.setRoot(ListPage)
+          })
+        })
+    }else{
+       let toast = this.toastCtrl.create({
+            message: 'Sorry, the two password you inserted don\'t match. Please check the fields and try again',
+            duration: 3000,
+            position: 'center'
+          });
 
+        toast.present();
+    }
   }
   
 }
