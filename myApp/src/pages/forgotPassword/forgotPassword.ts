@@ -4,8 +4,6 @@ import { UserService } from '../../services/userService'
 import { LoadingController,Loading,ToastController } from 'ionic-angular';
 
 
-
-
 enum ForgotPasswordPageState{
   InsertEmail,
   ConfirmEmail,
@@ -20,10 +18,9 @@ enum ForgotPasswordPageState{
 
 export class ForgotPasswordPage {
 
-
-  forgotPasswordForm = {email:''};
-  codeForm = {code:'',GeneratedCode:''};
-  passwordForm = {password:'',confirmPassword:''}
+  forgotPasswordModel = {email:''};
+  codeModel = {code:'',GeneratedCode:''};
+  passwordModel = {password:'',confirmPassword:''}
 
   loader:Loading;
   currentState:ForgotPasswordPageState = ForgotPasswordPageState.InsertEmail;
@@ -35,9 +32,16 @@ export class ForgotPasswordPage {
     });
   }
 
-  insertEmail(){
+  getCurrentState():string{
+    if(this.currentState == ForgotPasswordPageState.InsertEmail) return "InsertEmail"
+    if(this.currentState == ForgotPasswordPageState.ConfirmEmail) return "ConfirmEmail"
+    if(this.currentState == ForgotPasswordPageState.ChangePassword) return "ChangePassword"
+    return "";
+  }
+
+  public insertEmail(){
     this.loader.present();
-    this.userService.restorePassword(this.forgotPasswordForm.email).subscribe(res=>{
+    this.userService.restorePassword(this.forgotPasswordModel.email).subscribe(res=>{
       this.loader.dismiss();
       if(res.error==true){
         let toast = this.toastCtrl.create({
@@ -47,7 +51,7 @@ export class ForgotPasswordPage {
           });
           toast.present()
       }else{
-        this.codeForm.GeneratedCode = res.code;
+        this.codeModel.GeneratedCode = res.code;
         let toast = this.toastCtrl.create({
             message: 'Thanks, we sent you the email confirmation code. Check your email',
             duration: 3000,
@@ -63,7 +67,7 @@ export class ForgotPasswordPage {
   }
  
   submitCode(){
-     if(this.codeForm.code==this.codeForm.GeneratedCode){
+     if(this.codeModel.code==this.codeModel.GeneratedCode){
         let toast = this.toastCtrl.create({
             message: 'Thanks, the code is valid, please insert your password',
             duration: 3000,
