@@ -26,7 +26,8 @@
       </ion-item>
       <button ion-button full [disabled]="!loginForm.form.valid">Login</button>
     </form>
-
     <button ion-button full (click)="register()">Register</button>
+    <div>OR</div>
+    <button ion-button full (click)="facebookLogin()">Facebook</button>
   </ion-list>
 </ion-content>
