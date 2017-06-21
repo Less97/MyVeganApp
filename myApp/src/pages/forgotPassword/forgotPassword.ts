@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { UserService } from '../../services/userService'
 import { LoadingController,Loading,ToastController } from 'ionic-angular';
-import { ListPage } from '../list/list'
+import { TabsPage } from '../tabs/tabs'
 
 
 enum ForgotPasswordPageState{
@@ -105,7 +105,7 @@ export class ForgotPasswordPage {
           });
           toast.present();
           toast.onDidDismiss(()=>{
-            this.navCtrl.setRoot(ListPage)
+            this.navCtrl.setRoot(TabsPage)
           })
         })
     }else{
