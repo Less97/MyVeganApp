@@ -10,7 +10,6 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class PlaceService {
 
-  private serviceUrl:string;
 
   constructor(private http: Http, private configs:ConfigsProvider) {
   }

@@ -82,7 +82,7 @@ export class DetailsPage {
       });
     google.maps.event.addListener(this.placeMarker, "click", function() {
     //create a new InfoWindow instance
-    var infowindow = new google.maps.InfoWindow({  
+    new google.maps.InfoWindow({  
       content: this.place.name  
     }); 
     });

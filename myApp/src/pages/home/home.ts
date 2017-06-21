@@ -1,12 +1,10 @@
-import { Component,ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { ListPage } from '../list/list'
 import { MapPage } from '../map/map'
-import { Tag } from '../../entities/tag'
 import { TagsService } from '../../services/tagsService'
 import { SearchSettings } from '../../entities/searchSettings'
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
-import { Observable } from 'rxjs/Rx';
 import { ConfigsProvider } from '../../providers/configsProvider'
 
 
