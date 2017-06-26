@@ -2,7 +2,8 @@ page-login {
     .logoImg{
         margin: 10px;
         max-width: 75%;
-        max-height: 50%;
+        max-height: 200px;
+        width:auto;
         display: block;
         padding: 10px;
         margin: 0 auto;
@@ -19,5 +20,9 @@ page-login {
     .or{
         width:50px;
         margin:0 auto;
+    }
+
+    .center{
+        text-align: center;
     }
 }

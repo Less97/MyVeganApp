@@ -32,6 +32,7 @@ import { CallNumber } from '@ionic-native/call-number';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
+import { Facebook } from '@ionic-native/facebook'
 
 //directives:
 import { EqualValidator } from '../directives/validators/validateEqual';
@@ -82,6 +83,7 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     EmailComposer,
     LaunchNavigator,
     GoogleAnalytics,
+    Facebook,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

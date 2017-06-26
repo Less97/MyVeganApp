@@ -83,6 +83,10 @@
     <plugin name="cordova-plugin-device" spec="^1.1.4" />
     <plugin name="cordova-plugin-directions" spec="^0.4.4" />
     <plugin name="cordova-plugin-email" spec="^1.2.6" />
+    <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
+        <variable name="APP_ID" value="5119904504836745" />
+        <variable name="APP_NAME" value="TheCuriousCarrotApp" />
+    </plugin>
     <plugin name="cordova-plugin-geolocation" spec="^2.4.3" />
     <plugin name="cordova-plugin-google-analytics" spec="^1.8.2" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
@@ -91,9 +95,4 @@
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
     <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="^3.2.2" />
-    <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
-        <variable name="APP_ID" value="5119904504836745" />
-        <variable name="APP_NAME" value="TheCuriousCarrotApp" />
-    </plugin>
 </widget>
-<widget id="it.AlessandroOrlandi.theCuriousCarrot" version="0.0.50" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
