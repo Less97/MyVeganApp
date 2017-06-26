@@ -23,6 +23,8 @@ export class LoginPage {
     
   }
 
+
+
  ionViewDidLoad(){
     this.ga.startTrackerWithId('UA-82832670-5')
    .then(() => {
@@ -51,6 +53,13 @@ export class LoginPage {
     this.fb.login(['email','public_profile','user_friends'])
     .then((res: FacebookLoginResponse)=>{
      if(res.status == "connected"){
+        var accessToken = res.authResponse.accessToken;
+        this.fb.api("/me?fields=id,first_name,last_name,email", ["public_profile", "email","user_friends"]).then(res=>{
+         alert("firstName: "+res.first_name+" lastName:"+res.last_name+" email:"+res.email+" UserId:"+res.UserId )
+         this.userService.loginViaFacebook(res.first_name,res.last_name,res.email,res.UserId);
+        }).catch(()=>{
+          
+        })
       this.navCtrl.setRoot(TabsPage)
      }else{
       let toast = this.toastCtrl.create({

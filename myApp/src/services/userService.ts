@@ -33,6 +33,18 @@ export class UserService {
     }).map(res=> new CodeResponse().fromResponse(res.json()))
   }
 
+  public loginViaFacebook(firstName:string,lastName:string,email:string,userId:string){
+    return this.http.post(this.serviceUrl+'users/loginViaFacebook',
+    {
+      FirstName:firstName,
+      LastName:lastName,
+      Email:email,
+      UserId:userId,
+      IsFacebookLogin:true
+    })
+  }
+
+
   public confirmCode(eml:string):Observable<{error:boolean}>{
     return this.http.post(this.serviceUrl+'users/confirmEmail',{
       email:eml

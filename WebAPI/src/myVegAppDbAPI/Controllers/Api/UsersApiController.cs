@@ -7,6 +7,7 @@ using MongoDB.Driver;
 using myVegAppDbAPI.Helpers;
 using myVegAppDbAPI.Helpers.Project.Utilities;
 using myVegAppDbAPI.Model.APIModels;
+using myVegAppDbAPI.Model.APIModels.CreateUser;
 using myVegAppDbAPI.Model.DbModels.InsertModels;
 using myVegAppDbAPI.Model.DbModels.ReadModels;
 using myVegAppDbAPI.Model.Settings;
@@ -132,6 +133,7 @@ namespace myVegAppDbAPI.Controllers.Api
             }
         }
 
+
         [HttpPost("confirmEmail")]
         public async Task<JsonResult> ConfirmEmail([FromBody] ConfirmEmail model)
         {
@@ -155,10 +157,31 @@ namespace myVegAppDbAPI.Controllers.Api
                 temporaryUsers.Remove(model.Email);
                 return Json(new { Error = 0, Result = "User correctly created" }.ToJson(jsonWriterSettings));
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 return Json(ex.RaiseException());
             }
         }
+
+        [HttpPost("loginViaFacebook")]
+        public async Task<JsonResult> LoginViaFacebook(FacebookLogin fbLogin)
+        {
+            var users = _database.GetCollection<FacebookLogin>("users");
+            var isAlreadyPresent = users.AsQueryable().Any(x => x.Email == fbLogin.Email);
+
+            if (!isAlreadyPresent)
+            {
+                //not exists, insert it.
+                await users.InsertOneAsync(fbLogin);
+                return Json(new { status = "created" });
+            }
+            else
+            {
+                var myUser = users.AsQueryable().First(x => x.Email == fbLogin.Email);
+                return Json(new { status = "loggedIn" });
+            }
+        }
+
 
         [HttpPost("restorePassword")]
         public async Task<JsonResult> RestorePassword([FromBody] ForgotPassword model)
@@ -210,12 +233,12 @@ namespace myVegAppDbAPI.Controllers.Api
                     return Json(new { Error = 1, Message = "Sorry we haven't found any request of changing password from this email. Please try again." }.ToJson());
 
                 ReadUser myUser = null;
-                usersChangingPassword.TryGetValue(changePassword.Email ,out myUser);
+                usersChangingPassword.TryGetValue(changePassword.Email, out myUser);
 
                 var users = _database.GetCollection<ReadUser>("users");
-             
+
                 if (myUser == null)
-                    return Json(new { Error = 1, Message= "Sorry there has been a problem during changing your password" }.ToJson());
+                    return Json(new { Error = 1, Message = "Sorry there has been a problem during changing your password" }.ToJson());
 
                 String salt = String.Empty;
                 myUser.Password = AuthHelper.EncryptPassword(changePassword.Password, out salt);
