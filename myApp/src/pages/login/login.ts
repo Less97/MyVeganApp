@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController ,ToastController} from 'ionic-angular';
+import { NavController, ToastController, NavParams} from 'ionic-angular';
 import { TabsPage } from '../tabs/tabs';
 import { RegisterPage } from '../register/register';
 import { UserService } from '../../services/userService';
@@ -7,6 +7,7 @@ import { UserService } from '../../services/userService';
 import { ConfigsProvider } from '../../providers/configsProvider';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { FBRegistered } from '../fbRegistered/fbRegistered'
 
 
 
@@ -17,13 +18,13 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
 export class LoginPage {
 
+  private destination:string;
+
   user = {email:'',password:''}
-  constructor(public navCtrl: NavController, public userService:UserService, public configsProvider:ConfigsProvider,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public userService:UserService, public configsProvider:ConfigsProvider,
   private ga: GoogleAnalytics, private fb: Facebook,private toastCtrl: ToastController) {
-    
+    this.destination = this.navParams.get('destination');
   }
-
-
 
  ionViewDidLoad(){
     this.ga.startTrackerWithId('UA-82832670-5')
@@ -55,10 +56,21 @@ export class LoginPage {
      if(res.status == "connected"){
         var accessToken = res.authResponse.accessToken;
         this.fb.api("/me?fields=id,first_name,last_name,email", ["public_profile", "email","user_friends"]).then(res=>{
-         alert("firstName: "+res.first_name+" lastName:"+res.last_name+" email:"+res.email+" UserId:"+res.UserId )
-         this.userService.loginViaFacebook(res.first_name,res.last_name,res.email,res.UserId);
+         this.userService.loginViaFacebook(res.first_name,res.last_name,res.email,res.id).subscribe(res=>{
+            if(res.json().status=='loggedIn'){
+              this.navCtrl.setRoot(TabsPage);
+            }else{
+              this.navCtrl.setRoot(FBRegistered)
+            }
+         });
+         
         }).catch(()=>{
-          
+           let toast = this.toastCtrl.create({
+             message: 'Sorry, there was an error creating the user.Please try again or contact us.',
+            duration: 3000,
+            position: 'center'
+      })
+      toast.present();
         })
       this.navCtrl.setRoot(TabsPage)
      }else{
