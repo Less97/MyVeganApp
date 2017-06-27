@@ -164,12 +164,12 @@ namespace myVegAppDbAPI.Controllers.Api
         }
 
         [HttpPost("loginViaFacebook")]
-        public async Task<JsonResult> LoginViaFacebook(FacebookLogin fbLogin)
+        public async Task<JsonResult> LoginViaFacebook([FromBody] FacebookLogin fbLogin)
         {
             var users = _database.GetCollection<FacebookLogin>("users");
-            var isAlreadyPresent = users.AsQueryable().Any(x => x.Email == fbLogin.Email);
+            var myUser = users.AsQueryable().FirstOrDefault(x => x.Email == fbLogin.Email);
 
-            if (!isAlreadyPresent)
+            if (myUser==null)
             {
                 //not exists, insert it.
                 await users.InsertOneAsync(fbLogin);
@@ -177,7 +177,7 @@ namespace myVegAppDbAPI.Controllers.Api
             }
             else
             {
-                var myUser = users.AsQueryable().First(x => x.Email == fbLogin.Email);
+                //already exists
                 return Json(new { status = "loggedIn" });
             }
         }
