@@ -17,17 +17,19 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
 export class FBRegistered {
 
-  user = {email:'',password:''}
+
+  user = {email:'',userId:''}
   constructor(public navCtrl: NavController, public navParams: NavParams, public configsProvider:ConfigsProvider,
   private ga: GoogleAnalytics, private fb: Facebook,private toastCtrl: ToastController) {
-    
+    this.user.email = this.navParams.get("email");
+    this.user.userId = this.navParams.get("userId");
   }
 
  ionViewDidLoad(){
     this.ga.startTrackerWithId('UA-82832670-5')
    .then(() => {
       this.ga.trackView('fbRegistered');
-      this.ga.trackEvent('user','register','facebook');
+      this.ga.trackEvent('User','Register','facebook:'+this.user.email);
    })
    .catch(e => console.log('Error starting GoogleAnalytics', e));
   }

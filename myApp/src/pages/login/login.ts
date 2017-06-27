@@ -3,7 +3,6 @@ import { NavController, ToastController, NavParams} from 'ionic-angular';
 import { TabsPage } from '../tabs/tabs';
 import { RegisterPage } from '../register/register';
 import { UserService } from '../../services/userService';
-//import { UserData } from '../../entities/userData';
 import { ConfigsProvider } from '../../providers/configsProvider';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
@@ -21,6 +20,7 @@ export class LoginPage {
   private destination:string;
 
   user = {email:'',password:''}
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public userService:UserService, public configsProvider:ConfigsProvider,
   private ga: GoogleAnalytics, private fb: Facebook,private toastCtrl: ToastController) {
     this.destination = this.navParams.get('destination');
@@ -56,11 +56,13 @@ export class LoginPage {
      if(res.status == "connected"){
         var accessToken = res.authResponse.accessToken;
         this.fb.api("/me?fields=id,first_name,last_name,email", ["public_profile", "email","user_friends"]).then(res=>{
-         this.userService.loginViaFacebook(res.first_name,res.last_name,res.email,res.id).subscribe(res=>{
+         this.userService.loginViaFacebook(res.first_name,res.last_name,res.email,res.id).subscribe(serverRes=>{
             if(res.json().status=='loggedIn'){
               this.navCtrl.setRoot(TabsPage);
             }else{
-              this.navCtrl.setRoot(FBRegistered)
+              this.navCtrl.setRoot(FBRegistered,{
+                email:res.email
+              });
             }
          });
          

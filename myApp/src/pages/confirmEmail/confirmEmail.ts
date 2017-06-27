@@ -56,7 +56,7 @@ export class ConfirmEmailPage {
           this.loader.dismiss();
            this.ga.startTrackerWithId('UA-82832670-5')
            .then(() => {
-              this.ga.trackEvent('User','Register',this.email);
+              this.ga.trackEvent('User','Register','Username/Pwd:'+this.email);
               // Tracker is ready
               // You can now track pages or set additional information such as AppVersion or UserId
           }).catch(e => console.log('Error starting GoogleAnalytics', e));
