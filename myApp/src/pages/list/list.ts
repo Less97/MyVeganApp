@@ -8,6 +8,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { LoadingController,Loading } from 'ionic-angular';
+import { AppRate } from '@ionic-native/app-rate';
+
 
 @Component({
   selector: 'page-list',
@@ -17,9 +19,13 @@ export class ListPage {
    places:Place[]
    loader:Loading;
   constructor(public navCtrl: NavController,public placeService:PlaceService,private geolocation: Geolocation,
-   private loadingCtrl:LoadingController,private ga: GoogleAnalytics,private emailComposer: EmailComposer) {
+   private loadingCtrl:LoadingController,private ga: GoogleAnalytics,private emailComposer: EmailComposer,private appRate: AppRate) {
     
-  }
+    this.appRate.preferences.storeAppURL = {
+        ios: '1204525613',
+        android: 'market://details?id=it.AlessandroOrlandi.theCuriousCarrot',
+      };
+    }
 
   ionViewDidEnter(){
     this.loadPage();
