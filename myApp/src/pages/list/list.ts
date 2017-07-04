@@ -21,14 +21,17 @@ export class ListPage {
   constructor(public navCtrl: NavController,public placeService:PlaceService,private geolocation: Geolocation,
    private loadingCtrl:LoadingController,private ga: GoogleAnalytics,private emailComposer: EmailComposer,private appRate: AppRate) {
     
-    this.appRate.preferences.storeAppURL = {
+    if(this.appRate.preferences!=null){
+      this.appRate.preferences.storeAppURL = {
         ios: '1204525613',
-        android: 'market://details?id=it.AlessandroOrlandi.theCuriousCarrot',
+        android: 'market://details?id=it.AlessandroOrlandi.theCuriousCarrot'
       };
     }
+  }
 
   ionViewDidEnter(){
     this.loadPage();
+    this.appRate.promptForRating(false);
   }
   
 loadPage(){

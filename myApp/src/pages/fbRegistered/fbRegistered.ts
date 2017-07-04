@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController} from 'ionic-angular';
 import { TabsPage } from '../tabs/tabs';
-import { RegisterPage } from '../register/register';
-import { UserService } from '../../services/userService';
 //import { UserData } from '../../entities/userData';
 import { ConfigsProvider } from '../../providers/configsProvider';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
-import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { Facebook } from '@ionic-native/facebook';
 
 
 
@@ -32,6 +30,10 @@ export class FBRegistered {
       this.ga.trackEvent('User','Register','facebook:'+this.user.email);
    })
    .catch(e => console.log('Error starting GoogleAnalytics', e));
+  }
+
+  goToList(){
+    this.navCtrl.setRoot(TabsPage);
   }
 
 }

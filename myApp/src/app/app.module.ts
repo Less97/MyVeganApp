@@ -33,6 +33,7 @@ import { EmailComposer } from '@ionic-native/email-composer';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { Facebook } from '@ionic-native/facebook'
+import { AppRate } from '@ionic-native/app-rate';
 
 //directives:
 import { EqualValidator } from '../directives/validators/validateEqual';
@@ -84,6 +85,7 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     LaunchNavigator,
     GoogleAnalytics,
     Facebook,
+    AppRate,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

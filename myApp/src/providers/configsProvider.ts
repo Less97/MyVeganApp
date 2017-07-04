@@ -40,6 +40,7 @@
     window.localStorage.setItem('userData', JSON.stringify(userData));
    }
 
+
    getUserData():UserData{
      var obj = window.localStorage.getItem('userData');
      if(obj==null||obj==undefined) return new UserData();
