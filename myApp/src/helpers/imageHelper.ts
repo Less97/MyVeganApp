@@ -18,6 +18,8 @@ export class ImageHelper{
             return "assets/images/placeTypes/list/foodtruck.png";
           case "takeaway":
              return "assets/images/placeTypes/list/takeaway.png"
+          case "pizzeria":
+             return "assets/images/placeTypes/list/pizza.png"
           case "market":
             return ""
         }
@@ -34,7 +36,9 @@ export class ImageHelper{
           case "food truck":
             return "assets/images/placeTypes/pins/foodtruck.png";
           case "takeaway":
-            return "assets/images/placeTypes/pins/takeaway.png"
+            return "assets/images/placeTypes/pins/takeaway.png";
+          case "pizzeria":
+            return "assets/images/placeTypes/pins/pizza.png"
           case "market":
             return ""
         }
@@ -52,6 +56,8 @@ export class ImageHelper{
             return "assets/images/placeTypes/covers/foodtruck.jpg";
           case "takeaway":
              return "assets/images/placeTypes/covers/takeaway.jpg"
+          case "pizza":
+            return "assets/images/placeTypes/covers/pizza.jpg"
           case "market":
             return ""
         }
