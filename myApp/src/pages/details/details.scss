@@ -44,4 +44,16 @@ page-details {
     height:150px;
   }
 
+  .clock{
+    margin-top:5px;
+    margin-left:5px;
+    width:10%;
+  }
+
+  @media screen and (min-width:300px){
+    .clock{
+        width:20px;
+    }
+  }
+
 }
