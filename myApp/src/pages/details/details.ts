@@ -54,9 +54,9 @@ export class DetailsPage {
        this.position.latitude = resp.coords.latitude;
        this.position.longitude = resp.coords.longitude;
        this.placeService.getDetails(this.placeId,this.position.latitude,this.position.longitude).subscribe(placeDetails=>{
-        this.loader.dismiss();
-        this.place = placeDetails;
-        this.isContentReady = true;
+       this.loader.dismiss();
+       this.place = placeDetails;
+       this.isContentReady = true;
        this.loadMap();
        })
     }).catch((error) => {
