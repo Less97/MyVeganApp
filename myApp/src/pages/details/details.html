@@ -53,11 +53,12 @@
         <div *ngFor="let hour of place.openingHours">{{hour}}</div>
     </ion-col>
   </ion-row>
-  <ion-row>
-    <ion-col col-12>
-      <div #map id="map"></div>  
+   <ion-row>
+      <ion-col col-12>
+        <ion-icon name="ios-pricetags-outline" ></ion-icon>
+        <span class="tag" *ngFor="let t of tags">#{{t}}</span>
     </ion-col>
-  </ion-row>
+   </ion-row>
   <div class="clearf"></div>
   </ion-grid>
 </ion-content>
