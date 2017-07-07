@@ -34,6 +34,12 @@
       <ion-icon name="ios-call-outline" ></ion-icon><a (click)="call()" class="cursor-hand">&nbsp;{{place.phoneNumber}}</a>
     </ion-col>
   </ion-row>
+   <ion-row>
+      <ion-col col-12>
+        <ion-icon name="ios-pricetags-outline" ></ion-icon>
+        <span class="tag" *ngFor="let t of place.tags">#{{t}}</span>
+    </ion-col>
+   </ion-row>
   <ion-row>
     <ion-col col-12>
         <rating [(ngModel)]="place.rating" readOnly="true" max="5" emptyStarIconName="star-outline"
@@ -59,12 +65,23 @@
       </div>
      </ion-col>
   </ion-row>
-   <ion-row>
-      <ion-col col-12>
-        <ion-icon name="ios-pricetags-outline" ></ion-icon>
-        <span class="tag" *ngFor="let t of place.tags">#{{t}}</span>
-    </ion-col>
-   </ion-row>
+  
   <div class="clearf"></div>
   </ion-grid>
+  <ion-footer [hidden]="!isContentReady">
+  <ion-toolbar>
+       <button ion-button icon-start>
+        <ion-icon name="md-mail" (click)="sendEmail()"></ion-icon>&nbsp;
+        BOOKING
+      </button> 
+      <button ion-button icon-start (click)="call()">
+        <ion-icon name="md-call"></ion-icon>&nbsp;
+        CALL
+      </button> 
+      <button ion-button icon-start>
+        <ion-icon name="md-car"></ion-icon>&nbsp;
+       GET DIRECTION 
+      </button> 
+  </ion-toolbar>
+</ion-footer>
 </ion-content>
