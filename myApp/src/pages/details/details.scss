@@ -52,13 +52,14 @@ page-details {
 
    #map{
     width: 100%;
+    max-width: 300px;
     height: 150px;
    }
 
    .tag{
      color:#0041f7;
    }
-   
+
   @media screen and (min-width:300px){
     .clock{
         width:20px;
