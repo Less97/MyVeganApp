@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="it.AlessandroOrlandi.theCuriousCarrot" version="0.0.51" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>The Curious Carrot v2</name>
     <description>The curious carrot is a community that allows Vegetarians and Vegans to share their favourite foody finds and discoveries-cafes, restaurants and shops.</description>
-    <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <author email="alessandro@thecuriouscarrot.com" href="http://www.thecuriouscarrot.com/">TheCuriousCarrot Team</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="http://ionic.local/*" />
@@ -77,8 +77,12 @@
         <splash height="960" src="resources/ios/splash/Default@2x~iphone.png" width="640" />
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
     </platform>
+    <gap:config-file overwrite="true" parent="NSLocationAlwaysUsageDescription" platform="ios">
+        <string>We're using the location to find the best vegan places around you.</string>
+    </gap:config-file>
     <engine name="android" spec="^6.2.3" />
     <engine name="ios" spec="^4.4.0" />
+    <plugin name="cordova-plugin-apprate" spec="^1.3.0" />
     <plugin name="cordova-plugin-console" spec="^1.0.5" />
     <plugin name="cordova-plugin-device" spec="^1.1.4" />
     <plugin name="cordova-plugin-directions" spec="^0.4.4" />
@@ -95,5 +99,4 @@
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
     <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="^3.2.2" />
-    <plugin name="cordova-plugin-apprate" spec="^1.3.0" />
 </widget>

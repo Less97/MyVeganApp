@@ -10,6 +10,7 @@ import { PlaceService } from '../../services/placeService'
 import { LoadingController,Loading } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
+
 declare var google;
 
 
