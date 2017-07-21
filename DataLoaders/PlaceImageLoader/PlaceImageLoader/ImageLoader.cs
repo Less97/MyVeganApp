@@ -17,13 +17,14 @@ namespace PlaceImageLoader
 
         public void Load()
         {
-            String[] subDirectories = Directory.GetDirectories(rootFolder);
-            foreach (var s in subDirectories)
+            DirectoryInfo rootInfo = new DirectoryInfo(rootFolder);
+            DirectoryInfo[] subInfos = rootInfo.GetDirectories();
+            foreach (var s in subInfos)
             {
-                String[] imgs = Directory.GetFiles(Path.Combine(rootFolder, s));
+                List<FileInfo> imgs = s.EnumerateFiles().ToList();
                 foreach (var f in imgs)
                 {
-                    Upload(LoadImage(Path.Combine(rootFolder, s,f)),s);
+                    Upload(LoadImage(Path.Combine(rootFolder, s.Name,f.Name)),s.Name);
                 }
             }
         }

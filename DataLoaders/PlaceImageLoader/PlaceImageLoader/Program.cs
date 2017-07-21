@@ -10,6 +10,8 @@ namespace PlaceImageLoader
     {
         static void Main(string[] args)
         {
+            ImageLoader l = new ImageLoader();
+            l.Load();
         }
     }
 }
