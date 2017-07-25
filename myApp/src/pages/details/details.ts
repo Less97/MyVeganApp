@@ -67,6 +67,10 @@ export class DetailsPage {
   
   }
 
+  ionViewDidEnter(){
+    google.maps.event.trigger(this.map, 'resize');
+  }
+
   loadMap(){
      let latLng = new google.maps.LatLng(this.place.position.latitude, this.place.position.longitude);
      let mapOptions = {
