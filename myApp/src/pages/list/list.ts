@@ -65,7 +65,7 @@ loadPage(){
       return (d/1000).toFixed(1);
   }
 
-  addPlace(){
+  sendEmail(){
       //Now we know we can send
       let email = {
         to: 'alessandro@thecuriouscarrot.com',

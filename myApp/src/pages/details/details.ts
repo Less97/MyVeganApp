@@ -68,7 +68,7 @@ export class DetailsPage {
   }
 
   ionViewDidEnter(){
-    google.maps.event.trigger(this.map, 'resize');
+    this.loadMap();
   }
 
   loadMap(){
