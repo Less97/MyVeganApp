@@ -63,13 +63,11 @@ export class DetailsPage {
     }).catch((error) => {
       console.log('Error getting location', error);
     });
-    
+     google.maps.event.trigger(this.map, 'resize');
   
   }
 
-  ionViewDidEnter(){
-    google.maps.event.trigger(this.map, 'resize');
-  }
+  
 
   loadMap(){
      let latLng = new google.maps.LatLng(this.place.position.latitude, this.place.position.longitude);
