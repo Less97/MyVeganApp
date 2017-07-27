@@ -4,8 +4,9 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { PlaceService } from '../../services/placeService';
 import { Place } from '../../entities/place'
 import { ImageHelper } from '../../helpers/imageHelper'
-import { LoadingController,Loading } from 'ionic-angular';
+import { LoadingController,Loading,Platform } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
+
 
 import { DetailsPage } from '../details/details'
 
@@ -30,7 +31,7 @@ export class MapPage {
   
 
   constructor(public navCtrl: NavController,private geolocation: Geolocation,private placeService:PlaceService,
-  private imageHelper:ImageHelper,public loadingCtrl: LoadingController,private ga: GoogleAnalytics
+  private imageHelper:ImageHelper,public loadingCtrl: LoadingController,private ga: GoogleAnalytics, private platform:Platform
   ) {
     this.markers = [];
   }
@@ -40,6 +41,7 @@ ionViewDidEnter(){
 this.ga.startTrackerWithId('UA-82832670-5')
     .then(() => {
      this.ga.trackView('map');
+     this.ga.setAppVersion(this.platform.platforms().join(' '))
       // Tracker is ready
       // You can now track pages or set additional information such as AppVersion or UserId
     }).catch(e => console.log('Error starting GoogleAnalytics', e));
@@ -77,7 +79,7 @@ this.ga.startTrackerWithId('UA-82832670-5')
     
      var clusterStyles = [{
             textColor: '#FFFFFF',
-            url: '/assets/placeTypes/pins/cluster/m.png',
+            url: 'assets/placeTypes/pins/cluster/m.png',
             height: 100,
             width: 100,
             textSize: 20

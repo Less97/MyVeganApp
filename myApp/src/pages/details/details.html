@@ -2,6 +2,9 @@
   <ion-navbar>
     <ion-title>Details</ion-title>
   </ion-navbar>
+  <ion-nav-buttons side="right" [hidden]="!canShare">
+    <a class="button button-icon icon ion-settings" (click)="share"><ion-icon name="share-alt"></ion-icon></a>
+  </ion-nav-buttons>
 </ion-header>
 
 <ion-content padding>
@@ -19,7 +22,7 @@
     <ion-col col-12>
       <ion-slides>
         <ion-slide *ngFor="let imgId of place.gallery" class="gallery-slide">
-         <img [src]="getImgUrl(imgId)"/>
+         <img (click)='openImg(imgId)' [src]="getImgUrl(imgId)"/>
         </ion-slide>
       </ion-slides>
     </ion-col>
@@ -32,6 +35,11 @@
  <ion-row>
     <ion-col col-12>
       <ion-icon name="ios-call-outline" ></ion-icon><a (click)="call()" class="cursor-hand">&nbsp;{{place.phoneNumber}}</a>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-12>
+     <ion-icon ios="ios-compass-outline" md="md-compass"></ion-icon><a (click)="goToWebsite()" class="cursor-hand">&nbsp;{{place.website}}</a>
     </ion-col>
   </ion-row>
    <ion-row>
@@ -68,21 +76,26 @@
   
   <div class="clearf"></div>
   <ion-row>
-     <ion-col col-4>
+     <ion-col col-3>
         <button ion-button icon-only class="width-100" color="dark" (click)="call()">
          <ion-icon ios="ios-call" md="md-call"></ion-icon>
         </button>
      </ion-col>
-    <ion-col col-4>
+    <ion-col col-3>
        <button ion-button icon-only class="width-100" color="dark" (click)="sendEmail()">
           <ion-icon ios="ios-mail" md="md-mail"></ion-icon>
         </button>
     </ion-col>
-    <ion-col col-4>
+    <ion-col col-3>
        <button ion-button icon-only class="width-100" color="dark" (click)="getDirection()">
           <ion-icon ios="ios-car" md="md-car"></ion-icon>
         </button>
      </ion-col>
+      <ion-col col-3>
+      <button ion-button icon-only class="width-100" color="dark" (click)="goToWebsite()">
+        <ion-icon ios="ios-compass-outline" md="md-compass"></ion-icon>
+      </button>
+    </ion-col>
   </ion-row>
   </ion-grid>
 </ion-content>

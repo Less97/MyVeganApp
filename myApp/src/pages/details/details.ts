@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef  } from '@angular/core';
-import { NavController ,NavParams } from 'ionic-angular';
+import { NavController ,NavParams,ModalController, ViewController } from 'ionic-angular';
 import { Place } from '../../entities/place';
 import { CallNumber } from '@ionic-native/call-number';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
@@ -7,8 +7,11 @@ import { ImageHelper } from '../../helpers/imageHelper'
 import { Geolocation } from '@ionic-native/geolocation';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { PlaceService } from '../../services/placeService'
-import { LoadingController,Loading } from 'ionic-angular';
+import { LoadingController,Loading,Platform  } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
+import { SocialSharing } from '@ionic-native/social-sharing';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { GalleryPage } from '../gallery/gallery'
 
 
 declare var google;
@@ -28,11 +31,13 @@ export class DetailsPage {
   @ViewChild('map') mapElement: ElementRef;
   map: any;
   placeMarker:any;
+  canShare:boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private imageHelper:ImageHelper,private geolocation: Geolocation, 
     private callNumber: CallNumber,private launchNavigator: LaunchNavigator,private emailComposer: EmailComposer,
-    private placeService:PlaceService,private loadingCtrl:LoadingController,private ga: GoogleAnalytics) {
+    private placeService:PlaceService,private loadingCtrl:LoadingController,private ga: GoogleAnalytics,private platform:Platform,
+    private socialSharing: SocialSharing,private iab: InAppBrowser,public modalCtrl: ModalController) {
 
     this.placeId = navParams.get("placeId");
     this.place = new Place();
@@ -41,6 +46,13 @@ export class DetailsPage {
       content: "Loading details...",
     });
     this.isContentReady = false;
+    this.socialSharing.canShareViaEmail().then(() => {
+      // Sharing via email is possible
+      this.canShare = true;
+    }).catch(() => {
+      // Sharing via email is not possible
+      this.canShare = false;
+    });
   }
 
   ionViewDidLoad(){
@@ -48,6 +60,7 @@ export class DetailsPage {
      this.ga.startTrackerWithId('UA-82832670-5')
     .then(() => {
         this.ga.trackView('details');
+        this.ga.setAppVersion(this.platform.platforms().join(' '))
      })
    .catch(e => console.log('Error starting GoogleAnalytics', e));
 
@@ -63,13 +76,11 @@ export class DetailsPage {
     }).catch((error) => {
       console.log('Error getting location', error);
     });
-    
+     google.maps.event.trigger(this.map, 'resize');
   
   }
 
-  ionViewDidEnter(){
-    this.loadMap();
-  }
+  
 
   loadMap(){
      let latLng = new google.maps.LatLng(this.place.position.latitude, this.place.position.longitude);
@@ -114,6 +125,15 @@ export class DetailsPage {
     );
   }
 
+  openImg(img:String){
+     let imgModal = this.modalCtrl.create(GalleryPage);
+     imgModal.present();
+  }
+
+  goToWebsite(){
+    this.iab.create(this.place.website);
+  }
+
   sendEmail(){
       //Now we know we can send
       let email = {
@@ -135,5 +155,9 @@ export class DetailsPage {
    this.callNumber.callNumber(this.place.phoneNumber, true)
     .then(() => console.log('Launched dialer!'))
     .catch(() => console.log('Error launching dialer'));
+  }
+
+  share(){
+    this.socialSharing.share('I\'ve just discovered '+this.place.name+' through theCuriousCarrot. ','I\'ve just discovered a new vegan place, '+this.place.name,null,null)
   }
 }

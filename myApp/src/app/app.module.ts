@@ -1,6 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler,Platform } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HttpModule } from '@angular/http';
 
@@ -34,6 +34,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { Facebook } from '@ionic-native/facebook'
 import { AppRate } from '@ionic-native/app-rate';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 //directives:
 import { EqualValidator } from '../directives/validators/validateEqual';
@@ -86,6 +87,8 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     GoogleAnalytics,
     Facebook,
     AppRate,
+    Platform,
+    InAppBrowser, 
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
