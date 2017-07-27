@@ -9,6 +9,7 @@ import { EmailComposer } from '@ionic-native/email-composer';
 import { PlaceService } from '../../services/placeService'
 import { LoadingController,Loading,Platform  } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 
 declare var google;
@@ -28,11 +29,12 @@ export class DetailsPage {
   @ViewChild('map') mapElement: ElementRef;
   map: any;
   placeMarker:any;
+  canShare:boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private imageHelper:ImageHelper,private geolocation: Geolocation, 
     private callNumber: CallNumber,private launchNavigator: LaunchNavigator,private emailComposer: EmailComposer,
-    private placeService:PlaceService,private loadingCtrl:LoadingController,private ga: GoogleAnalytics,private platform:Platform) {
+    private placeService:PlaceService,private loadingCtrl:LoadingController,private ga: GoogleAnalytics,private platform:Platform,private socialSharing: SocialSharing) {
 
     this.placeId = navParams.get("placeId");
     this.place = new Place();
@@ -41,6 +43,13 @@ export class DetailsPage {
       content: "Loading details...",
     });
     this.isContentReady = false;
+    this.socialSharing.canShareViaEmail().then(() => {
+      // Sharing via email is possible
+      this.canShare = true;
+    }).catch(() => {
+      // Sharing via email is not possible
+      this.canShare = false;
+    });
   }
 
   ionViewDidLoad(){
@@ -48,6 +57,7 @@ export class DetailsPage {
      this.ga.startTrackerWithId('UA-82832670-5')
     .then(() => {
         this.ga.trackView('details');
+        this.ga.setAppVersion(this.platform.platforms().join(' '))
      })
    .catch(e => console.log('Error starting GoogleAnalytics', e));
 
@@ -134,4 +144,6 @@ export class DetailsPage {
     .then(() => console.log('Launched dialer!'))
     .catch(() => console.log('Error launching dialer'));
   }
+
+
 }
