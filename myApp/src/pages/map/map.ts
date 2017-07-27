@@ -77,7 +77,7 @@ this.ga.startTrackerWithId('UA-82832670-5')
     
      var clusterStyles = [{
             textColor: '#FFFFFF',
-            url: '/assets/placeTypes/pins/cluster/m.png',
+            url: 'assets/placeTypes/pins/cluster/m.png',
             height: 100,
             width: 100,
             textSize: 20
