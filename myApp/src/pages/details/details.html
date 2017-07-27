@@ -2,6 +2,9 @@
   <ion-navbar>
     <ion-title>Details</ion-title>
   </ion-navbar>
+  <ion-nav-buttons side="right" [hidden]="!canShare">
+    <a class="button button-icon icon ion-settings" (click)="share"><ion-icon name="share-alt"></ion-icon></a>
+  </ion-nav-buttons>
 </ion-header>
 
 <ion-content padding>
