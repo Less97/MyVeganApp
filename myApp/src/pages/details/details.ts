@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef  } from '@angular/core';
-import { NavController ,NavParams } from 'ionic-angular';
+import { NavController ,NavParams,ModalController, ViewController } from 'ionic-angular';
 import { Place } from '../../entities/place';
 import { CallNumber } from '@ionic-native/call-number';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
@@ -11,6 +11,7 @@ import { LoadingController,Loading,Platform  } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { GalleryPage } from '../gallery/gallery'
 
 
 declare var google;
@@ -36,7 +37,7 @@ export class DetailsPage {
     private imageHelper:ImageHelper,private geolocation: Geolocation, 
     private callNumber: CallNumber,private launchNavigator: LaunchNavigator,private emailComposer: EmailComposer,
     private placeService:PlaceService,private loadingCtrl:LoadingController,private ga: GoogleAnalytics,private platform:Platform,
-    private socialSharing: SocialSharing,private iab: InAppBrowser) {
+    private socialSharing: SocialSharing,private iab: InAppBrowser,public modalCtrl: ModalController) {
 
     this.placeId = navParams.get("placeId");
     this.place = new Place();
@@ -122,6 +123,11 @@ export class DetailsPage {
       success => console.log('Launched navigator'),
       error => console.log('Error launching navigator', error)
     );
+  }
+
+  openImg(img:String){
+     let imgModal = this.modalCtrl.create(GalleryPage);
+     imgModal.present();
   }
 
   goToWebsite(){

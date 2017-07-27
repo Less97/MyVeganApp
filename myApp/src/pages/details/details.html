@@ -22,7 +22,7 @@
     <ion-col col-12>
       <ion-slides>
         <ion-slide *ngFor="let imgId of place.gallery" class="gallery-slide">
-         <img [src]="getImgUrl(imgId)"/>
+         <img (click)='openImg(imgId)' [src]="getImgUrl(imgId)"/>
         </ion-slide>
       </ion-slides>
     </ion-col>
