@@ -1,6 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler,Platform } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HttpModule } from '@angular/http';
 
@@ -86,6 +86,7 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     GoogleAnalytics,
     Facebook,
     AppRate,
+    Platform,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

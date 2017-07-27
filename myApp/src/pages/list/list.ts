@@ -7,7 +7,7 @@ import { PlaceService } from '../../services/placeService'
 import { Geolocation } from '@ionic-native/geolocation';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { EmailComposer } from '@ionic-native/email-composer';
-import { LoadingController,Loading } from 'ionic-angular';
+import { LoadingController,Loading,Platform } from 'ionic-angular';
 import { AppRate } from '@ionic-native/app-rate';
 
 
@@ -19,7 +19,7 @@ export class ListPage {
    places:Place[]
    loader:Loading;
   constructor(public navCtrl: NavController,public placeService:PlaceService,private geolocation: Geolocation,
-   private loadingCtrl:LoadingController,private ga: GoogleAnalytics,private emailComposer: EmailComposer,private appRate: AppRate) {
+   private loadingCtrl:LoadingController,private ga: GoogleAnalytics,private emailComposer: EmailComposer,private appRate: AppRate,private platform:Platform) {
     
     if(this.appRate.preferences!=null){
       this.appRate.preferences.storeAppURL = {
@@ -41,6 +41,7 @@ loadPage(){
   this.ga.startTrackerWithId('UA-82832670-5')
       .then(() => {
           this.ga.trackView('list');
+          this.ga.setAppVersion(this.platform.platforms().join(' '))
       })
     .catch(e => console.log('Error starting GoogleAnalytics', e));
     this.loader.present();

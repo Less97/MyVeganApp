@@ -7,7 +7,7 @@ import { ImageHelper } from '../../helpers/imageHelper'
 import { Geolocation } from '@ionic-native/geolocation';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { PlaceService } from '../../services/placeService'
-import { LoadingController,Loading } from 'ionic-angular';
+import { LoadingController,Loading,Platform  } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 
@@ -32,7 +32,7 @@ export class DetailsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private imageHelper:ImageHelper,private geolocation: Geolocation, 
     private callNumber: CallNumber,private launchNavigator: LaunchNavigator,private emailComposer: EmailComposer,
-    private placeService:PlaceService,private loadingCtrl:LoadingController,private ga: GoogleAnalytics) {
+    private placeService:PlaceService,private loadingCtrl:LoadingController,private ga: GoogleAnalytics,private platform:Platform) {
 
     this.placeId = navParams.get("placeId");
     this.place = new Place();
