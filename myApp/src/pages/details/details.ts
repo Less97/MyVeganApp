@@ -145,5 +145,7 @@ export class DetailsPage {
     .catch(() => console.log('Error launching dialer'));
   }
 
-
+  share(){
+    this.socialSharing.share('I\'ve just discovered '+this.place.name+' through theCuriousCarrot. ','I\'ve just discovered a new vegan place, '+this.place.name,null,null)
+  }
 }
