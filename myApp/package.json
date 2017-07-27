@@ -27,6 +27,7 @@
     "@ionic-native/facebook": "^3.12.1",
     "@ionic-native/geolocation": "^3.12.1",
     "@ionic-native/google-analytics": "^3.12.1",
+    "@ionic-native/in-app-browser": "^4.1.0",
     "@ionic-native/launch-navigator": "^3.12.1",
     "@ionic-native/social-sharing": "^4.1.0",
     "@ionic-native/splash-screen": "3.7.0",
@@ -88,7 +89,8 @@
         "APP_NAME": "TheCuriousCarrotApp"
       },
       "cordova-plugin-apprate": {},
-      "cordova-plugin-x-socialsharing": {}
+      "cordova-plugin-x-socialsharing": {},
+      "cordova-plugin-inappbrowser": {}
     },
     "platforms": [
       "android",

@@ -34,6 +34,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { Facebook } from '@ionic-native/facebook'
 import { AppRate } from '@ionic-native/app-rate';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 //directives:
 import { EqualValidator } from '../directives/validators/validateEqual';
@@ -87,6 +88,7 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     Facebook,
     AppRate,
     Platform,
+    InAppBrowser, 
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

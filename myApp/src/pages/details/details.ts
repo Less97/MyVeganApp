@@ -10,6 +10,7 @@ import { PlaceService } from '../../services/placeService'
 import { LoadingController,Loading,Platform  } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 
 declare var google;
@@ -34,7 +35,8 @@ export class DetailsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private imageHelper:ImageHelper,private geolocation: Geolocation, 
     private callNumber: CallNumber,private launchNavigator: LaunchNavigator,private emailComposer: EmailComposer,
-    private placeService:PlaceService,private loadingCtrl:LoadingController,private ga: GoogleAnalytics,private platform:Platform,private socialSharing: SocialSharing) {
+    private placeService:PlaceService,private loadingCtrl:LoadingController,private ga: GoogleAnalytics,private platform:Platform,
+    private socialSharing: SocialSharing,private iab: InAppBrowser) {
 
     this.placeId = navParams.get("placeId");
     this.place = new Place();
@@ -120,6 +122,10 @@ export class DetailsPage {
       success => console.log('Launched navigator'),
       error => console.log('Error launching navigator', error)
     );
+  }
+
+  goToWebsite(){
+    this.iab.create(this.place.website);
   }
 
   sendEmail(){
