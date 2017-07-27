@@ -46,13 +46,13 @@ export class DetailsPage {
       content: "Loading details...",
     });
     this.isContentReady = false;
-    this.socialSharing.canShareViaEmail().then(() => {
-      // Sharing via email is possible
-      this.canShare = true;
-    }).catch(() => {
-      // Sharing via email is not possible
-      this.canShare = false;
-    });
+    // this.socialSharing.canShareViaEmail().then(() => {
+    //   // Sharing via email is possible
+    //   this.canShare = true;
+    // }).catch(() => {
+    //   // Sharing via email is not possible
+    //   this.canShare = false;
+    // });
   }
 
   ionViewDidLoad(){

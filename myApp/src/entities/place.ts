@@ -16,7 +16,7 @@ export class Place{
   openingHours:string[];
   email:string;
   gallery:string[];
-  website:string,
+  website:string;
   tags:string[];
 
   static build(_id:string, name:string,description:string,address:string,phoneNumber:string,email:string, type:string, reviews:number,rating:number,openingHours:string[], latitude:number, longitude:number,distance:number,gallery:string[],tags:string[],website:string):Place{

@@ -2,9 +2,9 @@
   <ion-navbar>
     <ion-title>Details</ion-title>
   </ion-navbar>
-  <ion-nav-buttons side="right" [hidden]="!canShare">
+  <!-- <ion-nav-button side="right" [hidden]="!canShare">
     <a class="button button-icon icon ion-settings" (click)="share"><ion-icon name="share-alt"></ion-icon></a>
-  </ion-nav-buttons>
+  </ion-nav-button> -->
 </ion-header>
 
 <ion-content padding>
@@ -22,7 +22,7 @@
     <ion-col col-12>
       <ion-slides>
         <ion-slide *ngFor="let imgId of place.gallery" class="gallery-slide">
-         <img (click)='openImg(imgId)' [src]="getImgUrl(imgId)"/>
+         <img [src]="getImgUrl(imgId)"/>
         </ion-slide>
       </ion-slides>
     </ion-col>

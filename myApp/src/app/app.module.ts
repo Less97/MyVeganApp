@@ -13,8 +13,9 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { DetailsPage } from '../pages/details/details';
 import { RegisterPage } from '../pages/register/register';
-import { ConfirmEmailPage } from '../pages/confirmEmail/confirmEmail'
-import { ForgotPasswordPage } from '../pages/forgotPassword/forgotPassword'
+import { ConfirmEmailPage } from '../pages/confirmEmail/confirmEmail';
+import { ForgotPasswordPage } from '../pages/forgotPassword/forgotPassword';
+import {GalleryPage} from '../pages/gallery/gallery';
 
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -35,6 +36,7 @@ import { GoogleAnalytics } from '@ionic-native/google-analytics';
 import { Facebook } from '@ionic-native/facebook'
 import { AppRate } from '@ionic-native/app-rate';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 //directives:
 import { EqualValidator } from '../directives/validators/validateEqual';
@@ -51,7 +53,8 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     RegisterPage,
     ConfirmEmailPage,
     ForgotPasswordPage,
-    EqualValidator
+    EqualValidator,
+    GalleryPage
   ],
   imports: [
     BrowserModule,
@@ -70,7 +73,8 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     DetailsPage,
     RegisterPage,
     ConfirmEmailPage,
-    ForgotPasswordPage
+    ForgotPasswordPage,
+    GalleryPage
   ],
   providers: [
     StatusBar,
@@ -89,6 +93,7 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     AppRate,
     Platform,
     InAppBrowser, 
+    SocialSharing,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
