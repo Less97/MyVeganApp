@@ -1,6 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler,Platform } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HttpModule } from '@angular/http';
 
@@ -15,7 +15,7 @@ import { DetailsPage } from '../pages/details/details';
 import { RegisterPage } from '../pages/register/register';
 import { ConfirmEmailPage } from '../pages/confirmEmail/confirmEmail';
 import { ForgotPasswordPage } from '../pages/forgotPassword/forgotPassword';
-import {GalleryPage} from '../pages/gallery/gallery';
+import { GalleryPage } from '../pages/gallery/gallery';
 
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -37,6 +37,7 @@ import { Facebook } from '@ionic-native/facebook'
 import { AppRate } from '@ionic-native/app-rate';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { Platform } from 'ionic-angular'
 
 //directives:
 import { EqualValidator } from '../directives/validators/validateEqual';
@@ -74,7 +75,6 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     RegisterPage,
     ConfirmEmailPage,
     ForgotPasswordPage,
-    GalleryPage
   ],
   providers: [
     StatusBar,
@@ -91,7 +91,7 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     GoogleAnalytics,
     Facebook,
     AppRate,
-    Platform,
+    // Platform,
     InAppBrowser, 
     SocialSharing,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
