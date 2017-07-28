@@ -91,7 +91,7 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     GoogleAnalytics,
     Facebook,
     AppRate,
-    // Platform,
+    Platform,
     InAppBrowser, 
     SocialSharing,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
