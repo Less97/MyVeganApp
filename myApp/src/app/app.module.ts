@@ -37,7 +37,6 @@ import { Facebook } from '@ionic-native/facebook'
 import { AppRate } from '@ionic-native/app-rate';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { SocialSharing } from '@ionic-native/social-sharing';
-import { Platform } from 'ionic-angular'
 
 //directives:
 import { EqualValidator } from '../directives/validators/validateEqual';
@@ -91,7 +90,6 @@ import { EqualValidator } from '../directives/validators/validateEqual';
     GoogleAnalytics,
     Facebook,
     AppRate,
-    Platform,
     InAppBrowser, 
     SocialSharing,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
