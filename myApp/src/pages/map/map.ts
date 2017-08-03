@@ -136,7 +136,7 @@ this.ga.startTrackerWithId('UA-82832670-5')
 
         google.maps.event.addListener(infowindow, 'domready', () => {
       document.getElementById('goToDetails').addEventListener('click', () => {
-        self.navCtrl.push(DetailsPage,{place:p});
+        self.navCtrl.push(DetailsPage,{placeId:p._id});
       }, false);
     }); 
     
