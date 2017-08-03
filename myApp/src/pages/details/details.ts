@@ -36,7 +36,7 @@ export class DetailsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private imageHelper:ImageHelper,private geolocation: Geolocation, 
     private callNumber: CallNumber,private launchNavigator: LaunchNavigator,private emailComposer: EmailComposer,
-    private placeService:PlaceService,private loadingCtrl:LoadingController,private ga: GoogleAnalytics,private platform:Platform,
+    private placeService:PlaceService,private loadingCtrl:LoadingController,private ga: GoogleAnalytics/*,private platform:Platform*/,
     private socialSharing: SocialSharing,private iab: InAppBrowser,public modalCtrl: ModalController) {
 
     this.placeId = navParams.get("placeId");
@@ -60,7 +60,7 @@ export class DetailsPage {
      this.ga.startTrackerWithId('UA-82832670-5')
     .then(() => {
         this.ga.trackView('details');
-        this.ga.setAppVersion(this.platform.platforms().join(' '))
+      //  this.ga.setAppVersion(this.platform.platforms().join(' '))
      })
    .catch(e => console.log('Error starting GoogleAnalytics', e));
 
@@ -72,11 +72,12 @@ export class DetailsPage {
        this.place = placeDetails;
        this.isContentReady = true;
        this.loadMap();
+       
        })
     }).catch((error) => {
       console.log('Error getting location', error);
     });
-     google.maps.event.trigger(this.map, 'resize');
+    
   
   }
 
@@ -102,6 +103,7 @@ export class DetailsPage {
       content: this.place.name  
     }); 
     });
+    google.maps.event.trigger(this.map, 'resize');
   }
 
 
