@@ -1,11 +1,13 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Nearby
-    </ion-title>
-  </ion-navbar>
+  <ion-toolbar>
+    <ion-title>Around you</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="goToList()">
+        <ion-icon name="list" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
-
 <ion-content>
   <div #map id="map"></div>  
 </ion-content>

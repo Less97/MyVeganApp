@@ -6,6 +6,7 @@ import { Place } from '../../entities/place'
 import { ImageHelper } from '../../helpers/imageHelper'
 import { LoadingController,Loading,Platform } from 'ionic-angular';
 import { GoogleAnalytics } from '@ionic-native/google-analytics';
+import { ListPage } from '../../pages/list/list'
 
 
 import { DetailsPage } from '../details/details'
@@ -147,6 +148,10 @@ this.ga.startTrackerWithId('UA-82832670-5')
      cluster = cluster;
      this.loader.dismiss()
 
+  }
+
+  goToList():void{
+    this.navCtrl.setRoot(ListPage);
   }
 
 }

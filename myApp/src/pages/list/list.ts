@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Place } from '../../entities/place';
 import { DetailsPage } from '../../pages/details/details';
+import { MapPage } from '../../pages/map/map'
 import { ImageHelper } from '../../helpers/imageHelper'
 import { PlaceService } from '../../services/placeService'
 import { Geolocation } from '@ionic-native/geolocation';
@@ -76,4 +77,9 @@ loadPage(){
       };
       this.emailComposer.open(email);
   }
+
+  goToMap():void{
+    this.navCtrl.setRoot(MapPage);
+  }
+
 }
