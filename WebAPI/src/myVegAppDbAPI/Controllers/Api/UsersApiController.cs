@@ -7,7 +7,7 @@ using MongoDB.Driver;
 using myVegAppDbAPI.Helpers;
 using myVegAppDbAPI.Helpers.Project.Utilities;
 using myVegAppDbAPI.Model.APIModels;
-using myVegAppDbAPI.Model.APIModels.CreateUser;
+using MyCreateNs = myVegAppDbAPI.Model.APIModels.CreateUser;
 using myVegAppDbAPI.Model.DbModels.InsertModels;
 using myVegAppDbAPI.Model.DbModels.ReadModels;
 using myVegAppDbAPI.Model.Settings;
@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using myVegAppDbAPI.Model.APIModels.CreateUser;
 
 namespace myVegAppDbAPI.Controllers.Api
 {
@@ -164,9 +165,9 @@ namespace myVegAppDbAPI.Controllers.Api
         }
 
         [HttpPost("loginViaFacebook")]
-        public async Task<JsonResult> LoginViaFacebook([FromBody] FacebookLogin fbLogin)
+        public async Task<JsonResult> LoginViaFacebook([FromBody] MyCreateNs.FacebookLogin fbLogin)
         {
-            var users = _database.GetCollection<FacebookLogin>("users");
+            var users = _database.GetCollection<MyCreateNs.FacebookLogin>("users");
             var myUser = users.AsQueryable().FirstOrDefault(x => x.Email == fbLogin.Email);
 
             if (myUser==null)
