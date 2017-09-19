@@ -27,7 +27,7 @@ namespace myVegAppDbAPI.Model
         public GeoLoc Location { get; set; }
 
         [BsonElement("replies")]
-        public Reply[] Replies { get; set; }
+        public List<Reply> Replies { get; set; }
 
         [BsonElement("likes")]
         public ObjectId[] Likes { get; set; }

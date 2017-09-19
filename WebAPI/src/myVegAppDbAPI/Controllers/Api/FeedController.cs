@@ -100,11 +100,12 @@ namespace myVegAppDbAPI.Controllers.Api
             try
             {
 
-                var feedCollection = _database.GetCollection<ReadFeed>("feed");
-                var myFeed = (from f in feedCollection.AsQueryable<ReadFeed>()
-                               select f).ToList<ReadFeed>();
-
-                return Json(myFeed.ToJson(jsonWriterSettings));
+                //var feedCollection = _database.GetCollection<ReadFeed>("feed");
+                //var myFeed = Builders<BsonDocument>.Filter.Eq("_id", reply.FeedId);
+                //var update = Builders<BsonDocument>.Update.Push("replies",Build);
+                //var result = await feedCollection.UpdateOneAsync()
+                throw new NotImplementedException();
+                //return Json(myFeed.ToJson(jsonWriterSettings));
 
 
 
