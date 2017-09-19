@@ -4,7 +4,9 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 using MongoDB.Driver.GridFS;
+using MongoDB.Driver.Linq;
 using myVegAppDbAPI.Helpers;
 using myVegAppDbAPI.Helpers.Project.Utilities;
 using myVegAppDbAPI.Model;
@@ -43,14 +45,38 @@ namespace myVegAppDbAPI.Controllers.Api
         }
 
 
-        public async Task<JsonResult> AddFeed([FromBody] AddFeed myFeed) {
+        public async Task<JsonResult> AddFeed([FromBody] Feed myFeed) {
 
             try
             {
 
-                IMongoCollection<AddFeed> feedCollection = _database.GetCollection<AddFeed>("feed");
+                IMongoCollection<Feed> feedCollection = _database.GetCollection<Feed>("feed");
                 await feedCollection.InsertOneAsync(myFeed);
                 return Json(new { result = true }.ToJson(jsonWriterSettings));
+
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.RaiseException());
+            }
+
+        }
+
+
+        public async Task<JsonResult> Feeds(Double latitude,Double longitude,Int32 fromItm,Int32 pageSize) {
+
+            try
+            {
+
+                var feedCollection = _database.GetCollection<Feed>("feed");
+                var myFeeds = (from f in feedCollection.AsQueryable<Feed>()
+                             where LinqToMongo.Inject(Query.Near("location", latitude, longitude, 1000))
+                             select f
+                            ).Select((itm, index) => new { feed = itm, idx = index }).Skip(fromItm - 1).Take(pageSize).Select(itm => itm.feed);
+
+                return Json(myFeeds.ToJson(jsonWriterSettings));             
+
+                            
 
             }
             catch (Exception ex)
