@@ -93,21 +93,22 @@ namespace myVegAppDbAPI.Controllers.Api
 
         }
 
-        [HttpPost("feeds")]
+        [HttpPost("addReply")]
         public async Task<JsonResult> AddReply([FromBody] AddReply reply)
         {
 
             try
             {
-
-                //var feedCollection = _database.GetCollection<ReadFeed>("feed");
-                //var myFeed = Builders<BsonDocument>.Filter.Eq("_id", reply.FeedId);
-                //var update = Builders<BsonDocument>.Update.Push("replies",Build);
-                //var result = await feedCollection.UpdateOneAsync()
-                throw new NotImplementedException();
-                //return Json(myFeed.ToJson(jsonWriterSettings));
-
-
+                var feedCollection = _database.GetCollection<ReadFeed>("feed");
+                var filter = Builders<ReadFeed>.Filter.Eq("_id", new ObjectId(reply.FeedId));
+                var update = Builders<ReadFeed>.Update.Push("replies",new Reply() {
+                         ReplyId = reply.ReplyId,
+                         Text = reply.Text,
+                         UserId = new ObjectId(reply.UserId)
+                });
+                var result = await feedCollection.UpdateOneAsync(filter,update);
+              
+                return Json(new {result = true}.ToJson(jsonWriterSettings));
 
             }
             catch (Exception ex)
@@ -117,19 +118,16 @@ namespace myVegAppDbAPI.Controllers.Api
 
         }
 
-        [HttpPost("feeds")]
-        public async Task<JsonResult> AddLike([FromBody] AddReply addReply)
+        [HttpPost("addLike")]
+        public async Task<JsonResult> AddLike([FromBody] AddLike addLike)
         {
             try
             {
                 var feedCollection = _database.GetCollection<ReadFeed>("feed");
-                var myFeed = (from f in feedCollection.AsQueryable<ReadFeed>()
-                              where f.Id == new ObjectId(addReply.FeedId)
-                              select f).Single<ReadFeed>();
-
-                return Json(myFeed.ToJson(jsonWriterSettings));
-
-
+                var filter = Builders<ReadFeed>.Filter.Eq("_id", new ObjectId(addLike.FeedId));
+                var update = Builders<ReadFeed>.Update.Push("likes", new ObjectId(addLike.UserId));
+                var result = await feedCollection.UpdateOneAsync(filter, update);
+                return Json(new { result = true }.ToJson(jsonWriterSettings));
             }
             catch (Exception ex)
             {
