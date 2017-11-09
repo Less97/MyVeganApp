@@ -12,6 +12,7 @@ using myVegAppDbAPI.Helpers.Project.Utilities;
 using myVegAppDbAPI.Model;
 using myVegAppDbAPI.Model.APIModels.Feed;
 using myVegAppDbAPI.Model.DbModels.Feeds;
+using myVegAppDbAPI.Model.DbModels.ReadModels;
 using myVegAppDbAPI.Model.Settings;
 using System;
 using System.Collections.Generic;
@@ -72,16 +73,17 @@ namespace myVegAppDbAPI.Controllers.Api
         }
 
         [HttpGet("feeds")]
-        public async Task<JsonResult> Feeds(Double latitude,Double longitude,Int32 fromItm,Int32 pageSize) {
+        public JsonResult Feeds(Double latitude,Double longitude,Int32 fromItm,Int32 pageSize) {
 
             try
             {
 
                 var feedCollection = _database.GetCollection<ReadFeed>("feed");
-                var myFeeds = (from f in feedCollection.AsQueryable<ReadFeed>()
-                               select f).ToList<ReadFeed>();
+               
+                var myQuery = (from f in feedCollection.AsQueryable<ReadFeed>() select f).AsQueryable().Where(x=>LinqToMongo.Inject(Query.Near("location", latitude, longitude, 50))).Skip(fromItm).Take(pageSize).
+                    ToList<ReadFeed>();
 
-                return Json(myFeeds.ToJson(jsonWriterSettings));             
+                return Json(myQuery.ToJson(jsonWriterSettings));             
 
                             
 
